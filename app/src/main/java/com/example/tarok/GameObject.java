@@ -1,15 +1,19 @@
 package com.example.tarok;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.View;
+import android.widget.ImageView;
 
-public abstract class GameObject {
+public abstract class GameObject extends androidx.appcompat.widget.AppCompatImageView{
     protected Bitmap image;
     protected int width;
     protected int height;
     protected int x;
     protected int y;
 
-    public GameObject(Bitmap image, int x, int y)  {
+    public GameObject(Context context, Bitmap image, int x, int y)  {
+        super(context);
 
         this.image = image;
 
@@ -26,21 +30,11 @@ public abstract class GameObject {
         return Bitmap.createBitmap(image, offset, offset , width, height);
     }
 
-    public int getX()  {
+    public float getX()  {
         return this.x;
     }
 
-    public int getY()  {
+    public float getY()  {
         return this.y;
     }
-
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
 }

@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFEB3B"
+    android:padding="0px"
+    android:paddingHorizontal="0px"
+    android:paddingVertical="0px"
+    android:paddingStart="0px"
+    android:paddingLeft="0px"
+    android:paddingTop="0px"
+    android:paddingEnd="0px"
+    android:paddingRight="0px"
+    android:paddingBottom="0px">
+
+    <com.example.tarok.DeckView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0px"
+        android:layout_marginHorizontal="0px"
+        android:layout_marginVertical="0px"
+        android:layout_marginStart="0px"
+        android:layout_marginLeft="0px"
+        android:layout_marginTop="0px"
+        android:layout_marginEnd="0px"
+        android:layout_marginRight="0px"
+        android:layout_marginBottom="0px"
+        android:padding="0px"
+        android:paddingHorizontal="0px"
+        android:paddingVertical="0px"
+        android:paddingStart="0px"
+        android:paddingLeft="0px"
+        android:paddingTop="0px"
+        android:paddingEnd="0px"
+        android:paddingRight="0px"
+        android:paddingBottom="0px" />
+
+</FrameLayout>

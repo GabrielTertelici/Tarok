@@ -19,6 +19,8 @@ public class MainActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
-        setContentView(new GameSurface(this));
+
+//        setContentView(new GameSurface(this));
+        setContentView(R.layout.sample_board_view);
     }
 }

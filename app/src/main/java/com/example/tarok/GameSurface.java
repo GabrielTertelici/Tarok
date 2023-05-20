@@ -30,8 +30,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Bitmap joker = BitmapFactory.decodeResource(this.getResources(),R.drawable.xxii);
-        this.card = new Card(this,joker,100,50);
+//        Bitmap joker = BitmapFactory.decodeResource(this.getResources(),R.drawable.xxii);
+//        this.card = new Card(joker,100,50);
 
         this.gameThread = new GameThread(this,holder);
         this.gameThread.setRunning(true);
