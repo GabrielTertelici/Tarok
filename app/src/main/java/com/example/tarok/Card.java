@@ -34,32 +34,30 @@ public class Card extends GameObject{
                     _yDelta = Y - view.getTranslationY();
                     view.animate().scaleX(1.1f).scaleY(1.1f);
                     view.setZ(1);
+                    rootLayout.setZ(1);
                     break;
                 case MotionEvent.ACTION_UP:
                     view.animate().scaleX(1.0f).scaleY(1.0f);
+                    view.animate().translationX(0);
                     view.animate().translationY(0);
                     view.setZ(0);
+                    view.animate().rotationX(0);
                     break;
                 case MotionEvent.ACTION_POINTER_DOWN:
                     break;
                 case MotionEvent.ACTION_POINTER_UP:
                     break;
                 case MotionEvent.ACTION_MOVE:
-//                    view.setTranslationX(X-_xDelta);
-                    view.setTranslationY(Y-_yDelta);
+                    view.setTranslationX(X-_xDelta);
+                    if(Y-_yDelta<=0){
+                        view.setTranslationY(Y-_yDelta);
+                        view.setRotationX(Math.min(Math.abs(Y-_yDelta)/10,30));
+                    }
                     break;
             }
             rootLayout.invalidate();
             return true;
         }
     }
-
-//    @Override
-//    public void draw(Canvas canvas) {
-//        canvas.save();
-//        canvas.scale(scale,scale);
-//        super.draw(canvas);
-//        canvas.restore();
-//    }
 
 }

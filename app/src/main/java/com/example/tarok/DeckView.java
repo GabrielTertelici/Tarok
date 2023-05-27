@@ -24,8 +24,8 @@ public class DeckView extends LinearLayout {
 
         for(Card c:cards){
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    c.width,
-                    c.height,
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT,
                     1.0f
             );
             param.setMargins(0, 0, 0, 0);
@@ -33,6 +33,8 @@ public class DeckView extends LinearLayout {
             this.addView(c);
         }
 
+        this.setClipChildren(false);
+        this.setClipToPadding(false);
 
     }
 
