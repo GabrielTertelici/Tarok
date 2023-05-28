@@ -4,34 +4,30 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSurface2 extends View {
+
+public class TableView extends View {
     private GameThread gameThread;
     private List<Card> playedCards;
     private int currentPlayer;
 
-    public GameSurface2(Context context, AttributeSet attributeSet)  {
-        super(context);
+    public TableView(Context context, AttributeSet attrs) {
+        super(context,attrs);
 
         // Make Game Surface focusable so it can handle events. .
-//        this.setFocusable(true);
-
-
-
+        this.setFocusable(true);
 
         currentPlayer=0;
 
         playedCards = new ArrayList<>();
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(),R.drawable.i),0,0,null));
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(), R.drawable.ii),0,0,null));
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(), R.drawable.iii),0,0,null));
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(),R.drawable.iv),0,0,null));
+
     }
 
     @Override
@@ -41,15 +37,15 @@ public class GameSurface2 extends View {
         //The rotation angle depends on which player went first
 
         float scaleFactor = 0.3f;
-        float canvasCenterX = canvas.getWidth()/2/scaleFactor;
-        float canvasCenterY = canvas.getHeight()/2/scaleFactor;
+        float canvasCenterX = canvas.getWidth()/2f/scaleFactor;
+        float canvasCenterY = canvas.getHeight()/2f/scaleFactor;
         canvas.save();
         canvas.scale(scaleFactor,scaleFactor);
         for(Card c:playedCards){
 
 
             canvas.rotate(currentPlayer*-90,canvasCenterX , canvasCenterY);
-            canvas.drawBitmap(c.image,canvasCenterX,canvasCenterY,null);
+            canvas.drawBitmap(c.image,canvasCenterX-c.getWidth()/2f,canvasCenterY-c.getHeight()/3f,null);
             canvas.rotate(currentPlayer*90,canvasCenterX , canvasCenterY);
 
             currentPlayer++;
@@ -58,7 +54,14 @@ public class GameSurface2 extends View {
         currentPlayer=0;
     }
 
-    public void setFirstPlayer(int firstPlayer){
-        this.currentPlayer=firstPlayer;
+    @Override
+    public void onFinishInflate() {
+        super.onFinishInflate();
+    }
+
+    public void addCardToTable(Card c){
+        playedCards.add(c);
+        this.invalidate();
+        Log.println(Log.INFO,"L","Added card "+c);
     }
 }

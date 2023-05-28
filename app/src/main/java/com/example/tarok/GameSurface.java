@@ -5,9 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +31,32 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         // Sét callback.
         this.getHolder().addCallback(this);
 
+        setupBackground(context);
+
 
         currentPlayer=0;
 
         playedCards = new ArrayList<>();
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(),R.drawable.i),0,0,null));
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(), R.drawable.ii),0,0,null));
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(), R.drawable.iii),0,0,null));
-        playedCards.add(new Card(context,BitmapFactory.decodeResource(this.getResources(),R.drawable.iv),0,0,null));
+    }
+
+    private void setupBackground(Context context) {
+        // Setup your SurfaceView
+        SurfaceView surfaceView = this;  // use any SurfaceView you want
+        surfaceView.setZOrderOnTop(true);
+//        surfaceView.setZOrderMediaOverlay(true);
+        surfaceView.getHolder().setFormat(PixelFormat.TRANSPARENT);
+
+//// Setup your ImageView
+//        ImageView bgImagePanel = new ImageView(context);
+//        bgImagePanel.setBackgroundResource(R.drawable.background); // use any Bitmap or BitmapDrawable you want
+//
+//// Use a RelativeLayout to overlap both SurfaceView and ImageView
+//        RelativeLayout.LayoutParams fillParentLayout = new RelativeLayout.LayoutParams(
+//                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+//        RelativeLayout rootPanel = new RelativeLayout(context);
+//        rootPanel.setLayoutParams(fillParentLayout);
+//        rootPanel.addView(surfaceView, fillParentLayout);
+//        rootPanel.addView(bgImagePanel, fillParentLayout);
     }
 
     @Override
