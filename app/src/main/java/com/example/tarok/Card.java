@@ -2,6 +2,7 @@ package com.example.tarok;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ public class Card extends GameObject{
     private float _yDelta;
     private DeckView rootLayout;
     private boolean setClip;
+    private static float width;
 
     private CardSuite suite;
 
@@ -114,7 +116,13 @@ public class Card extends GameObject{
     }
 
     private boolean cardCanBeDropped(View card, float X, float Y ){
-        return (Math.abs(X)>rootLayout.getWidth()*0.3 && Math.abs(X)<rootLayout.getWidth()*0.7)//Centered-ish in screen
+        View frame = (View) rootLayout.getParent();
+        if(width==0)
+            width = this.getWidth();
+        X-=width/2f;
+        Log.println(Log.INFO,"I","width:"+width);
+        Log.println(Log.INFO,"I","X:"+X);
+        return (Math.abs(X)>frame.getWidth()*0.3 && Math.abs(X)<frame.getWidth()*0.7)//Centered-ish in screen
             && (Math.abs(card.getTranslationY())>card.getHeight() && Y>card.getHeight());
     }
 
