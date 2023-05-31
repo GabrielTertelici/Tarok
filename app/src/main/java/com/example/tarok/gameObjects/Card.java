@@ -2,7 +2,6 @@ package com.example.tarok.gameObjects;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ public class Card extends GameObject{
     private float _xDelta;
     private float _yDelta;
     private DeckView rootLayout;
-    private boolean setClip;
     private static float width;
 
     private CardSuite suite;
@@ -26,26 +24,25 @@ public class Card extends GameObject{
      */
     private int value;
 
-    public Card(Context context, Bitmap image, int x, int y, DeckView rootLayout, CardSuite suite, int value) {
-        super(context,image, x, y);
-        if(x==0)
+    public Card(Context context, Bitmap image,boolean needsOffset, CardSuite suite, int value) {
+        super(context,image);
+        if(needsOffset)
             this.image = createSubImageWithOffset(50);
         else
             this.image = createSubImageWithOffset(0);
         this.setImageBitmap(this.image);
 
-        this.rootLayout = rootLayout;
         this.suite = suite;
         this.value = value;
-        this.setClip = false;
 
         this.setOnTouchListener(new ChoiceTouchListener());
 
     }
     private final class ChoiceTouchListener implements OnTouchListener {
         public boolean onTouch(View view, MotionEvent event) {
+            if(rootLayout==null)
+                setupRoot();
             performClick();
-            setAllParentsClip(view);
             final float X = event.getRawX();
             final float Y = event.getRawY();
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -87,17 +84,18 @@ public class Card extends GameObject{
             return true;
         }
     }
+    private void setupRoot() {
+        rootLayout = (DeckView) this.getParent();
+        setAllParentsClip(this);
+    }
 
     private void setAllParentsClip(View view) {
-        if(!setClip){
-            while (view.getParent() != null && view.getParent() instanceof ViewGroup) {
-                ViewGroup viewGroup = (ViewGroup) view.getParent();
-                viewGroup.setClipChildren(false);
-                viewGroup.setClipToPadding(false);
-                view = viewGroup;
-            }
+        while (view.getParent() != null && view.getParent() instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view.getParent();
+            viewGroup.setClipChildren(false);
+            viewGroup.setClipToPadding(false);
+            view = viewGroup;
         }
-        setClip = true;
     }
 
     public CardSuite getSuite() {
@@ -123,8 +121,7 @@ public class Card extends GameObject{
         if(width==0)
             width = this.getWidth();
         X-=width/2f;
-        Log.println(Log.INFO,"I","width:"+width);
-        Log.println(Log.INFO,"I","X:"+X);
+
         return (Math.abs(X)>frame.getWidth()*0.3 && Math.abs(X)<frame.getWidth()*0.7)//Centered-ish in screen
             && (Math.abs(card.getTranslationY())>card.getHeight() && Y>card.getHeight());
     }

@@ -7,16 +7,11 @@ public abstract class GameObject extends androidx.appcompat.widget.AppCompatImag
     protected Bitmap image;
     protected int width;
     protected int height;
-    protected int x;
-    protected int y;
 
-    public GameObject(Context context, Bitmap image, int x, int y)  {
+    public GameObject(Context context, Bitmap image)  {
         super(context);
 
         this.image = image;
-
-        this.x= x;
-        this.y= y;
 
         this.width = image.getWidth();
         this.height = image.getHeight();
@@ -30,13 +25,5 @@ public abstract class GameObject extends androidx.appcompat.widget.AppCompatImag
 
     public Bitmap getImage() {
         return image;
-    }
-
-    public float getX()  {
-        return this.x;
-    }
-
-    public float getY()  {
-        return this.y;
     }
 }
