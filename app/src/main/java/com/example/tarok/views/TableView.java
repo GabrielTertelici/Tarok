@@ -1,20 +1,20 @@
-package com.example.tarok;
+package com.example.tarok.views;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
+
+import com.example.tarok.gameObjects.Card;
+import com.example.tarok.unused.GameThreadOld;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TableView extends View {
-    private GameThread gameThread;
+    private GameThreadOld gameThreadOld;
     private List<Card> playedCards;
     private int currentPlayer;
 
@@ -45,7 +45,7 @@ public class TableView extends View {
 
 
             canvas.rotate(currentPlayer*-90,canvasCenterX , canvasCenterY);
-            canvas.drawBitmap(c.image,canvasCenterX-c.getWidth()/2f,canvasCenterY-c.getHeight()/3f,null);
+            canvas.drawBitmap(c.getImage(),canvasCenterX-c.getWidth()/2f,canvasCenterY-c.getHeight()/3f,null);
             canvas.rotate(currentPlayer*90,canvasCenterX , canvasCenterY);
 
             currentPlayer++;

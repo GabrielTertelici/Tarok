@@ -1,15 +1,15 @@
-package com.example.tarok;
+package com.example.tarok.unused;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-public class GameThread extends Thread{
+public class GameThreadOld extends Thread{
     private boolean running;
-    private GameSurface gameSurface;
+    private GameSurfaceOld gameSurfaceOld;
     private SurfaceHolder surfaceHolder;
 
-    public GameThread(GameSurface gameSurface, SurfaceHolder surfaceHolder)  {
-        this.gameSurface= gameSurface;
+    public GameThreadOld(GameSurfaceOld gameSurfaceOld, SurfaceHolder surfaceHolder)  {
+        this.gameSurfaceOld = gameSurfaceOld;
         this.surfaceHolder= surfaceHolder;
     }
 
@@ -25,7 +25,7 @@ public class GameThread extends Thread{
 
                 // Synchronized
                 synchronized (canvas)  {
-                    this.gameSurface.draw(canvas);
+                    this.gameSurfaceOld.draw(canvas);
                 }
             }catch(Exception e)  {
                 // Do nothing.

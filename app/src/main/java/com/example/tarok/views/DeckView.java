@@ -1,4 +1,4 @@
-package com.example.tarok;
+package com.example.tarok.views;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -6,18 +6,17 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.example.tarok.gameObjects.Card;
+import com.example.tarok.utility.CardSuite;
+import com.example.tarok.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * TODO: document your custom view class.
- */
 public class DeckView extends LinearLayout {
 
     private List<Card> cards;
@@ -81,7 +80,7 @@ public class DeckView extends LinearLayout {
     private List<Card> decodeTarots(Context context){
         List<Card> result = new ArrayList<>();
 
-        result.add(new Card(context,BitmapFactory.decodeResource(this.getResources(),R.drawable.i),0,0,this,CardSuite.Tarot,1));
+        result.add(new Card(context,BitmapFactory.decodeResource(this.getResources(),R.drawable.i),0,0,this, CardSuite.Tarot,1));
         result.add(new Card(context,BitmapFactory.decodeResource(this.getResources(), R.drawable.ii),0,0,this,CardSuite.Tarot,2));
         result.add(new Card(context,BitmapFactory.decodeResource(this.getResources(), R.drawable.iii),0,0,this,CardSuite.Tarot,3));
         result.add(new Card(context,BitmapFactory.decodeResource(this.getResources(),R.drawable.iv),0,0,this,CardSuite.Tarot,4));

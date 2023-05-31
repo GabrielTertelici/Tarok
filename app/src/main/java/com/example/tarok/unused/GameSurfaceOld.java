@@ -1,28 +1,23 @@
-package com.example.tarok;
+package com.example.tarok.unused;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+
+import com.example.tarok.gameObjects.Card;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
-    private GameThread gameThread;
+public class GameSurfaceOld extends SurfaceView implements SurfaceHolder.Callback{
+    private GameThreadOld gameThreadOld;
     private List<Card> playedCards;
     private int currentPlayer;
 
-    public GameSurface(Context context, AttributeSet attributeSet)  {
+    public GameSurfaceOld(Context context, AttributeSet attributeSet)  {
         super(context);
 
         // Make Game Surface focusable so it can handle events. .
@@ -74,7 +69,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
 
             canvas.rotate(currentPlayer*-90,canvasCenterX , canvasCenterY);
-            canvas.drawBitmap(c.image,canvasCenterX,canvasCenterY,null);
+            canvas.drawBitmap(c.getImage(),canvasCenterX,canvasCenterY,null);
             canvas.rotate(currentPlayer*90,canvasCenterX , canvasCenterY);
 
             currentPlayer++;
@@ -87,9 +82,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
-        this.gameThread = new GameThread(this,holder);
-        this.gameThread.setRunning(true);
-        this.gameThread.start();
+        this.gameThreadOld = new GameThreadOld(this,holder);
+        this.gameThreadOld.setRunning(true);
+        this.gameThreadOld.start();
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -104,10 +99,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         boolean retry= true;
         while(retry) {
             try {
-                this.gameThread.setRunning(false);
+                this.gameThreadOld.setRunning(false);
 
                 // Parent thread must wait until the end of GameThread.
-                this.gameThread.join();
+                this.gameThreadOld.join();
             }catch(InterruptedException e)  {
                 e.printStackTrace();
             }

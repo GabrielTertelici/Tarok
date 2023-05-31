@@ -1,9 +1,7 @@
-package com.example.tarok;
+package com.example.tarok.gameObjects;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.View;
-import android.widget.ImageView;
 
 public abstract class GameObject extends androidx.appcompat.widget.AppCompatImageView{
     protected Bitmap image;
@@ -28,6 +26,10 @@ public abstract class GameObject extends androidx.appcompat.widget.AppCompatImag
         width-=offset*2;
         height-=offset*2;
         return Bitmap.createBitmap(image, offset, offset , width, height);
+    }
+
+    public Bitmap getImage() {
+        return image;
     }
 
     public float getX()  {

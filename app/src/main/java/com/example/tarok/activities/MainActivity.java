@@ -1,9 +1,11 @@
-package com.example.tarok;
+package com.example.tarok.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.tarok.R;
 
 public class MainActivity extends Activity {
 

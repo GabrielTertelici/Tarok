@@ -1,4 +1,4 @@
-package com.example.tarok;
+package com.example.tarok.utility;
 
 public enum CardSuite {
     Heart,

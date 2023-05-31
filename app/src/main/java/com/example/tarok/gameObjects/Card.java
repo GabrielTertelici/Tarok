@@ -1,4 +1,4 @@
-package com.example.tarok;
+package com.example.tarok.gameObjects;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.tarok.utility.CardSuite;
+import com.example.tarok.views.DeckView;
 
 public class Card extends GameObject{
     private float _xDelta;
