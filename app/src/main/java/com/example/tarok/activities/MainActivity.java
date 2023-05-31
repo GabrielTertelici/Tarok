@@ -6,6 +6,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.tarok.R;
+import com.example.tarok.utility.GameStage;
 
 public class MainActivity extends Activity {
 
@@ -24,5 +25,7 @@ public class MainActivity extends Activity {
 
 //        setContentView(new GameSurface(this));
         setContentView(R.layout.sample_board_view);
+
+        GameStage g = new GameStage(findViewById(R.id.deckView),findViewById(R.id.tableView),getApplicationContext());
     }
 }

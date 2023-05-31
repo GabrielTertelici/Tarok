@@ -13,16 +13,16 @@ public class Card extends GameObject{
     private float _xDelta;
     private float _yDelta;
     private DeckView rootLayout;
+    private boolean locked;
     private static float width;
-
-    private CardSuite suite;
+    private final CardSuite suite;
 
     /** This is how the Card Value is labeled:
      * 1-4 = Empty suite cards ("1" = one of spades = four of hearts)
      * 5-8 = Boy, Horseman, Queen, King (in that order)
      * 1-22 = Tarots (for comparing who picks up we therefore need to take into account suite as well)
      */
-    private int value;
+    private final int value;
 
     public Card(Context context, Bitmap image,boolean needsOffset, CardSuite suite, int value) {
         super(context,image);
@@ -34,55 +34,65 @@ public class Card extends GameObject{
 
         this.suite = suite;
         this.value = value;
+        this.locked = false;
 
         this.setOnTouchListener(new ChoiceTouchListener());
 
     }
     private final class ChoiceTouchListener implements OnTouchListener {
         public boolean onTouch(View view, MotionEvent event) {
-            if(rootLayout==null)
-                setupRoot();
-            performClick();
-            final float X = event.getRawX();
-            final float Y = event.getRawY();
-            switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_DOWN:
-                    _xDelta = X - view.getTranslationX();
-                    _yDelta = Y - view.getTranslationY();
-                    view.animate().scaleX(1.1f).scaleY(1.1f);
-                    view.setZ(1);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if(view.getAlpha()<1){
-                        rootLayout.addCardToTable((Card) view);
-                    }
-                    view.animate().scaleX(1.0f).scaleY(1.0f);
-                    view.animate().translationX(0);
-                    view.animate().translationY(0);
-                    view.setZ(0);
-                    view.animate().rotationX(0);
-                    break;
-                case MotionEvent.ACTION_POINTER_DOWN:
-                    break;
-                case MotionEvent.ACTION_POINTER_UP:
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    view.setTranslationX(X-_xDelta);
-                    if(Y-_yDelta<=0){
-                        view.setTranslationY(Y-_yDelta);
-                        view.setRotationX(Math.min(Math.abs(Y-_yDelta)/10,30));
-                    }
-                    if(cardCanBeDropped(view,X,Y)){
-                        view.setAlpha(0.5f);
-                    }
-                    else{
-                        view.setAlpha(1f);
-                    }
-                    break;
+            if(!locked){
+                if(rootLayout==null)
+                    setupRoot();
+                performClick();
+                final float X = event.getRawX();
+                final float Y = event.getRawY();
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        _xDelta = X - view.getTranslationX();
+                        _yDelta = Y - view.getTranslationY();
+                        view.animate().scaleX(1.1f).scaleY(1.1f);
+                        view.setZ(1);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if(view.getAlpha()<1){
+                            rootLayout.addCardToTable((Card) view);
+                        }
+                        view.animate().scaleX(1.0f).scaleY(1.0f);
+                        view.animate().translationX(0);
+                        view.animate().translationY(0);
+                        view.setZ(0);
+                        view.animate().rotationX(0);
+                        break;
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                        break;
+                    case MotionEvent.ACTION_POINTER_UP:
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        view.setTranslationX(X-_xDelta);
+                        if(Y-_yDelta<=0){
+                            view.setTranslationY(Y-_yDelta);
+                            view.setRotationX(Math.min(Math.abs(Y-_yDelta)/10,30));
+                        }
+                        if(cardCanBeDropped(view,X,Y)){
+                            view.setAlpha(0.5f);
+                        }
+                        else{
+                            view.setAlpha(1f);
+                        }
+                        break;
+                }
+                rootLayout.invalidate();
             }
-            rootLayout.invalidate();
             return true;
         }
+    }
+    public void lockCard(){
+        locked = true;
+    }
+
+    public void unlockCard(){
+        locked=false;
     }
     private void setupRoot() {
         rootLayout = (DeckView) this.getParent();

@@ -9,7 +9,37 @@ import com.example.tarok.gameObjects.Card;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeckDecoder {
+public class DeckUtils {
+
+    public static List<Card> getLegalCards(List<Card> playerCards, Card firstCard){
+        List<Card> result = new ArrayList<>();
+        if(hasCardOfSuite(playerCards,firstCard.getSuite())){
+            for(Card c:playerCards){
+                if(c.getSuite().equals(firstCard.getSuite())){
+                    result.add(c);
+                }
+            }
+            return result;
+        }
+        else if(hasCardOfSuite(playerCards,CardSuite.Tarot)){
+            for(Card c:playerCards){
+                if(c.getSuite().equals(CardSuite.Tarot)){
+                    result.add(c);
+                }
+            }
+            return result;
+        }
+        else
+            return playerCards;
+    }
+
+    public static boolean hasCardOfSuite(List<Card> cards, CardSuite suite){
+        for(Card c:cards){
+            if(c.getSuite().equals(suite))
+                return true;
+        }
+        return false;
+    }
 
     public static List<Card> getDeck(Context context){
         List<Card> result = new ArrayList<>();

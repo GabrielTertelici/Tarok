@@ -14,7 +14,6 @@ import java.util.List;
 
 
 public class TableView extends View {
-    private GameThreadOld gameThreadOld;
     private List<Card> playedCards;
     private int currentPlayer;
 
@@ -62,6 +61,5 @@ public class TableView extends View {
     public void addCardToTable(Card c){
         playedCards.add(c);
         this.invalidate();
-        Log.println(Log.INFO,"L","Added card "+c);
     }
 }
