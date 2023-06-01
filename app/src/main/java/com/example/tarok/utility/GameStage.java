@@ -3,6 +3,7 @@ package com.example.tarok.utility;
 import android.content.Context;
 import android.icu.text.IDNA;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DeckView;
@@ -17,6 +18,7 @@ public class GameStage {
 
     private DeckView playerDeck;
     private TableView table;
+    private TextView pointsText;
     private Context context;
 
     private Bot player2;
@@ -30,11 +32,15 @@ public class GameStage {
     private List<Card> pointsTeam1;
     private List<Card> pointsTeam2;
 
-    public GameStage(DeckView playerDeck, TableView table, Context context) {
+    private final int delay;
+
+    public GameStage(DeckView playerDeck, TableView table, Context context, TextView pointsText) {
         this.playerDeck = playerDeck;
         playerDeck.setGameStage(this);
         this.table = table;
         this.context = context;
+        this.pointsText = pointsText;
+        pointsText.setText("");
 
         //A table can have max 4 cards
         tableCards = new ArrayList<>(4);
@@ -43,6 +49,7 @@ public class GameStage {
 
         pointsTeam1 = new ArrayList<>();
         pointsTeam2 = new ArrayList<>();
+        delay=500;
 
         dealToPlayers(DeckUtils.getDeck(context));
     }
@@ -65,6 +72,10 @@ public class GameStage {
         player2 = new Bot(deckP2);
         player3 = new Bot(deckP3);
         player4 = new Bot(deckP4);
+
+        //For now half of talon in T1, half in T2
+        pointsTeam1.addAll(talon.subList(0,3));
+        pointsTeam2.addAll(talon.subList(3,6));
     }
 
     /**
@@ -86,7 +97,7 @@ public class GameStage {
         if(cardsPlayed==4){
             new Thread(()->{
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(delay* 2L);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -116,7 +127,7 @@ public class GameStage {
     private void letBotPlayCard(Bot bot, int player, Card firstCard){
         new Thread(()->{
             try {
-                Thread.sleep(1000);
+                Thread.sleep(delay);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -140,11 +151,11 @@ public class GameStage {
         //If game is done -> log points
         //If not, allow next player to play
         if(roundCount==12){
-            Log.println(Log.INFO,"T1",pointsTeam1.toString());
-            Log.println(Log.INFO,"T2",pointsTeam2.toString());
+            pointsText.setText("Points Team 1: "+DeckUtils.sumPoints(pointsTeam1)+"\nPoints Team 2: "+DeckUtils.sumPoints(pointsTeam2));
         }
         else{
             table.setFirstPlayer(winningPlayer);
+            playerDeck.lockBoard();
             switch (winningPlayer){
                 case 1:
                     playerDeck.unlockBoard();

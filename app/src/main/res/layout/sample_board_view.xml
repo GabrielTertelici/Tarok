@@ -6,6 +6,18 @@
     android:background="@drawable/background"
     android:padding="15dp">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="699dp"
+        android:layout_height="246dp"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="#FFEB3B"
+        android:textSize="34sp" />
+
     <com.example.tarok.views.TableView
         android:id="@+id/tableView"
         android:layout_width="wrap_content"

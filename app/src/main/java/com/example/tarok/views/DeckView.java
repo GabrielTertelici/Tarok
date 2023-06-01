@@ -51,8 +51,8 @@ public class DeckView extends LinearLayout {
 
     public void lockBoard(){
         for(Card c:cards){
-            c.lockCard();
             c.validateCard();
+            c.lockCard();
         }
     }
 

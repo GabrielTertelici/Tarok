@@ -2,11 +2,13 @@ package com.example.tarok.utility;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.example.tarok.R;
 import com.example.tarok.gameObjects.Card;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -162,6 +164,18 @@ public class DeckUtils {
         if(value<=4)
             return 1;
         return value-3;
+    }
+
+    public static int sumPoints(List<Card> cards){
+        int result = 0;
+        for(Card c:cards){
+            result+=c.getPoints();
+        }
+        result=result-2*(cards.size()/3);
+        if(cards.size()%3!=0)
+            result--;
+        Log.println(Log.DEBUG,"Cards","Size:"+cards.size()+" Cards: "+cards.toString());
+        return result;
     }
 
     public static int getWinningPlayer(List<PlayedCard> tableCards) {
