@@ -15,7 +15,7 @@ import java.util.List;
 
 public class TableView extends View {
     private List<Card> playedCards;
-    private int currentPlayer;
+    private int firstPlayer;
 
     public TableView(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -23,7 +23,7 @@ public class TableView extends View {
         // Make Game Surface focusable so it can handle events. .
         this.setFocusable(true);
 
-        currentPlayer=0;
+        firstPlayer=1;
 
         playedCards = new ArrayList<>();
 
@@ -36,21 +36,21 @@ public class TableView extends View {
         //The rotation angle depends on which player went first
 
         float scaleFactor = 0.3f;
-        float canvasCenterX = canvas.getWidth()/2f/scaleFactor;
-        float canvasCenterY = canvas.getHeight()/2f/scaleFactor;
+        float centerX = canvas.getWidth()/2f/scaleFactor;
+        float centerY = canvas.getHeight()/2f/scaleFactor;
         canvas.save();
         canvas.scale(scaleFactor,scaleFactor);
+        int currentPlayer = firstPlayer-1;
         for(Card c:playedCards){
 
 
-            canvas.rotate(currentPlayer*-90,canvasCenterX , canvasCenterY);
-            canvas.drawBitmap(c.getImage(),canvasCenterX-c.getWidth()/2f,canvasCenterY-c.getHeight()/3f,null);
-            canvas.rotate(currentPlayer*90,canvasCenterX , canvasCenterY);
+            canvas.rotate(currentPlayer*-90,centerX , centerY);
+            canvas.drawBitmap(c.getImage(),centerX-Card.getCardImageWidth()/2f,centerY-c.getHeight()/2f,null);
+            canvas.rotate(currentPlayer*90,centerX , centerY);
 
             currentPlayer++;
         }
         canvas.restore();
-        currentPlayer=0;
     }
 
     @Override
@@ -61,5 +61,14 @@ public class TableView extends View {
     public void addCardToTable(Card c){
         playedCards.add(c);
         this.invalidate();
+    }
+
+    public void clearTable(){
+        playedCards = new ArrayList<>();
+        this.invalidate();
+    }
+
+    public void setFirstPlayer(int firstPlayer) {
+        this.firstPlayer = firstPlayer;
     }
 }

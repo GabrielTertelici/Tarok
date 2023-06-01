@@ -2,11 +2,15 @@ package com.example.tarok.gameObjects;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.graphics.PorterDuff;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tarok.utility.CardSuite;
+import com.example.tarok.utility.DeckUtils;
 import com.example.tarok.views.DeckView;
 
 public class Card extends GameObject{
@@ -14,6 +18,13 @@ public class Card extends GameObject{
     private float _yDelta;
     private DeckView rootLayout;
     private boolean locked;
+    /**
+     * This is bad design but for some reason the width
+     * of an image is not constant (when cards get removed
+     * from deck it grows), so I just set it to the
+     * first width = smallest one (since the deck is full)
+     * and use that for all calculations
+     */
     private static float width;
     private final CardSuite suite;
 
@@ -24,27 +35,28 @@ public class Card extends GameObject{
      */
     private final int value;
 
+    private final int points;
+
     public Card(Context context, Bitmap image,boolean needsOffset, CardSuite suite, int value) {
         super(context,image);
         if(needsOffset)
             this.image = createSubImageWithOffset(50);
-        else
-            this.image = createSubImageWithOffset(0);
         this.setImageBitmap(this.image);
 
         this.suite = suite;
         this.value = value;
         this.locked = false;
+        this.points = DeckUtils.calculatePoints(this.suite,this.value);
 
         this.setOnTouchListener(new ChoiceTouchListener());
 
     }
     private final class ChoiceTouchListener implements OnTouchListener {
         public boolean onTouch(View view, MotionEvent event) {
+            performClick();
             if(!locked){
                 if(rootLayout==null)
                     setupRoot();
-                performClick();
                 final float X = event.getRawX();
                 final float Y = event.getRawY();
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -55,8 +67,9 @@ public class Card extends GameObject{
                         view.setZ(1);
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(view.getAlpha()<1){
-                            rootLayout.addCardToTable((Card) view);
+                        if(view.getAlpha()==0.5f){
+                            //For now we know that this belongs to the human = player 1
+                            rootLayout.getGameStage().playCard((Card) view,1);
                         }
                         view.animate().scaleX(1.0f).scaleY(1.0f);
                         view.animate().translationX(0);
@@ -94,6 +107,14 @@ public class Card extends GameObject{
     public void unlockCard(){
         locked=false;
     }
+    public void invalidateCard(){
+        lockCard();
+        this.setColorFilter(new LightingColorFilter(0xFFFFFF00, 0x00000000));
+    }
+    public void validateCard(){
+        unlockCard();
+        this.clearColorFilter();
+    }
     private void setupRoot() {
         rootLayout = (DeckView) this.getParent();
         setAllParentsClip(this);
@@ -126,6 +147,14 @@ public class Card extends GameObject{
         return false;
     }
 
+    public static float getCardImageWidth() {
+        return width;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
     private boolean cardCanBeDropped(View card, float X, float Y ){
         View frame = (View) rootLayout.getParent();
         if(width==0)
@@ -136,4 +165,12 @@ public class Card extends GameObject{
             && (Math.abs(card.getTranslationY())>card.getHeight() && Y>card.getHeight());
     }
 
+    @Override
+    public String toString() {
+        return "Card{" +
+                "suite=" + suite +
+                ", value=" + value +
+                ", points=" + points +
+                '}';
+    }
 }

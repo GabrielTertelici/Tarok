@@ -8,10 +8,14 @@ import com.example.tarok.gameObjects.Card;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DeckUtils {
 
     public static List<Card> getLegalCards(List<Card> playerCards, Card firstCard){
+        if(firstCard==null)
+            return playerCards;
+
         List<Card> result = new ArrayList<>();
         if(hasCardOfSuite(playerCards,firstCard.getSuite())){
             for(Card c:playerCards){
@@ -139,6 +143,54 @@ public class DeckUtils {
         result.add(new Card(context,BitmapFactory.decodeResource(context.getResources(),R.drawable.spade_queen),true,CardSuite.Spade,7));
         result.add(new Card(context,BitmapFactory.decodeResource(context.getResources(), R.drawable.spade_king),true,CardSuite.Spade,8));
 
+        return result;
+    }
+
+    /**
+     * This method calculates the points value of a card
+     * @param suite The suite of the card
+     * @param value The value of the card = what kind of card it is
+     * @return The points value
+     */
+    public static int calculatePoints(CardSuite suite, int value) {
+        if(suite.equals(CardSuite.Tarot)){
+            if(value==1 || value==21 || value==22)
+                return 5;
+            else
+                return 1;
+        }
+        if(value<=4)
+            return 1;
+        return value-3;
+    }
+
+    public static int getWinningPlayer(List<PlayedCard> tableCards) {
+        List<Card> cards = new ArrayList<>(4);
+        cards.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
+        Card c = getWinningCard(cards);
+        for(PlayedCard pc:tableCards){
+            if(pc.card.equals(c))
+                return pc.playerId;
+        }
+        return -1;
+    }
+
+    private static Card getWinningCard(List<Card> cards) {
+        Card result=null;
+        if(hasCardOfSuite(cards,CardSuite.Tarot)){
+            for(Card c:cards){
+                if(c.getSuite().equals(CardSuite.Tarot) && (result==null || c.getValue()>result.getValue()))
+                    result=c;
+            }
+        }
+        else{
+            CardSuite correctSuite = cards.get(0).getSuite();
+            result = cards.get(0);
+            for(Card c:cards){
+                if(c.getSuite().equals(correctSuite) && c.getValue()>result.getValue())
+                    result = c;
+            }
+        }
         return result;
     }
 }
