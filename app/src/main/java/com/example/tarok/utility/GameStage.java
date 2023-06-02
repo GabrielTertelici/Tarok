@@ -1,7 +1,9 @@
 package com.example.tarok.utility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.icu.text.IDNA;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ public class GameStage {
     private TableView table;
     private TextView pointsText;
     private Context context;
+    private final int screenWidth;
+    private final int screenHeight;
 
     private Bot player2;
     private Bot player3;
@@ -31,14 +35,18 @@ public class GameStage {
     private List<Card> talon;
     private List<Card> pointsTeam1;
     private List<Card> pointsTeam2;
-
     private final int delay;
 
-    public GameStage(DeckView playerDeck, TableView table, Context context, TextView pointsText) {
+    public GameStage(DeckView playerDeck, TableView table, Context context, TextView pointsText, int screenWidth, int screenHeight) {
         this.playerDeck = playerDeck;
         playerDeck.setGameStage(this);
+
         this.table = table;
+
         this.context = context;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+
         this.pointsText = pointsText;
         pointsText.setText("");
 
@@ -95,14 +103,8 @@ public class GameStage {
 
         //Time to pick up
         if(cardsPlayed==4){
-            new Thread(()->{
-                try {
-                    Thread.sleep(delay* 2L);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                pickUpCards();
-            }).start();
+            playerDeck.lockBoard();
+            new Thread(this::pickUpCards).start();
         }
         else{
             switch (player){
@@ -136,41 +138,62 @@ public class GameStage {
     }
 
     public void pickUpCards(){
-        //Until talon is implemented 1-3 = team 1, 2-4 = team 2
         int winningPlayer = DeckUtils.getWinningPlayer(tableCards);
-        if(winningPlayer%2==1)
-            pointsTeam1.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
-        else
-            pointsTeam2.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
 
-        table.clearTable();
+        animateTable(winningPlayer);
+        assignPointsToWinningTeam(winningPlayer);
+
         tableCards = new ArrayList<>(4);
         cardsPlayed=0;
 
         roundCount++;
-        //If game is done -> log points
-        //If not, allow next player to play
         if(roundCount==12){
             pointsText.setText("Points Team 1: "+DeckUtils.sumPoints(pointsTeam1)+"\nPoints Team 2: "+DeckUtils.sumPoints(pointsTeam2));
         }
         else{
-            table.setFirstPlayer(winningPlayer);
-            playerDeck.lockBoard();
-            switch (winningPlayer){
-                case 1:
-                    playerDeck.unlockBoard();
-                    break;
-                case 2:
-                    letBotPlayCard(player2,2,null);
-                    break;
-                case 3:
-                    letBotPlayCard(player3,3,null);
-                    break;
-                case 4:
-                    letBotPlayCard(player4,4,null);
-                    break;
-            }
+            handleNextRound(winningPlayer);
         }
 
+    }
+
+    private void handleNextRound(int winningPlayer) {
+        table.setFirstPlayer(winningPlayer);
+        playerDeck.lockBoard();
+        switch (winningPlayer){
+            case 1:
+                playerDeck.unlockBoard();
+                break;
+            case 2:
+                letBotPlayCard(player2,2,null);
+                break;
+            case 3:
+                letBotPlayCard(player3,3,null);
+                break;
+            case 4:
+                letBotPlayCard(player4,4,null);
+                break;
+        }
+    }
+
+    private void assignPointsToWinningTeam(int winningPlayer) {
+        //Until talon is implemented 1-3 = team 1, 2-4 = team 2
+        if(winningPlayer%2==1)
+            pointsTeam1.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
+        else
+            pointsTeam2.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
+    }
+
+    private void animateTable(int winningPlayer) {
+        try { Thread.sleep(delay*2L);} catch (InterruptedException e) {throw new RuntimeException(e);}
+        switch (winningPlayer){
+            case 1 -> table.post(() -> table.animate().translationY(screenHeight).setDuration(1000));
+            case 2 -> table.post(() -> table.animate().translationX(screenWidth).setDuration(1000));
+            case 3 -> table.post(() -> table.animate().translationY(-screenHeight).setDuration(1000));
+            case 4 -> table.post(() -> table.animate().translationX(-screenWidth).setDuration(1000));
+        }
+        try { Thread.sleep(1000);} catch (InterruptedException e) {throw new RuntimeException(e);}
+        table.clearTable();
+        table.post(() -> table.animate().translationX(0).setDuration(0));
+        table.post(() -> table.animate().translationY(0).setDuration(0));
     }
 }

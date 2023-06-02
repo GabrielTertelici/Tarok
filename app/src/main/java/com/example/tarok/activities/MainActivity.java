@@ -2,6 +2,7 @@ package com.example.tarok.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -22,10 +23,13 @@ public class MainActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
-
-//        setContentView(new GameSurface(this));
         setContentView(R.layout.sample_board_view);
 
-        GameStage g = new GameStage(findViewById(R.id.deckView),findViewById(R.id.tableView),getApplicationContext(), findViewById(R.id.textView));
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+        GameStage g = new GameStage(findViewById(R.id.deckView),findViewById(R.id.tableView),getApplicationContext(), findViewById(R.id.textView),width,height);
     }
 }

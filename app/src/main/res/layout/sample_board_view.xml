@@ -12,7 +12,6 @@
         android:layout_height="246dp"
         android:layout_weight="1"
         android:fontFamily="sans-serif"
-        android:gravity="center_vertical"
         android:text="TextView"
         android:textAlignment="textStart"
         android:textColor="#FFEB3B"
@@ -28,7 +27,7 @@
         android:id="@+id/deckView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:translationY="270dp">
+        android:layout_gravity="bottom">
 
     </com.example.tarok.views.DeckView>
 
