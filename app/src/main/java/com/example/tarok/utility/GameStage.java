@@ -55,7 +55,7 @@ public class GameStage {
         this.pointsText = pointsText;
         pointsText.setText("");
 
-        delay=0;
+        delay=500;
         this.playAgain = playAgain;
         playAgain.setOnClickListener(view -> {
             pointsText.setText("");
