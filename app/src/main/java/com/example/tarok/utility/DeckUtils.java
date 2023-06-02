@@ -190,7 +190,9 @@ public class DeckUtils {
     }
 
     private static Card getWinningCard(List<Card> cards) {
-        Card result=null;
+        Card result=checkJokerRule(cards);
+        if(result!=null)//There was a 1, 21 and joker => result = 1
+            return result;
         if(hasCardOfSuite(cards,CardSuite.Tarot)){
             for(Card c:cards){
                 if(c.getSuite().equals(CardSuite.Tarot) && (result==null || c.getValue()>result.getValue()))
@@ -206,5 +208,28 @@ public class DeckUtils {
             }
         }
         return result;
+    }
+
+    private static Card checkJokerRule(List<Card> cards) {
+        boolean has1=false;
+        boolean has21=false;
+        boolean hasJoker=false;
+        Card card1=null;
+        for(Card c:cards){
+            if(c.getSuite().equals(CardSuite.Tarot)){
+                if(c.getValue()==1){
+                    has1=true;
+                    card1=c;
+                }
+                else if(c.getValue()==21)
+                    has21=true;
+                else if(c.getValue()==22)
+                    hasJoker=true;
+            }
+
+        }
+        if(has1 && has21 && hasJoker)
+            return card1;
+        return null;
     }
 }

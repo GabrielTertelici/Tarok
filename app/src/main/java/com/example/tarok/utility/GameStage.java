@@ -5,6 +5,8 @@ import android.content.Context;
 import android.icu.text.IDNA;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tarok.gameObjects.Card;
@@ -18,10 +20,12 @@ import java.util.stream.Collectors;
 
 public class GameStage {
 
+    private Activity mainActivity;
     private DeckView playerDeck;
     private TableView table;
     private TextView pointsText;
     private Context context;
+    private Button playAgain;
     private final int screenWidth;
     private final int screenHeight;
 
@@ -37,19 +41,32 @@ public class GameStage {
     private List<Card> pointsTeam2;
     private final int delay;
 
-    public GameStage(DeckView playerDeck, TableView table, Context context, TextView pointsText, int screenWidth, int screenHeight) {
+    public GameStage(DeckView playerDeck, TableView table, Activity mainActivity, TextView pointsText, Button playAgain, int screenWidth, int screenHeight) {
         this.playerDeck = playerDeck;
         playerDeck.setGameStage(this);
 
         this.table = table;
 
-        this.context = context;
+        this.context = mainActivity.getApplicationContext();
+        this.mainActivity = mainActivity;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         this.pointsText = pointsText;
         pointsText.setText("");
 
+        delay=0;
+        this.playAgain = playAgain;
+        playAgain.setOnClickListener(view -> {
+            pointsText.setText("");
+            playAgain.setVisibility(View.GONE);
+            startGame();
+        });
+        playAgain.setVisibility(View.GONE);
+        startGame();
+    }
+
+    private void startGame(){
         //A table can have max 4 cards
         tableCards = new ArrayList<>(4);
         cardsPlayed=0;
@@ -57,7 +74,6 @@ public class GameStage {
 
         pointsTeam1 = new ArrayList<>();
         pointsTeam2 = new ArrayList<>();
-        delay=500;
 
         dealToPlayers(DeckUtils.getDeck(context));
     }
@@ -149,6 +165,7 @@ public class GameStage {
         roundCount++;
         if(roundCount==12){
             pointsText.setText("Points Team 1: "+DeckUtils.sumPoints(pointsTeam1)+"\nPoints Team 2: "+DeckUtils.sumPoints(pointsTeam2));
+            mainActivity.runOnUiThread(()->playAgain.setVisibility(View.VISIBLE));
         }
         else{
             handleNextRound(winningPlayer);
