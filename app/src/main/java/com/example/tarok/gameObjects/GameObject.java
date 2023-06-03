@@ -1,9 +1,12 @@
 package com.example.tarok.gameObjects;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
-public abstract class GameObject extends androidx.appcompat.widget.AppCompatImageView{
+@SuppressLint("AppCompatCustomView")
+public abstract class GameObject extends ImageView {
     protected Bitmap image;
     protected int width;
     protected int height;

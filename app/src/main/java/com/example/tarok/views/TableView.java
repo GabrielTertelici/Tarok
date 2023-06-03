@@ -35,7 +35,7 @@ public class TableView extends View {
         //Cards are ordered based on the order they are played
         //The rotation angle depends on which player went first
 
-        float scaleFactor = 0.3f;
+        float scaleFactor = 0.27f;
         float centerX = canvas.getWidth()/2f/scaleFactor;
         float centerY = canvas.getHeight()/2f/scaleFactor;
         canvas.save();

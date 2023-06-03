@@ -1,6 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -8,38 +9,49 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="699dp"
-        android:layout_height="246dp"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:text="TextView"
         android:textAlignment="textStart"
         android:textColor="#FFEB3B"
-        android:textSize="34sp" />
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.tarok.views.TableView
         android:id="@+id/tableView"
-        android:layout_width="wrap_content"
-        android:layout_height="243dp"
-        android:layout_weight="1" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/deckView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="3" />
 
     <com.example.tarok.views.DeckView
         android:id="@+id/deckView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="bottom">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tableView"
+        app:layout_constraintVertical_weight="1">
 
-        <Button
-            android:id="@+id/playAgainButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:background="#00FF0000"
-            android:fontFamily="sans-serif"
-            android:text="Play again"
-            android:textColor="#FFEB3B"
-            android:textSize="24sp"
-            android:visibility="visible" />
     </com.example.tarok.views.DeckView>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/playAgainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="#00FF0000"
+        android:fontFamily="sans-serif"
+        android:text="Play again"
+        android:textColor="#FFEB3B"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

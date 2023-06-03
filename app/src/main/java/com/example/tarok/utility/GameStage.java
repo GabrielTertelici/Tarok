@@ -36,6 +36,7 @@ public class GameStage {
     private List<PlayedCard> tableCards;
     private int cardsPlayed;
     private int roundCount;
+    private List<Card> fullDeck;
     private List<Card> talon;
     private List<Card> pointsTeam1;
     private List<Card> pointsTeam2;
@@ -57,6 +58,7 @@ public class GameStage {
 
         delay=500;
         this.playAgain = playAgain;
+        this.fullDeck = DeckUtils.getDeck(context);
         playAgain.setOnClickListener(view -> {
             pointsText.setText("");
             playAgain.setVisibility(View.GONE);
@@ -71,11 +73,17 @@ public class GameStage {
         tableCards = new ArrayList<>(4);
         cardsPlayed=0;
         roundCount=0;
+        table.setFirstPlayer(1);
 
         pointsTeam1 = new ArrayList<>();
         pointsTeam2 = new ArrayList<>();
 
-        dealToPlayers(DeckUtils.getDeck(context));
+        resetFullDeck();
+        dealToPlayers(fullDeck);
+    }
+
+    private void resetFullDeck() {
+        fullDeck = fullDeck.stream().map(c->c.resetCard(context)).collect(Collectors.toList());
     }
 
     private void dealToPlayers(List<Card> deck) {
@@ -164,7 +172,7 @@ public class GameStage {
 
         roundCount++;
         if(roundCount==12){
-            pointsText.setText("Points Team 1: "+DeckUtils.sumPoints(pointsTeam1)+"\nPoints Team 2: "+DeckUtils.sumPoints(pointsTeam2));
+            mainActivity.runOnUiThread(()->pointsText.setText("Points Team 1: "+DeckUtils.sumPoints(pointsTeam1)+"\nPoints Team 2: "+DeckUtils.sumPoints(pointsTeam2)));
             mainActivity.runOnUiThread(()->playAgain.setVisibility(View.VISIBLE));
         }
         else{

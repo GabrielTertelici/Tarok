@@ -37,10 +37,8 @@ public class Card extends GameObject{
 
     private final int points;
 
-    public Card(Context context, Bitmap image,boolean needsOffset, CardSuite suite, int value) {
+    public Card(Context context, Bitmap image, CardSuite suite, int value) {
         super(context,image);
-        if(needsOffset)
-            this.image = createSubImageWithOffset(50);
         this.setImageBitmap(this.image);
 
         this.suite = suite;
@@ -172,5 +170,14 @@ public class Card extends GameObject{
                 ", value=" + value +
                 ", points=" + points +
                 '}';
+    }
+
+    /**
+     * This method should be called for each card
+     * before restarting the game so as to reset
+     * the internal variables of each card
+     */
+    public Card resetCard(Context context){
+        return new Card(context,this.image,this.suite,this.value);
     }
 }
