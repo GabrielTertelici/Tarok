@@ -1,0 +1,75 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/pointsTeam1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fontFamily="sans-serif"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/tarok_gold_accent"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@id/cardsTeam1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1" />
+
+    <com.example.tarok.views.EndGameCardsView
+        android:id="@+id/cardsTeam1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/pointsTeam2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pointsTeam1"
+        app:layout_constraintVertical_weight="3" />
+
+    <TextView
+        android:id="@+id/pointsTeam2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fontFamily="sans-serif"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/tarok_gold_accent"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@id/cardsTeam2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardsTeam1"
+        app:layout_constraintVertical_weight="1" />
+
+    <com.example.tarok.views.EndGameCardsView
+        android:id="@+id/cardsTeam2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/playAgainButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pointsTeam2"
+        app:layout_constraintVertical_weight="3" />
+
+    <Button
+        android:id="@+id/playAgainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/tarok_red_dark"
+        android:fontFamily="sans-serif"
+        android:text="Play again"
+        android:textColor="@color/tarok_gold_accent"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_weight="1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

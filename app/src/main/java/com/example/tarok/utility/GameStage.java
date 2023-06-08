@@ -1,31 +1,27 @@
 package com.example.tarok.utility;
 
-import android.app.Activity;
 import android.content.Context;
-import android.icu.text.IDNA;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.tarok.R;
+import com.example.tarok.activities.MainActivity;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DeckView;
 import com.example.tarok.views.TableView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameStage {
 
-    private Activity mainActivity;
+    private MainActivity mainActivity;
     private DeckView playerDeck;
     private TableView table;
-    private TextView pointsText;
     private Context context;
-    private Button playAgain;
     private final int screenWidth;
     private final int screenHeight;
 
@@ -33,20 +29,19 @@ public class GameStage {
     private Bot player3;
     private Bot player4;
 
+    private int teamMate;
+
     private List<PlayedCard> tableCards;
-    private int cardsPlayed;
     private int roundCount;
-    private List<Card> fullDeck;
-    private List<Card> talon;
     private List<Card> pointsTeam1;
     private List<Card> pointsTeam2;
     private final int delay;
 
-    public GameStage(DeckView playerDeck, TableView table, Activity mainActivity, TextView pointsText, Button playAgain) {
-        this.playerDeck = playerDeck;
+    public GameStage(MainActivity mainActivity) {
+        this.playerDeck = mainActivity.findViewById(R.id.deckView);
         playerDeck.setGameStage(this);
 
-        this.table = table;
+        this.table = mainActivity.findViewById(R.id.tableView);
 
         this.context = mainActivity.getApplicationContext();
         this.mainActivity = mainActivity;
@@ -56,62 +51,26 @@ public class GameStage {
         this.screenWidth = displayMetrics.widthPixels;
         this.screenHeight = displayMetrics.heightPixels;
 
-        this.pointsText = pointsText;
-        pointsText.setText("");
-
         delay=500;
-        this.playAgain = playAgain;
-        this.fullDeck = DeckUtils.getDeck(context);
-        playAgain.setOnClickListener(view -> {
-            pointsText.setText("");
-            playAgain.setVisibility(View.GONE);
-            startGame();
-        });
-        playAgain.setVisibility(View.GONE);
-        startGame();
     }
 
-    private void startGame(){
+    public void startGame(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4, List<Card> pointsPlayer, List<Card> pointsOpponent, int teamMateOfPlayer) {
         //A table can have max 4 cards
         tableCards = new ArrayList<>(4);
-        cardsPlayed=0;
         roundCount=0;
         table.setFirstPlayer(1);
 
-        pointsTeam1 = new ArrayList<>();
-        pointsTeam2 = new ArrayList<>();
+        pointsTeam1 = new ArrayList<>(pointsPlayer);
+        pointsTeam2 = new ArrayList<>(pointsOpponent);
 
-        resetFullDeck();
-        dealToPlayers(fullDeck);
-    }
-
-    private void resetFullDeck() {
-        fullDeck = fullDeck.stream().map(c->c.resetCard(context)).collect(Collectors.toList());
-    }
-
-    private void dealToPlayers(List<Card> deck) {
-        Collections.shuffle(deck);
-        List<Card> deckP1 = new ArrayList<>(deck.subList(0,12));
-        List<Card> deckP2 = new ArrayList<>(deck.subList(12,24));
-        List<Card> deckP3 = new ArrayList<>(deck.subList(24,36));
-        List<Card> deckP4 = new ArrayList<>(deck.subList(36,48));
-        talon = new ArrayList<>(deck.subList(48,54));
-        if(!DeckUtils.hasCardOfSuite(deckP1, CardSuite.Tarot)||
-                !DeckUtils.hasCardOfSuite(deckP2, CardSuite.Tarot)||
-                !DeckUtils.hasCardOfSuite(deckP3, CardSuite.Tarot)||
-                !DeckUtils.hasCardOfSuite(deckP4, CardSuite.Tarot)){
-            dealToPlayers(deck);
-        }
+        this.teamMate = teamMateOfPlayer;
 
         playerDeck.createDeckFromList(deckP1);
         player2 = new Bot(deckP2);
         player3 = new Bot(deckP3);
         player4 = new Bot(deckP4);
-
-        //For now half of talon in T1, half in T2
-        pointsTeam1.addAll(talon.subList(0,3));
-        pointsTeam2.addAll(talon.subList(3,6));
     }
+
 
     /**
      * Plays a given card on the table
@@ -124,31 +83,26 @@ public class GameStage {
         if(player<0 || player>4)
             throw new IllegalArgumentException("Wrong player id");
 
-        cardsPlayed++;
         tableCards.add(new PlayedCard(player,card));
         playerDeck.addCardToTable(card);
 
         //Time to pick up
-        if(cardsPlayed==4){
+        if(tableCards.size()==4){
             playerDeck.lockBoard();
             new Thread(this::pickUpCards).start();
         }
         else{
-            switch (player){
-                case 1:
+            switch (player) {
+                case 1 -> {
                     playerDeck.lockBoard();
-                    letBotPlayCard(player2,2,tableCards.get(0).card);
-                    break;
-                case 2:
-                    letBotPlayCard(player3,3,tableCards.get(0).card);
-                    break;
-                case 3:
-                    letBotPlayCard(player4,4,tableCards.get(0).card);
-                    break;
-                case 4:
+                    letBotPlayCard(player2, 2, tableCards.get(0).card);
+                }
+                case 2 -> letBotPlayCard(player3, 3, tableCards.get(0).card);
+                case 3 -> letBotPlayCard(player4, 4, tableCards.get(0).card);
+                case 4 -> {
                     playerDeck.unlockBoard();
                     playerDeck.setValidCards(tableCards.get(0).card);
-                    break;
+                }
             }
         }
     }
@@ -167,16 +121,14 @@ public class GameStage {
     public void pickUpCards(){
         int winningPlayer = DeckUtils.getWinningPlayer(tableCards);
 
-        animateTable(winningPlayer);
+        animateTableCardPickup(winningPlayer);
         assignPointsToWinningTeam(winningPlayer);
 
         tableCards = new ArrayList<>(4);
-        cardsPlayed=0;
 
         roundCount++;
         if(roundCount==12){
-            mainActivity.runOnUiThread(()->pointsText.setText("Points Team 1: "+DeckUtils.sumPoints(pointsTeam1)+"\nPoints Team 2: "+DeckUtils.sumPoints(pointsTeam2)));
-            mainActivity.runOnUiThread(()->playAgain.setVisibility(View.VISIBLE));
+            mainActivity.runOnUiThread(()->mainActivity.endGameStage(pointsTeam1,pointsTeam2));
         }
         else{
             handleNextRound(winningPlayer);
@@ -204,14 +156,13 @@ public class GameStage {
     }
 
     private void assignPointsToWinningTeam(int winningPlayer) {
-        //Until talon is implemented 1-3 = team 1, 2-4 = team 2
-        if(winningPlayer%2==1)
+        if(winningPlayer==1 || winningPlayer==teamMate)
             pointsTeam1.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
         else
             pointsTeam2.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
     }
 
-    private void animateTable(int winningPlayer) {
+    private void animateTableCardPickup(int winningPlayer) {
         try { Thread.sleep(delay*2L);} catch (InterruptedException e) {throw new RuntimeException(e);}
         switch (winningPlayer){
             case 1 -> table.post(() -> table.animate().translationY(screenHeight).setDuration(1000));

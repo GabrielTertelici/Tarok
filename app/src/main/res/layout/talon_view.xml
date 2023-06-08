@@ -9,6 +9,7 @@
     app:layout_constraintVertical_weight="2">
 
     <include
+        android:id="@+id/buttonGrid"
         layout="@layout/talon_options"
         android:layout_width="match_parent"
         android:layout_height="0dp"

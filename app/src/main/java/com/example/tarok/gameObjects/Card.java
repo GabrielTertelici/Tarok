@@ -105,6 +105,7 @@ public class Card extends GameObject{
     public void unlockCard(){
         locked=false;
     }
+    public boolean isLocked(){return locked;}
     public void invalidateCard(){
         lockCard();
         this.setColorFilter(new LightingColorFilter(0xFFFFFF00, 0x00000000));

@@ -37,7 +37,7 @@ public class DeckView extends LinearLayout {
 
     }
     public void createDeckFromList(List<Card> cardList){
-        cards = cardList.stream().sorted(DeckView::compareCards).collect(Collectors.toList());
+        cards = cardList.stream().map(x->x.resetCard(getContext())).sorted(DeckView::compareCards).collect(Collectors.toList());
         this.setWeightSum(cards.size());
 
         params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);

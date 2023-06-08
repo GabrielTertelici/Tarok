@@ -47,6 +47,16 @@ public class DeckUtils {
         return false;
     }
 
+    public static List<Card> getFivePointCards(List<Card> cards){
+        List<Card> result = new ArrayList<>();
+        for(Card c:cards){
+            if(c.getPoints()==5){
+                result.add(c);
+            }
+        }
+        return result;
+    }
+
     public static List<Card> getDeck(Context context){
         List<Card> result = new ArrayList<>();
 

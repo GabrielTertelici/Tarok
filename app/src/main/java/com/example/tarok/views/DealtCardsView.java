@@ -15,12 +15,16 @@ import com.example.tarok.R;
 import com.example.tarok.utility.DeckUtils;
 import com.example.tarok.utility.GameStage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressLint("ClickableViewAccessibility")
 public class DealtCardsView extends LinearLayout {
 
     private List<Card> cards;
+    private List<Card> selectedCards;
+    private int selectableCards;
     LinearLayout.LayoutParams params;
 
     public DealtCardsView(Context context, AttributeSet attributeSet){
@@ -29,6 +33,8 @@ public class DealtCardsView extends LinearLayout {
         this.setClipChildren(false);
         this.setClipToPadding(false);
         this.setGravity(Gravity.CENTER);
+
+        selectedCards = new ArrayList<>();
     }
 
     @Override
@@ -37,7 +43,6 @@ public class DealtCardsView extends LinearLayout {
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     public void createDeckFromList(List<Card> cardList){
         cards = cardList.stream().sorted(DeckView::compareCards).collect(Collectors.toList());
         this.setWeightSum(cards.size());
@@ -49,14 +54,68 @@ public class DealtCardsView extends LinearLayout {
             c.setLayoutParams(params);
             c.setOnTouchListener((view, motionEvent) -> {
                 performClick();
-                handleTouch(c);
+                if(!c.isLocked()){
+                    handleTouch(c);
+                }
                 return false;
             });
+            c.lockCard();
             this.addView(c);
         }
     }
 
+    public void beginPutCardsDown(){
+        unlockBoard();
+        List<Card> invalidCards = DeckUtils.getFivePointCards(cards);
+        for(Card c:invalidCards){
+            c.invalidateCard();
+        }
+    }
+
+    public void unlockBoard(){
+        for(Card c:cards){
+            c.unlockCard();
+        }
+    }
+
     private void handleTouch(Card c) {
-        c.setAlpha(0.5f);
+        if(!selectedCards.contains(c)){
+            if(selectedCards.size()<selectableCards){
+                selectedCards.add(c);
+                c.setAlpha(0.5f);
+            }
+        }
+        else{
+            selectedCards.remove(c);
+            c.setAlpha(1f);
+        }
+
+    }
+
+    public void addCard(Card c) {
+        cards.add(c);
+        this.removeAllViews();
+        createDeckFromList(cards);
+    }
+
+    public void removeCard(Card c) {
+        cards.remove(c);
+        this.removeView(c);
+        this.setWeightSum(cards.size());
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public List<Card> getSelectedCards() {
+        return selectedCards;
+    }
+
+    public int getSelectableCards() {
+        return selectableCards;
+    }
+    public void setSelectableCards(int selectableCards) {
+        this.selectableCards = selectableCards;
     }
 }
