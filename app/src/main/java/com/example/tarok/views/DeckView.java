@@ -37,7 +37,7 @@ public class DeckView extends LinearLayout {
 
     }
     public void createDeckFromList(List<Card> cardList){
-        cards = cardList.stream().sorted(this::compareCards).collect(Collectors.toList());
+        cards = cardList.stream().sorted(DeckView::compareCards).collect(Collectors.toList());
         this.setWeightSum(cards.size());
 
         params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
@@ -75,7 +75,7 @@ public class DeckView extends LinearLayout {
         this.invalidate();
     }
 
-    public int compareCards(Card c1, Card c2){
+    public static int compareCards(Card c1, Card c2){
         if(c1.getSuite()==c2.getSuite())
             return Integer.compare(c1.getValue(),c2.getValue());
         else if(c1.getSuite() == CardSuite.Tarot)

@@ -42,7 +42,7 @@ public class GameStage {
     private List<Card> pointsTeam2;
     private final int delay;
 
-    public GameStage(DeckView playerDeck, TableView table, Activity mainActivity, TextView pointsText, Button playAgain, int screenWidth, int screenHeight) {
+    public GameStage(DeckView playerDeck, TableView table, Activity mainActivity, TextView pointsText, Button playAgain) {
         this.playerDeck = playerDeck;
         playerDeck.setGameStage(this);
 
@@ -50,8 +50,11 @@ public class GameStage {
 
         this.context = mainActivity.getApplicationContext();
         this.mainActivity = mainActivity;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        this.screenWidth = displayMetrics.widthPixels;
+        this.screenHeight = displayMetrics.heightPixels;
 
         this.pointsText = pointsText;
         pointsText.setText("");

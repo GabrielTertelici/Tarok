@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/playThree"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Three"
+                android:textColor="@color/tarok_gold_accent"
+                app:cornerRadius="30dp" />
+
+            <Button
+                android:id="@+id/playTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Two"
+                android:textColor="@color/tarok_gold_accent"
+                app:cornerRadius="30dp"/>
+
+            <Button
+                android:id="@+id/playOne"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="One"
+                android:textColor="@color/tarok_gold_accent"
+                app:cornerRadius="30dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <Button
+                android:id="@+id/soloThree"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Solo Three"
+                android:textColor="@color/tarok_gold_accent"
+                app:cornerRadius="30dp"/>
+
+            <Button
+                android:id="@+id/soloTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Solo Two"
+                android:textColor="@color/tarok_gold_accent"
+                app:cornerRadius="30dp"/>
+
+            <Button
+                android:id="@+id/soloOne"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Solo One"
+                android:textColor="@color/tarok_gold_accent"
+                app:cornerRadius="30dp"/>
+        </TableRow>
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

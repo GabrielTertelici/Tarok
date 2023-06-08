@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="15dp"
+    app:layout_constraintVertical_weight="2">
+
+    <include
+        layout="@layout/talon_options"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/advanceButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="5"/>
+
+    <com.example.tarok.views.TalonCardsView
+        android:id="@+id/talonCardsView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/advanceButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="5">
+
+    </com.example.tarok.views.TalonCardsView>
+
+    <Button
+        android:id="@+id/advanceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Advance"
+        android:backgroundTint="@color/tarok_red_dark"
+        android:textColor="@color/tarok_gold_accent"
+        android:fontFamily="sans-serif"
+        app:layout_constraintBottom_toTopOf="@+id/dealtCardsView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/talonCardsView"
+        app:layout_constraintVertical_weight="1" />
+
+    <com.example.tarok.views.DealtCardsView
+        android:id="@+id/dealtCardsView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/advanceButton"
+        app:layout_constraintVertical_weight="2">
+
+    </com.example.tarok.views.DealtCardsView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,6 @@ public class MainActivity extends Activity {
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
 
-        GameStage g = new GameStage(findViewById(R.id.deckView),findViewById(R.id.tableView),this, findViewById(R.id.textView),findViewById(R.id.playAgainButton),width,height);
+        GameStage g = new GameStage(findViewById(R.id.deckView),findViewById(R.id.tableView),this, findViewById(R.id.textView),findViewById(R.id.playAgainButton));
     }
 }
