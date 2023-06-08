@@ -48,8 +48,12 @@ public class EndGameCardsView extends LinearLayout {
     }
 
     private int compareCards(Card c1, Card c2){
-        if(c1.getPoints()==c2.getPoints())
-            return -c1.getSuite().compareTo(c2.getSuite());
+        if(c1.getPoints()==c2.getPoints()){
+            if(c1.getSuite()==c2.getSuite())
+                return -Integer.compare(c1.getValue(),c2.getValue());
+            else
+                return -c1.getSuite().compareTo(c2.getSuite());
+        }
         else return -Integer.compare(c1.getPoints(),c2.getPoints());
     }
 }

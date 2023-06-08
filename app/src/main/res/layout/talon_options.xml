@@ -26,8 +26,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Three"
-                android:textColor="@color/tarok_gold_accent"
-                app:cornerRadius="30dp" />
+                android:textColor="@color/tarok_gold_accent"/>
 
             <Button
                 android:id="@+id/playTwo"
@@ -37,8 +36,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Two"
-                android:textColor="@color/tarok_gold_accent"
-                app:cornerRadius="30dp"/>
+                android:textColor="@color/tarok_gold_accent"/>
 
             <Button
                 android:id="@+id/playOne"
@@ -48,8 +46,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="One"
-                android:textColor="@color/tarok_gold_accent"
-                app:cornerRadius="30dp"/>
+                android:textColor="@color/tarok_gold_accent"/>
         </TableRow>
 
         <TableRow
@@ -65,8 +62,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Solo Three"
-                android:textColor="@color/tarok_gold_accent"
-                app:cornerRadius="30dp"/>
+                android:textColor="@color/tarok_gold_accent"/>
 
             <Button
                 android:id="@+id/soloTwo"
@@ -76,8 +72,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Solo Two"
-                android:textColor="@color/tarok_gold_accent"
-                app:cornerRadius="30dp"/>
+                android:textColor="@color/tarok_gold_accent"/>
 
             <Button
                 android:id="@+id/soloOne"
@@ -87,8 +82,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Solo One"
-                android:textColor="@color/tarok_gold_accent"
-                app:cornerRadius="30dp"/>
+                android:textColor="@color/tarok_gold_accent"/>
         </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
