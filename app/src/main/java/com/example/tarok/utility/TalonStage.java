@@ -27,9 +27,10 @@ public class TalonStage {
     private List<Card> deckP4;
     private List<Card> talon;
     /**
-     * 1-4 representing who the teammate of the player is
+     * The king the player has chosen or null if
+     * The player is going solo
      */
-    private int teamMateOfPlayer;
+    private Card chosenKing;
 
     public TalonStage(MainActivity mainActivity, List<Card> fullDeck) {
         this.mainActivity = mainActivity;
@@ -45,16 +46,7 @@ public class TalonStage {
     private void getTeamMate() {
         if(talonView.getChosenKing()!=null){
             advanceButton.setOnClickListener(view -> checkPutDownCards());
-            Card chosenKing = talonView.getChosenKing();
-            if(deckP1.contains(chosenKing)||talon.contains(chosenKing))
-                teamMateOfPlayer=1;
-            else if(deckP2.contains(chosenKing))
-                teamMateOfPlayer=2;
-            else if(deckP3.contains(chosenKing))
-                teamMateOfPlayer=3;
-            else if(deckP4.contains(chosenKing))
-                teamMateOfPlayer=4;
-
+            chosenKing = talonView.getChosenKing();
             talonView.createTalon();
         }
     }
@@ -64,10 +56,10 @@ public class TalonStage {
         if(playerDeck.getSelectedCards().size()== playerDeck.getSelectableCards()){
             deckP1 = playerDeck.getCards();
             deckP1.removeAll(playerDeck.getSelectedCards());
-            talon.removeAll(talonView.getChosenCards());
             List<Card> pointsPlayer = playerDeck.getSelectedCards();
-            List<Card> pointsOpponent = talon;
-            mainActivity.startGameStage(deckP1,deckP2,deckP3,deckP4,pointsPlayer,pointsOpponent,teamMateOfPlayer);
+            List<Card> pointsOpponent = new ArrayList<>(talon);
+            pointsOpponent.removeAll((talonView.getChosenCards()));
+            mainActivity.startGameStage(deckP1,deckP2,deckP3,deckP4,talon,pointsPlayer,pointsOpponent,chosenKing);
         }
     }
 
@@ -80,7 +72,7 @@ public class TalonStage {
         advanceButton.setVisibility(View.VISIBLE);
         advanceButton.setOnClickListener(view -> getTeamMate());
         if(playMode==PlayMode.Solo_Three||playMode==PlayMode.Solo_Two||playMode==PlayMode.Solo_One){
-            teamMateOfPlayer=1;
+            chosenKing=null;
             advanceButton.setOnClickListener(view -> checkPutDownCards());
             talonView.createTalon();
         }

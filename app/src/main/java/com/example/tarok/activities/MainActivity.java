@@ -50,10 +50,10 @@ public class MainActivity extends Activity {
         talonStage = new TalonStage(this,fullDeck);
     }
 
-    public void startGameStage(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4, List<Card> pointsPlayer, List<Card> pointsOpponent, int teamMateOfPlayer) {
+    public void startGameStage(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4, List<Card> talon,List<Card> pointsPlayer, List<Card> pointsOpponent, Card pickedKing) {
         setContentView(R.layout.sample_board_view);
         gameStage = new GameStage(this);
-        gameStage.startGame(deckP1, deckP2, deckP3, deckP4,pointsPlayer, pointsOpponent, teamMateOfPlayer);
+        gameStage.startGame(deckP1, deckP2, deckP3, deckP4,talon,pointsPlayer, pointsOpponent, pickedKing);
     }
 
     public void endGameStage(List<Card> pointsTeam1, List<Card> pointsTeam2){

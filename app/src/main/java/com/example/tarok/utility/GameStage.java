@@ -2,12 +2,10 @@ package com.example.tarok.utility;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
+import com.example.tarok.bots.Bot;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DeckView;
 import com.example.tarok.views.TableView;
@@ -35,6 +33,7 @@ public class GameStage {
     private int roundCount;
     private List<Card> pointsTeam1;
     private List<Card> pointsTeam2;
+    private Card chosenKing;
     private final int delay;
 
     public GameStage(MainActivity mainActivity) {
@@ -54,7 +53,7 @@ public class GameStage {
         delay=500;
     }
 
-    public void startGame(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4, List<Card> pointsPlayer, List<Card> pointsOpponent, int teamMateOfPlayer) {
+    public void startGame(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4, List<Card> talon,  List<Card> pointsPlayer, List<Card> pointsOpponent, Card pickedKing) {
         //A table can have max 4 cards
         tableCards = new ArrayList<>(4);
         roundCount=0;
@@ -62,13 +61,37 @@ public class GameStage {
 
         pointsTeam1 = new ArrayList<>(pointsPlayer);
         pointsTeam2 = new ArrayList<>(pointsOpponent);
-
-        this.teamMate = teamMateOfPlayer;
+        chosenKing = pickedKing;
 
         playerDeck.createDeckFromList(deckP1);
         player2 = new Bot(deckP2);
         player3 = new Bot(deckP3);
         player4 = new Bot(deckP4);
+
+        teamMate = getTeammate(deckP2,deckP3,deckP4);
+        //Solo or rufie -> bots know teammates
+        if(chosenKing == null || talon.contains(chosenKing)){
+            handleTeammatesOfBots();
+        }
+    }
+
+    private int getTeammate(List<Card> deckP2, List<Card> deckP3, List<Card> deckP4) {
+        int teammate = 1;
+        if(chosenKing!=null){
+            if(deckP2.contains(chosenKing)){
+                teammate = 2;
+                player2.setTeamMate(1);
+            }
+            else if(deckP3.contains(chosenKing)) {
+                teammate = 3;
+                player3.setTeamMate(1);
+            }
+            else if(deckP4.contains(chosenKing)) {
+                teammate = 4;
+                player4.setTeamMate(1);
+            }
+        }
+        return teammate;
     }
 
 
@@ -83,6 +106,10 @@ public class GameStage {
         if(player<0 || player>4)
             throw new IllegalArgumentException("Wrong player id");
 
+        if(card.equals(chosenKing)){
+            handleTeammatesOfBots();
+        }
+
         tableCards.add(new PlayedCard(player,card));
         playerDeck.addCardToTable(card);
 
@@ -95,10 +122,10 @@ public class GameStage {
             switch (player) {
                 case 1 -> {
                     playerDeck.lockBoard();
-                    letBotPlayCard(player2, 2, tableCards.get(0).card);
+                    letBotPlayCard(player2, 2, tableCards);
                 }
-                case 2 -> letBotPlayCard(player3, 3, tableCards.get(0).card);
-                case 3 -> letBotPlayCard(player4, 4, tableCards.get(0).card);
+                case 2 -> letBotPlayCard(player3, 3, tableCards);
+                case 3 -> letBotPlayCard(player4, 4, tableCards);
                 case 4 -> {
                     playerDeck.unlockBoard();
                     playerDeck.setValidCards(tableCards.get(0).card);
@@ -107,14 +134,37 @@ public class GameStage {
         }
     }
 
-    private void letBotPlayCard(Bot bot, int player, Card firstCard){
+    private void handleTeammatesOfBots() {
+        switch (teamMate){
+            //Player is solo
+            case 1->{
+                player2.setTeamMate(3); player2.setTeamMate(4);
+                player3.setTeamMate(2); player3.setTeamMate(4);
+                player4.setTeamMate(2); player4.setTeamMate(3);
+            }
+            case 2->{
+                player3.setTeamMate(4);
+                player4.setTeamMate(3);
+            }
+            case 3->{
+                player2.setTeamMate(4);
+                player4.setTeamMate(2);
+            }
+            case 4->{
+                player2.setTeamMate(3);
+                player3.setTeamMate(2);
+            }
+        }
+    }
+
+    private void letBotPlayCard(Bot bot, int player, List<PlayedCard> tableCards){
         new Thread(()->{
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            playCard(bot.playCard(firstCard),player);
+            playCard(bot.playCard(tableCards),player);
         }).start();
     }
 
@@ -144,13 +194,13 @@ public class GameStage {
                 playerDeck.unlockBoard();
                 break;
             case 2:
-                letBotPlayCard(player2,2,null);
+                letBotPlayCard(player2,2,tableCards);
                 break;
             case 3:
-                letBotPlayCard(player3,3,null);
+                letBotPlayCard(player3,3,tableCards);
                 break;
             case 4:
-                letBotPlayCard(player4,4,null);
+                letBotPlayCard(player4,4,tableCards);
                 break;
         }
     }

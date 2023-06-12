@@ -189,7 +189,14 @@ public class DeckUtils {
         result=result-2*(cards.size()/3);
         if(cards.size()%3!=0)
             result--;
-        Log.println(Log.DEBUG,"Cards","Size:"+cards.size()+" Cards: "+cards.toString());
+        return result;
+    }
+
+    public static int tablePoints(List<Card> cards){
+        int result = 0;
+        for(Card c:cards){
+            result+=c.getPoints();
+        }
         return result;
     }
 
@@ -204,7 +211,7 @@ public class DeckUtils {
         return -1;
     }
 
-    private static Card getWinningCard(List<Card> cards) {
+    public static Card getWinningCard(List<Card> cards) {
         Card result=checkJokerRule(cards);
         if(result!=null)//There was a 1, 21 and joker => result = 1
             return result;
@@ -225,7 +232,7 @@ public class DeckUtils {
         return result;
     }
 
-    private static Card checkJokerRule(List<Card> cards) {
+    public static Card checkJokerRule(List<Card> cards) {
         boolean has1=false;
         boolean has21=false;
         boolean hasJoker=false;

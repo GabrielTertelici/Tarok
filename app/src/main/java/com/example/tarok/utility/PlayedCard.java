@@ -10,4 +10,12 @@ public class PlayedCard {
         this.playerId = playerId;
         this.card = card;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "playerId=" + playerId +
+                ", card=" + card +
+                '}';
+    }
 }
