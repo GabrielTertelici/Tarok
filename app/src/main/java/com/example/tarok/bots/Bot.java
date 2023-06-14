@@ -57,8 +57,6 @@ public class Bot {
         }
         else
             c = suiteRule.sortedList(usableCards,table,teamMates).get(0);
-
-        Log.println(Log.INFO,"L","Played:"+c+" out of options:"+usableCards+ " knowing teammates"+teamMates);
         deck.remove(c);
         return c;
     }

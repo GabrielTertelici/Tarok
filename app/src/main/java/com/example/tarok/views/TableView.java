@@ -41,7 +41,9 @@ public class TableView extends View {
         canvas.save();
         canvas.scale(scaleFactor,scaleFactor);
         int currentPlayer = firstPlayer-1;
-        for(Card c:playedCards){
+        //Copy the list to avoid concurrent modifications
+        List<Card> copyList = new ArrayList<>(playedCards);
+        for(Card c:copyList){
 
 
             canvas.rotate(currentPlayer*-90,centerX , centerY);
