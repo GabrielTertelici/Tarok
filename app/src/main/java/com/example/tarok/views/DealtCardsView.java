@@ -100,6 +100,7 @@ public class DealtCardsView extends LinearLayout {
 
     public void removeCard(Card c) {
         cards.remove(c);
+        selectedCards.remove(c);
         this.removeView(c);
         this.setWeightSum(cards.size());
     }
