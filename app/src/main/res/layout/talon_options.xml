@@ -18,6 +18,59 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
+            <TextView
+                android:id="@+id/bidInformerLabel"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="Player One: Make Your Bid" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/playThreeLabel"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+
+
+            <TextView
+                android:id="@+id/playTwoLabel"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/playOneLabel"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10">
+
             <Button
                 android:id="@+id/playThree"
                 android:layout_width="wrap_content"
@@ -52,7 +105,43 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/playSoloThreeLabel"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/playSoloTwoLabel"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/playSoloOneLabel"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10" >
 
             <Button
                 android:id="@+id/soloThree"
