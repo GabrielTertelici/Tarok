@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
+import com.example.tarok.bots.BotBidRule;
+import com.example.tarok.bots.NaiveBidRule;
+import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.PlayMode;
 
 import java.util.ArrayList;
@@ -40,10 +43,14 @@ public class PlayButtonsView {
     private List<Button> buttonList;
     private List<TextView> textViewList;
 
+    private List<List<Card>> decks;
+
+    private BotBidRule naiveBidRule = new NaiveBidRule(new Random());
+
     private int currentLowestBid;
     private int skips;
 
-    public PlayButtonsView(MainActivity mainActivity) {
+    public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks) {
         this.mainActivity = mainActivity;
         this.playThree = mainActivity.findViewById(R.id.playThree);
         this.playTwo = mainActivity.findViewById(R.id.playTwo);
@@ -78,6 +85,8 @@ public class PlayButtonsView {
         textViewList.add(playSoloThreeLabel);
         textViewList.add(playSoloTwoLabel);
         textViewList.add(playSoloOneLabel);
+
+        this.decks = decks;
 
         setUpBiddingProcess();
     }
@@ -150,11 +159,10 @@ public class PlayButtonsView {
                     return;
                 }
 
-                Random random = new Random();
-                boolean randomChoice = random.nextBoolean();
+                int decision = naiveBidRule.decideWhatToPlayFor(decks.get(bidderId), currentLowestBid);
 
-                if(randomChoice){
-                    currentLowestBid++;
+                if(decision > currentLowestBid){
+                    currentLowestBid = decision;
                     skips = 0;
                     textViewList.get(currentLowestBid).setText("PLAYER " + (bidderId + 2));
 

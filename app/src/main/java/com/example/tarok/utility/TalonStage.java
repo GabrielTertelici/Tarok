@@ -38,9 +38,10 @@ public class TalonStage {
         this.talonView = mainActivity.findViewById(R.id.talonCardsView);
         this.advanceButton = mainActivity.findViewById(R.id.advanceButton);
 
-        new PlayButtonsView(mainActivity);
         advanceButton.setVisibility(View.GONE);
         dealToPlayers(fullDeck);
+
+        new PlayButtonsView(mainActivity, List.of(deckP2, deckP3, deckP4));
     }
 
     private void getTeamMate() {
