@@ -257,7 +257,11 @@ public class GameStage {
 
         roundCount++;
         if(roundCount==12){
-            mainActivity.runOnUiThread(()->mainActivity.endGameStage(pointsTeam1,pointsTeam2));
+            if(this.player == 1 || this.teamMate == 1){
+                mainActivity.runOnUiThread(()->mainActivity.endGameStage(pointsTeam1,pointsTeam2));
+            } else {
+                mainActivity.runOnUiThread(()->mainActivity.endGameStage(pointsTeam2,pointsTeam1));
+            }
         }
         else{
             handleNextRound(winningPlayer);
