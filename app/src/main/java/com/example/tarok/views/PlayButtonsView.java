@@ -32,6 +32,7 @@ public class PlayButtonsView {
     private Button playSoloThree;
     private Button playSoloTwo;
     private Button playSoloOne;
+    private Button skipButton;
     private TextView playThreeLabel;
     private TextView playTwoLabel;
     private TextView playOneLabel;
@@ -58,6 +59,8 @@ public class PlayButtonsView {
         this.playSoloThree = mainActivity.findViewById(R.id.soloThree);
         this.playSoloTwo = mainActivity.findViewById(R.id.soloTwo);
         this.playSoloOne = mainActivity.findViewById(R.id.soloOne);
+
+        this.skipButton = mainActivity.findViewById(R.id.skipButton);
 
         this.playThreeLabel = mainActivity.findViewById(R.id.playThreeLabel);
         this.playTwoLabel = mainActivity.findViewById(R.id.playTwoLabel);
