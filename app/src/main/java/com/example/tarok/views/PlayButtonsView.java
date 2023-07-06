@@ -99,6 +99,7 @@ public class PlayButtonsView {
             currentLowestBid = 0;
             playThreeLabel.setText("PLAYER 1");
             enableAllButtons(false);
+            displayLatestBid();
             skips = 0;
             makeBotBids(0);
         });
@@ -120,7 +121,7 @@ public class PlayButtonsView {
         });
         playSoloThree.setOnClickListener(view -> {
             currentLowestBid = 3;
-            playThreeLabel.setText("PLAYER 1");
+            playSoloThreeLabel.setText("PLAYER 1");
             enableAllButtons(false);
             displayLatestBid();
             skips = 0;
@@ -128,7 +129,7 @@ public class PlayButtonsView {
         });
         playSoloTwo.setOnClickListener(view -> {
             currentLowestBid = 4;
-            playTwoLabel.setText("PLAYER 1");
+            playSoloTwoLabel.setText("PLAYER 1");
             enableAllButtons(false);
             displayLatestBid();
             skips = 0;
@@ -136,7 +137,7 @@ public class PlayButtonsView {
         });
         playSoloOne.setOnClickListener(view -> {
             currentLowestBid = 5;
-            playTwoLabel.setText("PLAYER 1");
+            playSoloOneLabel.setText("PLAYER 1");
             displayLatestBid();
             announceWhoPlaysAndInformMain(PlayMode.Solo_One, 1);
         });
