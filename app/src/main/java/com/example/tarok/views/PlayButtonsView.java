@@ -102,7 +102,7 @@ public class PlayButtonsView {
             skips++;
             bidInformerLabel.setText("PLAYER 1 SKIPS");
             if(skips == 3){
-                sendPlayModeToMain(1);
+                sendPlayModeToMain(2);
             } else {
                 makeBotBids(0);
             }

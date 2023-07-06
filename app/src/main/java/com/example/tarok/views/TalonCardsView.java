@@ -85,6 +85,7 @@ public class TalonCardsView extends LinearLayout {
         params.setMargins(0, 0, 0, 0);
 
         for(Card c:kings){
+            c.setLayoutParams(params);
             this.addView(c);
         }
     }
@@ -99,7 +100,7 @@ public class TalonCardsView extends LinearLayout {
             public void run() {
                 createUnclickableTalon(deck);
             }
-        }, 1000);
+        }, 3000);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -159,7 +160,7 @@ public class TalonCardsView extends LinearLayout {
             public void run() {
                 mainActivity.startGameStageWithBotPlaying(pointsPlayer, pointsOpponent, cards, chosenKing, botPlayer);
             }
-        }, 2000);
+        }, 3000);
 
     }
 
