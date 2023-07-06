@@ -99,4 +99,25 @@ public class MainActivity extends Activity {
     public void removeTalonCards() {
         talonStage.removeTalonCards();
     }
+
+    /**
+     * Starts the game stage with a bot as the bidder
+     * @param pointsPlayer list of cards dropped by bot player
+     * @param pointsOpponent leftover cards from talon
+     * @param talon talon
+     * @param chosenKing the king the bot player chose
+     * @param player id of the bot who is playing, 2-4
+     */
+    public void startGameStageWithBotPlaying(List<Card> pointsPlayer, List<Card> pointsOpponent, List<Card> talon, Card chosenKing, int player) {
+        List<List<Card>> decks = talonStage.getDecks();
+        gameStage.startGameWithBotPlaying(
+                decks.get(0),
+                decks.get(1),
+                decks.get(2),
+                decks.get(3),
+                pointsPlayer,
+                pointsOpponent,
+                talon,
+                chosenKing, player);
+    }
 }

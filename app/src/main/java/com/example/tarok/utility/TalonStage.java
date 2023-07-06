@@ -108,6 +108,8 @@ public class TalonStage {
 
         setUpTalonView(playMode);
 
+        talonView.setBotPlayer(player);
+
         List<Card> deck = List.of(deckP2, deckP3, deckP4).get(player - 2);
 
         if(playMode==PlayMode.Solo_Three||playMode==PlayMode.Solo_Two||playMode==PlayMode.Solo_One){
@@ -125,12 +127,16 @@ public class TalonStage {
     private void setDealtCardsSelectableCards(PlayMode playMode) {
         if(playMode==PlayMode.Three||playMode==PlayMode.Solo_Three){
             playerDeck.setSelectableCards(3);
+            talonView.setSelectableCards(3);
         }
         else if(playMode==PlayMode.Two||playMode==PlayMode.Solo_Two){
             playerDeck.setSelectableCards(2);
+            talonView.setSelectableCards(2);
         }
-        else
+        else {
             playerDeck.setSelectableCards(1);
+            talonView.setSelectableCards(1);
+        }
     }
 
     private void dealToPlayers(List<Card> deck) {
@@ -164,5 +170,13 @@ public class TalonStage {
         for(Card c:talon){
             playerDeck.removeCard(c);
         }
+    }
+
+    /**
+     * Getter for the decks dealt
+     * @return list of decks, in order
+     */
+    public List<List<Card>> getDecks(){
+        return List.of(deckP1, deckP2, deckP3, deckP4);
     }
 }

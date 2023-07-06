@@ -225,4 +225,8 @@ public class GameStage {
         table.post(() -> table.animate().translationX(0).setDuration(0));
         table.post(() -> table.animate().translationY(0).setDuration(0));
     }
+
+
+    public void startGameWithBotPlaying(List<Card> cards, List<Card> cards1, List<Card> cards2, List<Card> cards3, List<Card> pointsPlayer, List<Card> pointsOpponent, List<Card> talon, Card chosenKing, int player) {
+    }
 }
