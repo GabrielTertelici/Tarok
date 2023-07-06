@@ -98,6 +98,15 @@ public class PlayButtonsView {
      * Allows the human player to make a bid, and initiates the bot bidding process
      */
     private void setUpBiddingProcess(){
+        skipButton.setOnClickListener(view -> {
+            skips++;
+            bidInformerLabel.setText("PLAYER 1 SKIPS");
+            if(skips == 3){
+                sendPlayModeToMain(1);
+            } else {
+                makeBotBids(0);
+            }
+        });
         playThree.setOnClickListener(view -> {
             currentLowestBid = 0;
             playThreeLabel.setText("PLAYER 1");
