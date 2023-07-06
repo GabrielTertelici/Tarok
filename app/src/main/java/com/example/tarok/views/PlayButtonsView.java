@@ -202,7 +202,7 @@ public class PlayButtonsView {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mainActivity.setPlayMode(mode);
+                mainActivity.setPlayMode(mode, player);
             }
         }, 1500);
     }

@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
+import com.example.tarok.bots.BotKingPickingRule;
+import com.example.tarok.bots.NaiveKingPickingRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DealtCardsView;
 import com.example.tarok.views.PlayButtonsView;
@@ -15,6 +17,7 @@ import com.example.tarok.views.TalonCardsView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class TalonStage {
     private MainActivity mainActivity;
@@ -31,6 +34,8 @@ public class TalonStage {
      * The player is going solo
      */
     private Card chosenKing;
+
+    private BotKingPickingRule kingPickingRule = new NaiveKingPickingRule(new Random());
 
     public TalonStage(MainActivity mainActivity, List<Card> fullDeck) {
         this.mainActivity = mainActivity;
@@ -65,11 +70,11 @@ public class TalonStage {
     }
 
     public void startGameWithPlayMode(PlayMode playMode) {
-        mainActivity.findViewById(R.id.buttonGrid).setVisibility(View.GONE);
-        talonView.setMainActivity(mainActivity);
-        talonView.setPlayMode(playMode);
-        talonView.setCards(talon);
+
+        setUpTalonView(playMode);
+
         setDealtCardsSelectableCards(playMode);
+
         advanceButton.setVisibility(View.VISIBLE);
         advanceButton.setOnClickListener(view -> getTeamMate());
         if(playMode==PlayMode.Solo_Three||playMode==PlayMode.Solo_Two||playMode==PlayMode.Solo_One){
@@ -80,6 +85,41 @@ public class TalonStage {
         else{
             talonView.showKings();
         }
+    }
+
+    /**
+     * Sets up the talon view
+     * @param playMode PlayMode chosen
+     */
+    private void setUpTalonView(PlayMode playMode){
+        mainActivity.findViewById(R.id.buttonGrid).setVisibility(View.GONE);
+        talonView.setMainActivity(mainActivity);
+        talonView.setPlayMode(playMode);
+        talonView.setCards(talon);
+    }
+
+    /**
+     * Starts the process of the bot who made the lowest bid picking a king (if needed) and
+     * cards from the talon, and putting down cards from their hand
+     * @param playMode the PlayMode chosen
+     * @param player the id of the bot playing
+     */
+    public void startGameWithBotPlaying(PlayMode playMode, int player){
+
+        setUpTalonView(playMode);
+
+        List<Card> deck = List.of(deckP2, deckP3, deckP4).get(player - 2);
+
+        if(playMode==PlayMode.Solo_Three||playMode==PlayMode.Solo_Two||playMode==PlayMode.Solo_One){
+            chosenKing = null;
+            talonView.createUnclickableTalon(deck);
+        }
+        else{
+            talonView.showUnclickableKings();
+            int pickedKing = kingPickingRule.pickKing(deck);
+            talonView.displayKingChoice(pickedKing, deck);
+        }
+
     }
 
     private void setDealtCardsSelectableCards(PlayMode playMode) {

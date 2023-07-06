@@ -73,8 +73,13 @@ public class MainActivity extends Activity {
         textTeam2.setText("Opponent points: "+DeckUtils.sumPoints(pointsTeam2));
     }
 
-    public void setPlayMode(PlayMode playMode){
-        talonStage.startGameWithPlayMode(playMode);
+    public void setPlayMode(PlayMode playMode, int player){
+        // player == 1 -> human player made the lowest bid
+        if(player == 1){
+            talonStage.startGameWithPlayMode(playMode);
+        } else {
+            talonStage.startGameWithBotPlaying(playMode, player);
+        }
     }
 
     public List<Card> getKings() {
