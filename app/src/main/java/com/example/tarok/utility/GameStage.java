@@ -27,6 +27,7 @@ public class GameStage {
     private Bot player3;
     private Bot player4;
 
+    private int player;
     private int teamMate;
 
     private List<PlayedCard> tableCards;
@@ -68,15 +69,19 @@ public class GameStage {
         player3 = new Bot(deckP3);
         player4 = new Bot(deckP4);
 
-        teamMate = getTeammate(deckP2,deckP3,deckP4);
+        if(this.player == 0){
+            this.player = 1;
+        }
+
+        teamMate = getTeammate(deckP1,deckP2,deckP3,deckP4);
         //Solo or rufie -> bots know teammates
         if(chosenKing == null || talon.contains(chosenKing)){
             handleTeammatesOfBots();
         }
     }
 
-    private int getTeammate(List<Card> deckP2, List<Card> deckP3, List<Card> deckP4) {
-        int teammate = 1;
+    private int getTeammate(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4) {
+        int teammate = player;
         if(chosenKing!=null){
             if(deckP2.contains(chosenKing)){
                 teammate = 2;
@@ -89,6 +94,8 @@ public class GameStage {
             else if(deckP4.contains(chosenKing)) {
                 teammate = 4;
                 player4.setTeamMate(1);
+            } else if(deckP1.contains(chosenKing)){
+                teammate = 1;
             }
         }
         return teammate;
@@ -135,26 +142,98 @@ public class GameStage {
     }
 
     private void handleTeammatesOfBots() {
-        switch (teamMate){
-            //Player is solo
-            case 1->{
-                player2.setTeamMate(3); player2.setTeamMate(4);
-                player3.setTeamMate(2); player3.setTeamMate(4);
-                player4.setTeamMate(2); player4.setTeamMate(3);
+        if(player == 1){
+            switch (teamMate){
+                //Player is solo
+                case 1->{
+                    player2.setTeamMate(3); player2.setTeamMate(4);
+                    player3.setTeamMate(2); player3.setTeamMate(4);
+                    player4.setTeamMate(2); player4.setTeamMate(3);
+                }
+                case 2->{
+                    player3.setTeamMate(4);
+                    player4.setTeamMate(3);
+                }
+                case 3->{
+                    player2.setTeamMate(4);
+                    player4.setTeamMate(2);
+                }
+                case 4->{
+                    player2.setTeamMate(3);
+                    player3.setTeamMate(2);
+                }
             }
-            case 2->{
-                player3.setTeamMate(4);
-                player4.setTeamMate(3);
+        } else if(player == 2){
+            switch (teamMate){
+                //Player is solo
+                case 1->{
+                    player3.setTeamMate(4);
+                    player4.setTeamMate(3);
+                }
+                case 2->{
+                    player3.setTeamMate(1);
+                    player3.setTeamMate(4);
+
+                    player4.setTeamMate(1);
+                    player4.setTeamMate(3);
+
+                    player2.setTeamMate(2);
+                }
+                case 3->{
+                    player4.setTeamMate(1);
+                }
+                case 4->{
+                    player3.setTeamMate(1);
+                }
             }
-            case 3->{
-                player2.setTeamMate(4);
-                player4.setTeamMate(2);
+        } else if(player == 3){
+            switch (teamMate){
+                //Player is solo
+                case 1->{
+                    player2.setTeamMate(4);
+                    player4.setTeamMate(2);
+                }
+                case 2->{
+                    player4.setTeamMate(1);
+                }
+                case 3->{
+                    player2.setTeamMate(1);
+                    player2.setTeamMate(4);
+
+                    player4.setTeamMate(1);
+                    player4.setTeamMate(2);
+
+                    player3.setTeamMate(3);
+                }
+                case 4->{
+                    player2.setTeamMate(1);
+                }
             }
-            case 4->{
-                player2.setTeamMate(3);
-                player3.setTeamMate(2);
+        } else if (player == 4){
+            switch (teamMate){
+                //Player is solo
+                case 1->{
+                    player2.setTeamMate(3);
+                    player3.setTeamMate(2);
+                }
+                case 2->{
+                    player3.setTeamMate(1);
+                }
+                case 3->{
+                    player2.setTeamMate(1);
+                }
+                case 4->{
+                    player2.setTeamMate(1);
+                    player2.setTeamMate(3);
+
+                    player3.setTeamMate(1);
+                    player3.setTeamMate(2);
+
+                    player4.setTeamMate(4);
+                }
             }
         }
+
     }
 
     private void letBotPlayCard(Bot bot, int player, List<PlayedCard> tableCards){
@@ -206,7 +285,7 @@ public class GameStage {
     }
 
     private void assignPointsToWinningTeam(int winningPlayer) {
-        if(winningPlayer==1 || winningPlayer==teamMate)
+        if(winningPlayer==player || winningPlayer==teamMate)
             pointsTeam1.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
         else
             pointsTeam2.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
@@ -228,5 +307,8 @@ public class GameStage {
 
 
     public void startGameWithBotPlaying(List<Card> cards, List<Card> cards1, List<Card> cards2, List<Card> cards3, List<Card> pointsPlayer, List<Card> pointsOpponent, List<Card> talon, Card chosenKing, int player) {
+        this.player = player;
+
+        startGame(cards, cards1, cards2, cards3, talon, pointsPlayer, pointsOpponent, chosenKing);
     }
 }

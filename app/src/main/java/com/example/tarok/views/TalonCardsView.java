@@ -136,6 +136,7 @@ public class TalonCardsView extends LinearLayout {
         params.setMargins(0, 0, 0, 0);
 
         for(Card c:cards){
+            c.setLayoutParams(params);
             this.addView(c);
         }
 
@@ -157,10 +158,9 @@ public class TalonCardsView extends LinearLayout {
             public void run() {
                 mainActivity.startGameStageWithBotPlaying(pointsPlayer, pointsOpponent, cards, chosenKing, botPlayer);
             }
-        }, 1000);
+        }, 2000);
 
     }
-    public void startGame(){};
 
     /**
      * Highlights the talon partition chosen by the bot

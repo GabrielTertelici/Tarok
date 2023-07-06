@@ -110,6 +110,8 @@ public class MainActivity extends Activity {
      */
     public void startGameStageWithBotPlaying(List<Card> pointsPlayer, List<Card> pointsOpponent, List<Card> talon, Card chosenKing, int player) {
         List<List<Card>> decks = talonStage.getDecks();
+        setContentView(R.layout.sample_board_view);
+        gameStage = new GameStage(this);
         gameStage.startGameWithBotPlaying(
                 decks.get(0),
                 decks.get(1),
