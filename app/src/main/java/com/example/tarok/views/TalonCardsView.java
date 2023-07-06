@@ -149,6 +149,7 @@ public class TalonCardsView extends LinearLayout {
         deck.addAll(chosenCards);
 
         List<Card> pointsPlayer = cardDroppingRule.dropCards(deck, selectableCards);
+        deck.removeAll(pointsPlayer);
         List<Card> pointsOpponent = new ArrayList<>(cards);
         pointsOpponent.removeAll(chosenCards);
 

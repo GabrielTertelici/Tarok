@@ -108,6 +108,8 @@ public class TalonStage {
 
         setUpTalonView(playMode);
 
+        setDealtCardsSelectableCards(playMode);
+
         talonView.setBotPlayer(player);
 
         List<Card> deck = List.of(deckP2, deckP3, deckP4).get(player - 2);
