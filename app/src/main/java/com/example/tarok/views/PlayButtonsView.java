@@ -99,12 +99,16 @@ public class PlayButtonsView {
      */
     private void setUpBiddingProcess(){
         skipButton.setOnClickListener(view -> {
-            skips++;
-            bidInformerLabel.setText("PLAYER 1 SKIPS");
-            if(skips == 3){
-                sendPlayModeToMain(2);
+            if(currentLowestBid == 0){
+                bidInformerLabel.setText("PLEASE MAKE THE FIRST BID");
             } else {
-                makeBotBids(0);
+                skips++;
+                bidInformerLabel.setText("PLAYER 1 SKIPS");
+                if (skips == 3) {
+                    sendPlayModeToMain(2);
+                } else {
+                    makeBotBids(0);
+                }
             }
         });
         playThree.setOnClickListener(view -> {
