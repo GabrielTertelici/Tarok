@@ -68,23 +68,9 @@ public class PlayButtonsView {
 
         this.botManager = botManager;
 
-        buttonList = new ArrayList<>();
+        buttonList = addAllButtons();
 
-        buttonList.add(playThree);
-        buttonList.add(playTwo);
-        buttonList.add(playOne);
-        buttonList.add(playSoloThree);
-        buttonList.add(playSoloTwo);
-        buttonList.add(playSoloOne);
-
-        textViewList = new ArrayList<>();
-
-        textViewList.add(playThreeLabel);
-        textViewList.add(playTwoLabel);
-        textViewList.add(playOneLabel);
-        textViewList.add(playSoloThreeLabel);
-        textViewList.add(playSoloTwoLabel);
-        textViewList.add(playSoloOneLabel);
+        textViewList = addAllLabels();
 
         this.decks = decks;
 
@@ -286,5 +272,39 @@ public class PlayButtonsView {
         playSoloThree.setEnabled(enable);
         playSoloTwo.setEnabled(enable);
         playSoloOne.setEnabled(enable);
+    }
+
+    /**
+     * Adds all of the play buttons into a List
+     * @return the list with all the buttons
+     */
+    private List<Button> addAllButtons(){
+        List<Button> result = new ArrayList<>();
+
+        result.add(playThree);
+        result.add(playTwo);
+        result.add(playOne);
+        result.add(playSoloThree);
+        result.add(playSoloTwo);
+        result.add(playSoloOne);
+
+        return result;
+    }
+
+    /**
+     * Adds all of the play button labels to a List
+     * @return the list of all the labels
+     */
+    private List<TextView> addAllLabels(){
+        List<TextView> result = new ArrayList<>();
+
+        result.add(playThreeLabel);
+        result.add(playTwoLabel);
+        result.add(playOneLabel);
+        result.add(playSoloThreeLabel);
+        result.add(playSoloTwoLabel);
+        result.add(playSoloOneLabel);
+
+        return result;
     }
 }
