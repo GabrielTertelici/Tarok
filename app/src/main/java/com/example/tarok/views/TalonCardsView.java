@@ -12,6 +12,7 @@ import android.widget.Space;
 import com.example.tarok.activities.MainActivity;
 import com.example.tarok.bots.BotCardDroppingRule;
 import com.example.tarok.bots.BotTalonPickingRule;
+import com.example.tarok.bots.BotTalonStageRuleManager;
 import com.example.tarok.bots.GreedyCardDroppingRule;
 import com.example.tarok.bots.GreedyTalonPickingRule;
 import com.example.tarok.gameObjects.Card;
@@ -30,12 +31,10 @@ public class TalonCardsView extends LinearLayout {
     private List<Card> chosenCards;
     private Card chosenKing;
     private PlayMode playMode;
-
-    private BotTalonPickingRule talonPickingRule = new GreedyTalonPickingRule();
-    private BotCardDroppingRule cardDroppingRule = new GreedyCardDroppingRule();
     LayoutParams params;
     private int selectableCards;
     private int botPlayer;
+    private BotTalonStageRuleManager botManager;
 
     public TalonCardsView(Context context, AttributeSet attributeSet){
         super(context,attributeSet);
@@ -143,13 +142,13 @@ public class TalonCardsView extends LinearLayout {
 
         addSpaces();
 
-        Card pickedCard = talonPickingRule.pickCardFromTalon(deck, cards);
+        Card pickedCard = botManager.pickCardFromTalon(deck, cards, selectableCards);
 
         displayTalonChoice(pickedCard);
 
         deck.addAll(chosenCards);
 
-        List<Card> pointsPlayer = cardDroppingRule.dropCards(deck, selectableCards);
+        List<Card> pointsPlayer = botManager.dropCards(deck, selectableCards);
         deck.removeAll(pointsPlayer);
         List<Card> pointsOpponent = new ArrayList<>(cards);
         pointsOpponent.removeAll(chosenCards);
@@ -272,5 +271,9 @@ public class TalonCardsView extends LinearLayout {
 
     public void setBotPlayer(int player) {
         this.botPlayer = player;
+    }
+
+    public void setBotTalonStageRuleManager(BotTalonStageRuleManager botManager) {
+        this.botManager = botManager;
     }
 }

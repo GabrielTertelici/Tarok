@@ -8,6 +8,10 @@ import android.widget.Button;
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
 import com.example.tarok.bots.BotKingPickingRule;
+import com.example.tarok.bots.BotTalonStageRuleManager;
+import com.example.tarok.bots.GreedyCardDroppingRule;
+import com.example.tarok.bots.GreedyTalonPickingRule;
+import com.example.tarok.bots.NaiveBidRule;
 import com.example.tarok.bots.NaiveKingPickingRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DealtCardsView;
@@ -35,7 +39,14 @@ public class TalonStage {
      */
     private Card chosenKing;
 
-    private BotKingPickingRule kingPickingRule = new NaiveKingPickingRule(new Random());
+    // can later be placed in MainActivity and passed down to TalonStage after user sets
+    // difficulty or sets the bot strats manually
+    private BotTalonStageRuleManager botManager = new BotTalonStageRuleManager(
+            new NaiveBidRule(new Random()),
+            new NaiveKingPickingRule(new Random()),
+            new GreedyTalonPickingRule(),
+            new GreedyCardDroppingRule()
+    );
 
     public TalonStage(MainActivity mainActivity, List<Card> fullDeck) {
         this.mainActivity = mainActivity;
@@ -43,10 +54,12 @@ public class TalonStage {
         this.talonView = mainActivity.findViewById(R.id.talonCardsView);
         this.advanceButton = mainActivity.findViewById(R.id.advanceButton);
 
+        this.talonView.setBotTalonStageRuleManager(this.botManager);
+
         advanceButton.setVisibility(View.GONE);
         dealToPlayers(fullDeck);
 
-        new PlayButtonsView(mainActivity, List.of(deckP2, deckP3, deckP4));
+        new PlayButtonsView(mainActivity, List.of(deckP2, deckP3, deckP4), botManager);
     }
 
     private void getTeamMate() {
@@ -120,7 +133,7 @@ public class TalonStage {
         }
         else{
             talonView.showUnclickableKings();
-            int pickedKing = kingPickingRule.pickKing(deck);
+            int pickedKing = botManager.pickKing(deck);
             talonView.displayKingChoice(pickedKing, deck);
         }
 

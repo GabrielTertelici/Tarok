@@ -1,30 +1,27 @@
 package com.example.tarok.views;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Handler;
-import android.os.Looper;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
 import com.example.tarok.bots.BotBidRule;
+import com.example.tarok.bots.BotTalonStageRuleManager;
 import com.example.tarok.bots.NaiveBidRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.PlayMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 //import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+
 
 public class PlayButtonsView {
+    private final BotTalonStageRuleManager botManager;
     private MainActivity mainActivity;
     private Button playThree;
     private Button playTwo;
@@ -46,12 +43,10 @@ public class PlayButtonsView {
 
     private List<List<Card>> decks;
 
-    private BotBidRule naiveBidRule = new NaiveBidRule(new Random());
-
     private int currentLowestBid;
     private int skips;
 
-    public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks) {
+    public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks, BotTalonStageRuleManager botManager) {
         this.mainActivity = mainActivity;
         this.playThree = mainActivity.findViewById(R.id.playThree);
         this.playTwo = mainActivity.findViewById(R.id.playTwo);
@@ -70,6 +65,8 @@ public class PlayButtonsView {
         this.playSoloOneLabel = mainActivity.findViewById(R.id.playSoloOneLabel);
 
         this.bidInformerLabel = mainActivity.findViewById(R.id.bidInformerLabel);
+
+        this.botManager = botManager;
 
         buttonList = new ArrayList<>();
 
@@ -176,7 +173,7 @@ public class PlayButtonsView {
                     return;
                 }
 
-                int decision = naiveBidRule.decideWhatToPlayFor(decks.get(bidderId), currentLowestBid);
+                int decision = botManager.decideWhatToPlayFor(decks.get(bidderId), currentLowestBid);
 
                 if(decision > currentLowestBid){
                     currentLowestBid = decision;
