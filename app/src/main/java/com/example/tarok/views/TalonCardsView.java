@@ -3,12 +3,18 @@ package com.example.tarok.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Space;
 
 import com.example.tarok.activities.MainActivity;
+import com.example.tarok.bots.BotCardDroppingRule;
+import com.example.tarok.bots.BotTalonPickingRule;
+import com.example.tarok.bots.BotTalonStageRuleManager;
+import com.example.tarok.bots.GreedyCardDroppingRule;
+import com.example.tarok.bots.GreedyTalonPickingRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.DeckUtils;
 import com.example.tarok.utility.PlayMode;
@@ -26,6 +32,9 @@ public class TalonCardsView extends LinearLayout {
     private Card chosenKing;
     private PlayMode playMode;
     LayoutParams params;
+    private int selectableCards;
+    private int botPlayer;
+    private BotTalonStageRuleManager botManager;
 
     public TalonCardsView(Context context, AttributeSet attributeSet){
         super(context,attributeSet);
@@ -60,6 +69,39 @@ public class TalonCardsView extends LinearLayout {
             this.addView(c);
         }
     }
+
+    /**
+     * Draws the four kings which can be chosen, but since a bot is playing, the
+     * human player is unable to select a king
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    public void showUnclickableKings(){
+        this.removeAllViews();
+        this.setWeightSum(4);
+        kings = mainActivity.getKings();
+
+        params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
+        params.setMargins(0, 0, 0, 0);
+
+        for(Card c:kings){
+            c.setLayoutParams(params);
+            this.addView(c);
+        }
+    }
+
+    public void displayKingChoice(int pickedKing, List<Card> deck){
+        Card king = kings.get(pickedKing);
+        handleKingClick(king);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                createUnclickableTalon(deck);
+            }
+        }, 3000);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     public void createTalon(){
         this.removeAllViews();
@@ -78,6 +120,61 @@ public class TalonCardsView extends LinearLayout {
         }
 
         addSpaces();
+    }
+
+    /**
+     * Draws the talon options, but, since a bot is playing, the human player is unable to
+     * select any cards
+     *
+     * @param deck the deck of the bot making the choice
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    public void createUnclickableTalon(List<Card> deck){
+        this.removeAllViews();
+
+        params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
+        params.setMargins(0, 0, 0, 0);
+
+        for(Card c:cards){
+            c.setLayoutParams(params);
+            this.addView(c);
+        }
+
+        addSpaces();
+
+        Card pickedCard = botManager.pickCardFromTalon(deck, cards, selectableCards);
+
+        displayTalonChoice(pickedCard);
+
+        deck.addAll(chosenCards);
+
+        List<Card> pointsPlayer = botManager.dropCards(deck, selectableCards);
+        deck.removeAll(pointsPlayer);
+        List<Card> pointsOpponent = new ArrayList<>(cards);
+        pointsOpponent.removeAll(chosenCards);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mainActivity.startGameStageWithBotPlaying(pointsPlayer, pointsOpponent, cards, chosenKing, botPlayer);
+            }
+        }, 3000);
+
+    }
+
+    /**
+     * Highlights the talon partition chosen by the bot
+     */
+    public void displayTalonChoice(Card card){
+        List<Card> inGroup = getGroup(card);
+        for(Card c:cards){
+            c.setAlpha(1f);
+            if(inGroup.contains(c)){
+                c.setAlpha(0.5f);
+            }
+        }
+        chosenCards = inGroup;
     }
 
     private void addSpaces() {
@@ -166,5 +263,17 @@ public class TalonCardsView extends LinearLayout {
 
     public Card getChosenKing() {
         return chosenKing;
+    }
+
+    public void setSelectableCards(int i) {
+        this.selectableCards = i;
+    }
+
+    public void setBotPlayer(int player) {
+        this.botPlayer = player;
+    }
+
+    public void setBotTalonStageRuleManager(BotTalonStageRuleManager botManager) {
+        this.botManager = botManager;
     }
 }

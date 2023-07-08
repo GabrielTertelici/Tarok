@@ -7,6 +7,12 @@ import android.widget.Button;
 
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
+import com.example.tarok.bots.BotKingPickingRule;
+import com.example.tarok.bots.BotTalonStageRuleManager;
+import com.example.tarok.bots.GreedyCardDroppingRule;
+import com.example.tarok.bots.GreedyTalonPickingRule;
+import com.example.tarok.bots.NaiveBidRule;
+import com.example.tarok.bots.NaiveKingPickingRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DealtCardsView;
 import com.example.tarok.views.PlayButtonsView;
@@ -15,6 +21,7 @@ import com.example.tarok.views.TalonCardsView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class TalonStage {
     private MainActivity mainActivity;
@@ -32,15 +39,27 @@ public class TalonStage {
      */
     private Card chosenKing;
 
+    // can later be placed in MainActivity and passed down to TalonStage after user sets
+    // difficulty or sets the bot strats manually
+    private BotTalonStageRuleManager botManager = new BotTalonStageRuleManager(
+            new NaiveBidRule(new Random()),
+            new NaiveKingPickingRule(new Random()),
+            new GreedyTalonPickingRule(),
+            new GreedyCardDroppingRule()
+    );
+
     public TalonStage(MainActivity mainActivity, List<Card> fullDeck) {
         this.mainActivity = mainActivity;
         this.playerDeck = mainActivity.findViewById(R.id.dealtCardsView);
         this.talonView = mainActivity.findViewById(R.id.talonCardsView);
         this.advanceButton = mainActivity.findViewById(R.id.advanceButton);
 
-        new PlayButtonsView(mainActivity);
+        this.talonView.setBotTalonStageRuleManager(this.botManager);
+
         advanceButton.setVisibility(View.GONE);
         dealToPlayers(fullDeck);
+
+        new PlayButtonsView(mainActivity, List.of(deckP2, deckP3, deckP4), botManager);
     }
 
     private void getTeamMate() {
@@ -64,11 +83,11 @@ public class TalonStage {
     }
 
     public void startGameWithPlayMode(PlayMode playMode) {
-        mainActivity.findViewById(R.id.buttonGrid).setVisibility(View.GONE);
-        talonView.setMainActivity(mainActivity);
-        talonView.setPlayMode(playMode);
-        talonView.setCards(talon);
+
+        setUpTalonView(playMode);
+
         setDealtCardsSelectableCards(playMode);
+
         advanceButton.setVisibility(View.VISIBLE);
         advanceButton.setOnClickListener(view -> getTeamMate());
         if(playMode==PlayMode.Solo_Three||playMode==PlayMode.Solo_Two||playMode==PlayMode.Solo_One){
@@ -81,15 +100,58 @@ public class TalonStage {
         }
     }
 
+    /**
+     * Sets up the talon view
+     * @param playMode PlayMode chosen
+     */
+    private void setUpTalonView(PlayMode playMode){
+        mainActivity.findViewById(R.id.buttonGrid).setVisibility(View.GONE);
+        talonView.setMainActivity(mainActivity);
+        talonView.setPlayMode(playMode);
+        talonView.setCards(talon);
+    }
+
+    /**
+     * Starts the process of the bot who made the lowest bid picking a king (if needed) and
+     * cards from the talon, and putting down cards from their hand
+     * @param playMode the PlayMode chosen
+     * @param player the id of the bot playing
+     */
+    public void startGameWithBotPlaying(PlayMode playMode, int player){
+
+        setUpTalonView(playMode);
+
+        setDealtCardsSelectableCards(playMode);
+
+        talonView.setBotPlayer(player);
+
+        List<Card> deck = List.of(deckP2, deckP3, deckP4).get(player - 2);
+
+        if(playMode==PlayMode.Solo_Three||playMode==PlayMode.Solo_Two||playMode==PlayMode.Solo_One){
+            chosenKing = null;
+            talonView.createUnclickableTalon(deck);
+        }
+        else{
+            talonView.showUnclickableKings();
+            int pickedKing = botManager.pickKing(deck);
+            talonView.displayKingChoice(pickedKing, deck);
+        }
+
+    }
+
     private void setDealtCardsSelectableCards(PlayMode playMode) {
         if(playMode==PlayMode.Three||playMode==PlayMode.Solo_Three){
             playerDeck.setSelectableCards(3);
+            talonView.setSelectableCards(3);
         }
         else if(playMode==PlayMode.Two||playMode==PlayMode.Solo_Two){
             playerDeck.setSelectableCards(2);
+            talonView.setSelectableCards(2);
         }
-        else
+        else {
             playerDeck.setSelectableCards(1);
+            talonView.setSelectableCards(1);
+        }
     }
 
     private void dealToPlayers(List<Card> deck) {
@@ -123,5 +185,13 @@ public class TalonStage {
         for(Card c:talon){
             playerDeck.removeCard(c);
         }
+    }
+
+    /**
+     * Getter for the decks dealt
+     * @return list of decks, in order
+     */
+    public List<List<Card>> getDecks(){
+        return List.of(deckP1, deckP2, deckP3, deckP4);
     }
 }
