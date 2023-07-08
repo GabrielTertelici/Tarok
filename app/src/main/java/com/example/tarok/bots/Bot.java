@@ -64,4 +64,12 @@ public class Bot {
     public void setTeamMate(int teamMate) {
         teamMates.add(teamMate);
     }
+
+    /**
+     * Getter for teamMates field, to facilitate observability for testing
+     * @return the set of teammate ids
+     */
+    public Set<Integer> getTeammates(){
+        return this.teamMates;
+    }
 }

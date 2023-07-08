@@ -76,7 +76,7 @@ public class GameStage {
         teamMate = getTeammate(deckP1,deckP2,deckP3,deckP4);
         //Solo or rufie -> bots know teammates
         if(chosenKing == null || talon.contains(chosenKing)){
-            handleTeammatesOfBots();
+            BotTeammateHandler.handleTeammatesOfBots(List.of(player2, player3, player4), player, teamMate);
         }
     }
 
@@ -114,7 +114,7 @@ public class GameStage {
             throw new IllegalArgumentException("Wrong player id");
 
         if(card.equals(chosenKing)){
-            handleTeammatesOfBots();
+            BotTeammateHandler.handleTeammatesOfBots(List.of(player2, player3, player4), player, teamMate);
         }
 
         tableCards.add(new PlayedCard(player,card));
@@ -139,110 +139,6 @@ public class GameStage {
                 }
             }
         }
-    }
-    
-    private void handleTeammatesOfBots() {
-        if(player == 1){
-            switch (teamMate){
-                //Player is solo
-                case 1->{
-                    player2.setTeamMate(3); player2.setTeamMate(4);
-                    player3.setTeamMate(2); player3.setTeamMate(4);
-                    player4.setTeamMate(2); player4.setTeamMate(3);
-                }
-                case 2->{
-                    player3.setTeamMate(4);
-                    player4.setTeamMate(3);
-                }
-                case 3->{
-                    player2.setTeamMate(4);
-                    player4.setTeamMate(2);
-                }
-                case 4->{
-                    player2.setTeamMate(3);
-                    player3.setTeamMate(2);
-                }
-            }
-        } else if(player == 2){
-            switch (teamMate){
-                case 1->{
-                    player3.setTeamMate(4);
-                    player4.setTeamMate(3);
-
-                    player2.setTeamMate(1);
-                }
-                case 2->{
-                    player3.setTeamMate(1);
-                    player3.setTeamMate(4);
-
-                    player4.setTeamMate(1);
-                    player4.setTeamMate(3);
-
-                    player2.setTeamMate(2);
-                }
-                case 3->{
-                    player4.setTeamMate(1);
-                    player2.setTeamMate(3);
-                }
-                case 4->{
-                    player3.setTeamMate(1);
-                    player2.setTeamMate(4);
-                }
-            }
-        } else if(player == 3){
-            switch (teamMate){
-                case 1->{
-                    player2.setTeamMate(4);
-                    player4.setTeamMate(2);
-
-                    player3.setTeamMate(1);
-                }
-                case 2->{
-                    player4.setTeamMate(1);
-                    player3.setTeamMate(2);
-                }
-                case 3->{
-                    player2.setTeamMate(1);
-                    player2.setTeamMate(4);
-
-                    player4.setTeamMate(1);
-                    player4.setTeamMate(2);
-
-                    player3.setTeamMate(3);
-                }
-                case 4->{
-                    player2.setTeamMate(1);
-                    player3.setTeamMate(4);
-                }
-            }
-        } else if (player == 4){
-            switch (teamMate){
-                case 1->{
-                    player2.setTeamMate(3);
-                    player3.setTeamMate(2);
-
-                    player4.setTeamMate(1);
-                }
-                case 2->{
-                    player3.setTeamMate(1);
-                    player4.setTeamMate(2);
-                }
-                case 3->{
-                    player2.setTeamMate(1);
-                    player4.setTeamMate(3);
-                }
-                case 4->{
-                    player2.setTeamMate(1);
-                    player2.setTeamMate(3);
-
-                    player3.setTeamMate(1);
-                    player3.setTeamMate(2);
-
-                    player4.setTeamMate(4);
-                }
-            }
-        }
-
     }
 
     private void letBotPlayCard(Bot bot, int player, List<PlayedCard> tableCards){
