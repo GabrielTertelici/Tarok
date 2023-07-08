@@ -12,6 +12,7 @@ import com.example.tarok.bots.BotBidRule;
 import com.example.tarok.bots.BotTalonStageRuleManager;
 import com.example.tarok.bots.NaiveBidRule;
 import com.example.tarok.gameObjects.Card;
+import com.example.tarok.utility.BidClickListener;
 import com.example.tarok.utility.PlayMode;
 
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class PlayButtonsView {
     private List<TextView> textViewList;
 
     private List<List<Card>> decks;
+
+    private BidClickListener clickListenerHandler;
 
     private int currentLowestBid;
     private int skips;
@@ -74,72 +77,9 @@ public class PlayButtonsView {
 
         this.decks = decks;
 
-        setUpBiddingProcess();
-    }
-
-    /**
-     * Allows the human player to make a bid, and initiates the bot bidding process
-     */
-    private void setUpBiddingProcess(){
-        skipButton.setOnClickListener(view -> {
-            if(currentLowestBid == 0){
-                bidInformerLabel.setText("PLEASE MAKE THE FIRST BID");
-            } else {
-                skips++;
-                bidInformerLabel.setText("PLAYER 1 SKIPS");
-                if (skips == 3) {
-                    sendPlayModeToMain(2);
-                } else {
-                    makeBotBids(0);
-                }
-            }
-        });
-        playThree.setOnClickListener(view -> {
-            currentLowestBid = 0;
-            playThreeLabel.setText("PLAYER 1");
-            enableAllButtons(false);
-            displayLatestBid();
-            skips = 0;
-            makeBotBids(0);
-        });
-        playTwo.setOnClickListener(view -> {
-            currentLowestBid = 1;
-            playTwoLabel.setText("PLAYER 1");
-            enableAllButtons(false);
-            displayLatestBid();
-            skips = 0;
-            makeBotBids(0);
-        });
-        playOne.setOnClickListener(view -> {
-            currentLowestBid = 2;
-            playOneLabel.setText("PLAYER 1");
-            enableAllButtons(false);
-            displayLatestBid();
-            skips = 0;
-            makeBotBids(0);
-        });
-        playSoloThree.setOnClickListener(view -> {
-            currentLowestBid = 3;
-            playSoloThreeLabel.setText("PLAYER 1");
-            enableAllButtons(false);
-            displayLatestBid();
-            skips = 0;
-            makeBotBids(0);
-        });
-        playSoloTwo.setOnClickListener(view -> {
-            currentLowestBid = 4;
-            playSoloTwoLabel.setText("PLAYER 1");
-            enableAllButtons(false);
-            displayLatestBid();
-            skips = 0;
-            makeBotBids(0);
-        });
-        playSoloOne.setOnClickListener(view -> {
-            currentLowestBid = 5;
-            playSoloOneLabel.setText("PLAYER 1");
-            displayLatestBid();
-            announceWhoPlaysAndInformMain(PlayMode.Solo_One, 1);
-        });
+        this.clickListenerHandler = new BidClickListener(this);
+        this.clickListenerHandler.setSkipButtonListener(skipButton);
+        this.clickListenerHandler.setButtonListeners(buttonList);
     }
 
     /**
@@ -196,7 +136,7 @@ public class PlayButtonsView {
      * @param mode the chosen PlayMode
      * @param player the player who is playing
      */
-    private void announceWhoPlaysAndInformMain(PlayMode mode, int player){
+    public void announceWhoPlaysAndInformMain(PlayMode mode, int player){
         bidInformerLabel.setText("PLAYER " + player + " IS PLAYING " + mode.toString());
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -219,7 +159,7 @@ public class PlayButtonsView {
      * 5 -> Solo_One
      * @param player player number of the player who made this bid
      */
-    private void sendPlayModeToMain(int player){
+    public void sendPlayModeToMain(int player){
         PlayMode lowestBid = null;
 
         switch (currentLowestBid){
@@ -265,7 +205,7 @@ public class PlayButtonsView {
      * Enables or disables the pressing of the buttons based on the enable parameter
      * @param enable enables the buttons if true, disables them if false
      */
-    private void enableAllButtons(boolean enable){
+    public void enableAllButtons(boolean enable){
         playThree.setEnabled(enable);
         playTwo.setEnabled(enable);
         playOne.setEnabled(enable);
@@ -306,5 +246,61 @@ public class PlayButtonsView {
         result.add(playSoloOneLabel);
 
         return result;
+    }
+
+    /**
+     * Setter for currentLowestBid
+     * @param newLowestBid new lowest bid
+     */
+    public void setCurrentLowestBid(int newLowestBid) {
+        this.currentLowestBid = newLowestBid;
+    }
+
+    /**
+     * Sets the text of the ith label to the given text
+     * @param i position of the label in the textViewList
+     * @param text text to set the label to
+     */
+    public void setLabelText(int i, String text) {
+        textViewList.get(i).setText(text);
+    }
+
+    /**
+     * Setter for skips field
+     * @param skips new number of skips
+     */
+    public void setSkips(int skips) {
+        this.skips = skips;
+    }
+
+    /**
+     * Getter for currentLowestBid field
+     * @return the current lowest bid as an integer
+     */
+    public int getCurrentLowestBid() {
+        return this.currentLowestBid;
+    }
+
+    /**
+     * Sets the text value of the bidInformationLabel
+     * @param text text to set
+     */
+    public void setInfoLabelText(String text) {
+        this.bidInformerLabel.setText(text);
+    }
+
+    /**
+     * Increments the skips field by one
+     */
+    public void incrementSkips() {
+        this.skips++;
+    }
+
+    /**
+     * Getter for the skips field
+     * @return skips
+     */
+    public int getSkips() {
+        return this.skips;
     }
 }

@@ -141,6 +141,9 @@ public class GameStage {
         }
     }
 
+    /**
+     * ADD HANDLING FOR ME PLAYING THE CARD THAT THE BOT PICKED
+     */
     private void handleTeammatesOfBots() {
         if(player == 1){
             switch (teamMate){
