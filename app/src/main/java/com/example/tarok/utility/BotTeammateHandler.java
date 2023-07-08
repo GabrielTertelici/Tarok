@@ -1,5 +1,7 @@
 package com.example.tarok.utility;
 
+import android.util.Log;
+
 import com.example.tarok.bots.Bot;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class BotTeammateHandler {
      * Utility method for setting the teammates of bots after the teams have been revealed,
      * either by a player playing solo, or by the chosen king getting revealed either on the table or
      * in the talon
-     * @param bots list of Bots playing, sorted anticlockwise
+     * @param botsPassed list of Bots playing, sorted anticlockwise
      * @param player integer representing the player who made the lowest bid, in anticlockwise order
      *               player = 1 -> human player
      *               player = 2 -> player to the human's immediate right
@@ -22,6 +24,8 @@ public class BotTeammateHandler {
      *                 parameter
      */
     public static void handleTeammatesOfBots(List<Bot> botsPassed, int player, int teammate){
+        Log.d("player", player + "");
+        Log.d("teammate", teammate + "");
         List<Integer> playerIds = new ArrayList<>();
         for (int i = 1; i < 5; i++){
             playerIds.add(i);
@@ -54,6 +58,5 @@ public class BotTeammateHandler {
                 }
             }
         }
-
     }
 }

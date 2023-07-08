@@ -13,6 +13,7 @@ import com.example.tarok.bots.BotTalonStageRuleManager;
 import com.example.tarok.bots.NaiveBidRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.BidClickListener;
+import com.example.tarok.utility.BotBiddingProcess;
 import com.example.tarok.utility.PlayMode;
 
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ import java.util.Random;
 
 
 public class PlayButtonsView {
-    private final BotTalonStageRuleManager botManager;
     private MainActivity mainActivity;
     private Button playThree;
     private Button playTwo;
@@ -42,12 +42,7 @@ public class PlayButtonsView {
     private List<Button> buttonList;
     private List<TextView> textViewList;
 
-    private List<List<Card>> decks;
-
     private BidClickListener clickListenerHandler;
-
-    private int currentLowestBid;
-    private int skips;
 
     public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks, BotTalonStageRuleManager botManager) {
         this.mainActivity = mainActivity;
@@ -69,65 +64,14 @@ public class PlayButtonsView {
 
         this.bidInformerLabel = mainActivity.findViewById(R.id.bidInformerLabel);
 
-        this.botManager = botManager;
-
         buttonList = addAllButtons();
 
         textViewList = addAllLabels();
 
-        this.decks = decks;
-
-        this.clickListenerHandler = new BidClickListener(this);
+        this.clickListenerHandler = new BidClickListener(this,
+                new BotBiddingProcess(this, botManager, decks));
         this.clickListenerHandler.setSkipButtonListener(skipButton);
         this.clickListenerHandler.setButtonListeners(buttonList);
-    }
-
-    /**
-     * Simulates the process of bots choosing what play mode to go for
-     * Each bot randomly chooses whether to play for the next lowest play mode, or to skip
-     * @param bidderId id of the bot making a decision (bidderId = 0 -> bot 1...)
-     */
-    public void makeBotBids(int bidderId){
-        // use a Handler to delay the UI by 1000ms when displaying the decision of each bot
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(bidderId > 2){
-                    enableAllButtons(true);
-                    displayLatestBid();
-                    return;
-                }
-
-                int decision = botManager.decideWhatToPlayFor(decks.get(bidderId), currentLowestBid);
-
-                if(decision > currentLowestBid){
-                    currentLowestBid = decision;
-                    skips = 0;
-                    textViewList.get(currentLowestBid).setText("PLAYER " + (bidderId + 2));
-
-                    bidInformerLabel.setText("PLAYER " + (bidderId + 2) + " PLAYS");
-
-                    displayLatestBid();
-
-                    if(currentLowestBid == 5){
-                        announceWhoPlaysAndInformMain(PlayMode.Solo_One, bidderId + 2);
-                        return;
-                    }
-                } else {
-                    skips++;
-
-                    bidInformerLabel.setText("PLAYER " + (bidderId + 2) + " SKIPS");
-
-                    if(skips == 3){
-                        sendPlayModeToMain((bidderId + 2) % 4 + 1);
-                        return;
-                    }
-                }
-
-                makeBotBids(bidderId + 1);
-            }
-        }, 1000);
     }
 
     /**
@@ -159,7 +103,7 @@ public class PlayButtonsView {
      * 5 -> Solo_One
      * @param player player number of the player who made this bid
      */
-    public void sendPlayModeToMain(int player){
+    public void sendPlayModeToMain(int player, int currentLowestBid){
         PlayMode lowestBid = null;
 
         switch (currentLowestBid){
@@ -190,7 +134,7 @@ public class PlayButtonsView {
      * Disables all the buttons corresponding to high PlayModes which are no longer playable
      * and indicates who went for what option, and what the current lowest bid is
      */
-    public void displayLatestBid(){
+    public void displayLatestBid(int currentLowestBid){
         for(int i = 0; i < currentLowestBid; i++){
             buttonList.get(i).setEnabled(false);
             buttonList.get(i).setAlpha(0.5f);
@@ -206,12 +150,11 @@ public class PlayButtonsView {
      * @param enable enables the buttons if true, disables them if false
      */
     public void enableAllButtons(boolean enable){
-        playThree.setEnabled(enable);
-        playTwo.setEnabled(enable);
-        playOne.setEnabled(enable);
-        playSoloThree.setEnabled(enable);
-        playSoloTwo.setEnabled(enable);
-        playSoloOne.setEnabled(enable);
+        for(Button button : buttonList){
+            button.setEnabled(enable);
+        }
+
+        skipButton.setEnabled(enable);
     }
 
     /**
@@ -249,14 +192,6 @@ public class PlayButtonsView {
     }
 
     /**
-     * Setter for currentLowestBid
-     * @param newLowestBid new lowest bid
-     */
-    public void setCurrentLowestBid(int newLowestBid) {
-        this.currentLowestBid = newLowestBid;
-    }
-
-    /**
      * Sets the text of the ith label to the given text
      * @param i position of the label in the textViewList
      * @param text text to set the label to
@@ -266,41 +201,10 @@ public class PlayButtonsView {
     }
 
     /**
-     * Setter for skips field
-     * @param skips new number of skips
-     */
-    public void setSkips(int skips) {
-        this.skips = skips;
-    }
-
-    /**
-     * Getter for currentLowestBid field
-     * @return the current lowest bid as an integer
-     */
-    public int getCurrentLowestBid() {
-        return this.currentLowestBid;
-    }
-
-    /**
      * Sets the text value of the bidInformationLabel
      * @param text text to set
      */
     public void setInfoLabelText(String text) {
         this.bidInformerLabel.setText(text);
-    }
-
-    /**
-     * Increments the skips field by one
-     */
-    public void incrementSkips() {
-        this.skips++;
-    }
-
-    /**
-     * Getter for the skips field
-     * @return skips
-     */
-    public int getSkips() {
-        return this.skips;
     }
 }

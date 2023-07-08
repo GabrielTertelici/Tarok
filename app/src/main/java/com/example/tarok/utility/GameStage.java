@@ -114,7 +114,7 @@ public class GameStage {
             throw new IllegalArgumentException("Wrong player id");
 
         if(card.equals(chosenKing)){
-            BotTeammateHandler.handleTeammatesOfBots(List.of(player2, player3, player4), player, teamMate);
+            BotTeammateHandler.handleTeammatesOfBots(List.of(player2, player3, player4), this.player, teamMate);
         }
 
         tableCards.add(new PlayedCard(player,card));
