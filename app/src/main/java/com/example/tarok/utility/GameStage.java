@@ -85,15 +85,15 @@ public class GameStage {
         if(chosenKing!=null){
             if(deckP2.contains(chosenKing)){
                 teammate = 2;
-                player2.setTeamMate(1);
+                player2.setTeamMate(player);
             }
             else if(deckP3.contains(chosenKing)) {
                 teammate = 3;
-                player3.setTeamMate(1);
+                player3.setTeamMate(player);
             }
             else if(deckP4.contains(chosenKing)) {
                 teammate = 4;
-                player4.setTeamMate(1);
+                player4.setTeamMate(player);
             } else if(deckP1.contains(chosenKing)){
                 teammate = 1;
             }
@@ -140,10 +140,7 @@ public class GameStage {
             }
         }
     }
-
-    /**
-     * ADD HANDLING FOR ME PLAYING THE CARD THAT THE BOT PICKED
-     */
+    
     private void handleTeammatesOfBots() {
         if(player == 1){
             switch (teamMate){
@@ -168,10 +165,11 @@ public class GameStage {
             }
         } else if(player == 2){
             switch (teamMate){
-                //Player is solo
                 case 1->{
                     player3.setTeamMate(4);
                     player4.setTeamMate(3);
+
+                    player2.setTeamMate(1);
                 }
                 case 2->{
                     player3.setTeamMate(1);
@@ -184,20 +182,24 @@ public class GameStage {
                 }
                 case 3->{
                     player4.setTeamMate(1);
+                    player2.setTeamMate(3);
                 }
                 case 4->{
                     player3.setTeamMate(1);
+                    player2.setTeamMate(4);
                 }
             }
         } else if(player == 3){
             switch (teamMate){
-                //Player is solo
                 case 1->{
                     player2.setTeamMate(4);
                     player4.setTeamMate(2);
+
+                    player3.setTeamMate(1);
                 }
                 case 2->{
                     player4.setTeamMate(1);
+                    player3.setTeamMate(2);
                 }
                 case 3->{
                     player2.setTeamMate(1);
@@ -210,20 +212,24 @@ public class GameStage {
                 }
                 case 4->{
                     player2.setTeamMate(1);
+                    player3.setTeamMate(4);
                 }
             }
         } else if (player == 4){
             switch (teamMate){
-                //Player is solo
                 case 1->{
                     player2.setTeamMate(3);
                     player3.setTeamMate(2);
+
+                    player4.setTeamMate(1);
                 }
                 case 2->{
                     player3.setTeamMate(1);
+                    player4.setTeamMate(2);
                 }
                 case 3->{
                     player2.setTeamMate(1);
+                    player4.setTeamMate(3);
                 }
                 case 4->{
                     player2.setTeamMate(1);
