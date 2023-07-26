@@ -48,14 +48,14 @@ public class OpenFileBidRule implements BotBidRule {
         //Go over every option in reverse order and decide for it or against it
         //Solo options -> look at opening 3 files
         int sumOf3 = cardsRequiredToOpenFiles.get(0) + cardsRequiredToOpenFiles.get(1) + cardsRequiredToOpenFiles.get(2);
-        if(sumOf3==0){chosenOption = 5;}
-        if(sumOf3==1){chosenOption = 4;}
-        if(sumOf3==2){chosenOption = 3;}
-        //We cannot go solo -> look at opening 2 files
         int sumOf2 = cardsRequiredToOpenFiles.get(0) + cardsRequiredToOpenFiles.get(1);
-        if(sumOf2<=1){chosenOption = 2;}
-        if(sumOf2==2){chosenOption = 1;}
-        if(sumOf2==3){chosenOption = 0;}
+        if(sumOf3==0){chosenOption = 5;}
+        else if(sumOf3==1){chosenOption = 4;}
+        else if(sumOf3==2){chosenOption = 3;}
+        //We cannot go solo -> look at opening 2 files
+        else if(sumOf2<=1){chosenOption = 2;}
+        else if(sumOf2==2){chosenOption = 1;}
+        else if(sumOf2==3){chosenOption = 0;}
 
         //Here bot can decide to bluff by not playing as low as it can go
         //Instead it just goes one step lower
