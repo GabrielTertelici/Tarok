@@ -59,9 +59,12 @@ public class OpenFileBidRule implements BotBidRule {
 
         //Here bot can decide to bluff by not playing as low as it can go
         //Instead it just goes one step lower
-        if(r.nextInt(10)<8)
-            return chosenOption;
-        else
-            return currentLowestBid+1;
+        if(chosenOption>currentLowestBid) {
+            if(r.nextInt(10)<8)
+                return chosenOption;
+            else
+                return currentLowestBid+1;
+        }
+        return currentLowestBid;
     }
 }
