@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 
 import com.example.tarok.gameObjects.Card;
+import com.example.tarok.utility.CardComparator;
 import com.example.tarok.utility.CardSuite;
 import com.example.tarok.utility.DeckUtils;
 
@@ -34,7 +35,7 @@ public class EndGameCardsView extends LinearLayout {
     }
 
     public void createDeckFromList(List<Card> cardList){
-        cards = cardList.stream().map(x->x.resetCard(getContext())).sorted(this::compareCards).collect(Collectors.toList());
+        cards = cardList.stream().map(x->x.resetCard(getContext())).sorted(new CardComparator<Card>()).collect(Collectors.toList());
         this.setWeightSum(cards.size());
 
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
@@ -45,15 +46,5 @@ public class EndGameCardsView extends LinearLayout {
             c.lockCard();
             this.addView(c);
         }
-    }
-
-    private int compareCards(Card c1, Card c2){
-        if(c1.getPoints()==c2.getPoints()){
-            if(c1.getSuite()==c2.getSuite())
-                return -Integer.compare(c1.getValue(),c2.getValue());
-            else
-                return -c1.getSuite().compareTo(c2.getSuite());
-        }
-        else return -Integer.compare(c1.getPoints(),c2.getPoints());
     }
 }

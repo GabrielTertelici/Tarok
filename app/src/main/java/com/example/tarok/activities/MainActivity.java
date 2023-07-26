@@ -73,8 +73,13 @@ public class MainActivity extends Activity {
         textTeam2.setText("Opponent points: "+DeckUtils.sumPoints(pointsTeam2));
     }
 
-    public void setPlayMode(PlayMode playMode){
-        talonStage.startGameWithPlayMode(playMode);
+    public void setPlayMode(PlayMode playMode, int player){
+        // player == 1 -> human player made the lowest bid
+        if(player == 1){
+            talonStage.startGameWithPlayMode(playMode);
+        } else {
+            talonStage.startGameWithBotPlaying(playMode, player);
+        }
     }
 
     public List<Card> getKings() {
@@ -93,5 +98,28 @@ public class MainActivity extends Activity {
 
     public void removeTalonCards() {
         talonStage.removeTalonCards();
+    }
+
+    /**
+     * Starts the game stage with a bot as the bidder
+     * @param pointsPlayer list of cards dropped by bot player
+     * @param pointsOpponent leftover cards from talon
+     * @param talon talon
+     * @param chosenKing the king the bot player chose
+     * @param player id of the bot who is playing, 2-4
+     */
+    public void startGameStageWithBotPlaying(List<Card> pointsPlayer, List<Card> pointsOpponent, List<Card> talon, Card chosenKing, int player) {
+        List<List<Card>> decks = talonStage.getDecks();
+        setContentView(R.layout.sample_board_view);
+        gameStage = new GameStage(this);
+        gameStage.startGameWithBotPlaying(
+                decks.get(0),
+                decks.get(1),
+                decks.get(2),
+                decks.get(3),
+                pointsPlayer,
+                pointsOpponent,
+                talon,
+                chosenKing, player);
     }
 }
