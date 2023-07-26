@@ -1,7 +1,7 @@
 package com.example.tarok.bots;
 
-import android.util.Log;
-
+import com.example.tarok.bots.cardPlayingRules.SuiteCardRule;
+import com.example.tarok.bots.cardPlayingRules.TarotCardRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.CardSuite;
 import com.example.tarok.utility.DeckUtils;

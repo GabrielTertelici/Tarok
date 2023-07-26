@@ -1,11 +1,12 @@
-package com.example.tarok.bots;
+package com.example.tarok.bots.naiveTalonRules;
 
+import com.example.tarok.bots.BotBidRule;
 import com.example.tarok.gameObjects.Card;
 
 import java.util.List;
 import java.util.Random;
 
-public class NaiveBidRule implements BotBidRule{
+public class NaiveBidRule implements BotBidRule {
 
     private Random random;
 

@@ -19,6 +19,7 @@ import com.example.tarok.utility.TalonStage;
 import com.example.tarok.views.EndGameCardsView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,6 +90,7 @@ public class MainActivity extends Activity {
                 result.add(c.resetCard(getApplicationContext()));
             }
         }
+        result.sort(Comparator.comparing(Card::getSuite));
         return result;
     }
     public void addCardsToDeck(List<Card> cards){

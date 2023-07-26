@@ -1,15 +1,17 @@
-package com.example.tarok.bots;
+package com.example.tarok.bots.talonRules;
 
+import com.example.tarok.bots.BotTalonPickingRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.CardComparator;
+import com.example.tarok.utility.TalonCardComparator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GreedyTalonPickingRule implements BotTalonPickingRule{
+public class TarotsFirstTalonPickingRule implements BotTalonPickingRule {
 
     /**
-     *  Picks the highest value card from the talon by sorting them
+     * Sorts the cards based on biggest points, prioritizing tarots
      * @param deck deck of the bot making the choice
      * @param talon the current talon
      * @return the highest card from the talon
@@ -17,7 +19,7 @@ public class GreedyTalonPickingRule implements BotTalonPickingRule{
     @Override
     public Card pickCardFromTalon(List<Card> deck, List<Card> talon){
         List<Card> talonCopy = new ArrayList<>(talon);
-        talonCopy.sort(new CardComparator<Card>());
+        talonCopy.sort(new TalonCardComparator<>());
 
         return talonCopy.get(0);
     }

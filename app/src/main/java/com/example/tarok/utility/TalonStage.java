@@ -1,18 +1,16 @@
 package com.example.tarok.utility;
 
-import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
-import com.example.tarok.bots.BotKingPickingRule;
 import com.example.tarok.bots.BotTalonStageRuleManager;
-import com.example.tarok.bots.GreedyCardDroppingRule;
-import com.example.tarok.bots.GreedyTalonPickingRule;
-import com.example.tarok.bots.NaiveBidRule;
-import com.example.tarok.bots.NaiveKingPickingRule;
+import com.example.tarok.bots.naiveTalonRules.GreedyCardDroppingRule;
+import com.example.tarok.bots.talonRules.OpenFileBidRule;
+import com.example.tarok.bots.talonRules.OpenFileCardDroppingRule;
+import com.example.tarok.bots.talonRules.OpenKingPickingRule;
+import com.example.tarok.bots.talonRules.TarotsFirstTalonPickingRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DealtCardsView;
 import com.example.tarok.views.PlayButtonsView;
@@ -42,10 +40,10 @@ public class TalonStage {
     // can later be placed in MainActivity and passed down to TalonStage after user sets
     // difficulty or sets the bot strats manually
     private BotTalonStageRuleManager botManager = new BotTalonStageRuleManager(
-            new NaiveBidRule(new Random()),
-            new NaiveKingPickingRule(new Random()),
-            new GreedyTalonPickingRule(),
-            new GreedyCardDroppingRule()
+            new OpenFileBidRule(),
+            new OpenKingPickingRule(new Random()),
+            new TarotsFirstTalonPickingRule(),
+            new OpenFileCardDroppingRule()
     );
 
     public TalonStage(MainActivity mainActivity, List<Card> fullDeck) {

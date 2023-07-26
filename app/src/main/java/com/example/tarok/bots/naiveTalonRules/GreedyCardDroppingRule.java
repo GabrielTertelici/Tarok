@@ -1,12 +1,13 @@
-package com.example.tarok.bots;
+package com.example.tarok.bots.naiveTalonRules;
 
+import com.example.tarok.bots.BotCardDroppingRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.CardComparator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GreedyCardDroppingRule implements BotCardDroppingRule{
+public class GreedyCardDroppingRule implements BotCardDroppingRule {
 
 
     /**

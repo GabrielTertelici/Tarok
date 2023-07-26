@@ -1,5 +1,6 @@
-package com.example.tarok.bots;
+package com.example.tarok.bots.cardPlayingRules;
 
+import com.example.tarok.bots.BotRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.utility.DeckUtils;
 import com.example.tarok.utility.PlayedCard;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SuiteCardRule implements BotRule{
+public class SuiteCardRule implements BotRule {
 
     /**
      * This rule will ensure the bot plays a high point suite card
