@@ -24,7 +24,6 @@ public class OpenFileCardDroppingRule implements BotCardDroppingRule {
     @Override
     public List<Card> dropCards(List<Card> deck, int numCardsToDrop) {
         deck = new ArrayList<>(deck);
-        deck = deck.stream().map(c->c.resetCard(c.getContext())).collect(Collectors.toList());
         for(Card c:DeckUtils.getFivePointCards(deck)){
             deck.remove(c);
         }

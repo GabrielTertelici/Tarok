@@ -55,7 +55,7 @@ public class BotTalonStageRuleManager {
      * @return the Card the user would click on
      */
     public Card pickCardFromTalon(List<Card> deck, List<Card> talon, int amountPlayedFor){
-        return talonPickingRule.pickCardFromTalon(deck, talon);
+        return talonPickingRule.pickCardFromTalon(deck, talon, amountPlayedFor);
     }
 
     /**

@@ -16,7 +16,7 @@ public class GreedyTalonPickingRule implements BotTalonPickingRule {
      * @return the highest card from the talon
      */
     @Override
-    public Card pickCardFromTalon(List<Card> deck, List<Card> talon){
+    public Card pickCardFromTalon(List<Card> deck, List<Card> talon, int cardsToPick){
         List<Card> talonCopy = new ArrayList<>(talon);
         talonCopy.sort(new CardComparator<Card>());
 

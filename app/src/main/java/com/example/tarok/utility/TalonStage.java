@@ -40,7 +40,7 @@ public class TalonStage {
     // can later be placed in MainActivity and passed down to TalonStage after user sets
     // difficulty or sets the bot strats manually
     private BotTalonStageRuleManager botManager = new BotTalonStageRuleManager(
-            new OpenFileBidRule(),
+            new OpenFileBidRule(new Random()),
             new OpenKingPickingRule(new Random()),
             new TarotsFirstTalonPickingRule(),
             new OpenFileCardDroppingRule()
