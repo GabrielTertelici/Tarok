@@ -24,8 +24,6 @@ public class BotTeammateHandler {
      *                 parameter
      */
     public static void handleTeammatesOfBots(List<Bot> botsPassed, int player, int teammate){
-        Log.d("player", player + "");
-        Log.d("teammate", teammate + "");
         List<Integer> playerIds = new ArrayList<>();
         for (int i = 1; i < 5; i++){
             playerIds.add(i);
