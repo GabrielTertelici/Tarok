@@ -8,6 +8,7 @@ import com.example.tarok.activities.MainActivity;
 import com.example.tarok.bots.Bot;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DeckView;
+import com.example.tarok.views.PlayerIconsView;
 import com.example.tarok.views.TableView;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class GameStage {
     private MainActivity mainActivity;
     private DeckView playerDeck;
     private TableView table;
+    private PlayerIconsView iconsView;
     private Context context;
     private final int screenWidth;
     private final int screenHeight;
@@ -45,6 +47,8 @@ public class GameStage {
 
         this.context = mainActivity.getApplicationContext();
         this.mainActivity = mainActivity;
+
+        this.iconsView = new PlayerIconsView(mainActivity);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -77,6 +81,19 @@ public class GameStage {
         //Solo or rufie -> bots know teammates
         if(chosenKing == null || talon.contains(chosenKing)){
             BotTeammateHandler.handleTeammatesOfBots(List.of(player2, player3, player4), player, teamMate);
+            mainActivity.runOnUiThread(()->iconsView.setPlayerTeammates(player,teamMate));
+        }
+        else{
+            showPickedKingImage();
+        }
+    }
+
+    private void showPickedKingImage() {
+        switch (player){
+            case 1 -> iconsView.setPlayer1King(chosenKing.getSuite());
+            case 2 -> iconsView.setPlayer2King(chosenKing.getSuite());
+            case 3 -> iconsView.setPlayer3King(chosenKing.getSuite());
+            case 4 -> iconsView.setPlayer4King(chosenKing.getSuite());
         }
     }
 
@@ -115,6 +132,7 @@ public class GameStage {
 
         if(card.equals(chosenKing)){
             BotTeammateHandler.handleTeammatesOfBots(List.of(player2, player3, player4), this.player, teamMate);
+            mainActivity.runOnUiThread(()->iconsView.setPlayerTeammates(this.player,teamMate));
         }
 
         tableCards.add(new PlayedCard(player,card));
