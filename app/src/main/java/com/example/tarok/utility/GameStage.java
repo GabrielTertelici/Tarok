@@ -6,6 +6,10 @@ import android.util.DisplayMetrics;
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
 import com.example.tarok.bots.Bot;
+import com.example.tarok.bots.botBrains.NegativeGameModeBrain;
+import com.example.tarok.bots.botBrains.NormalGameModeBrain;
+import com.example.tarok.bots.cardPlayingRules.SuiteCardRule;
+import com.example.tarok.bots.cardPlayingRules.TarotCardRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DeckView;
 import com.example.tarok.views.TableView;
@@ -68,9 +72,9 @@ public class GameStage {
         chosenKing = pickedKing;
 
         playerDeck.createDeckFromList(deckP1);
-        player2 = new Bot(deckP2);
-        player3 = new Bot(deckP3);
-        player4 = new Bot(deckP4);
+        player2 = new Bot(deckP2, new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
+        player3 = new Bot(deckP3, new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
+        player4 = new Bot(deckP4, new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
 
         if(this.player == 0){
             this.player = 1;
@@ -95,9 +99,9 @@ public class GameStage {
         table.setFirstPlayer(1);
 
         playerDeck.createDeckFromList(decks.get(0));
-        player2 = new Bot(decks.get(1));
-        player3 = new Bot(decks.get(2));
-        player4 = new Bot(decks.get(3));
+        player2 = new Bot(decks.get(1), new NegativeGameModeBrain());
+        player3 = new Bot(decks.get(2), new NegativeGameModeBrain());
+        player4 = new Bot(decks.get(3), new NegativeGameModeBrain());
     }
 
     private int getTeammate(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4) {

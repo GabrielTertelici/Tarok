@@ -18,9 +18,9 @@ public class BotTeammateHandlerTest {
 
     @Before
     public void initialise(){
-        botP2 = new Bot(null);
-        botP3 = new Bot(null);
-        botP4 = new Bot(null);
+        botP2 = new Bot(null, null);
+        botP3 = new Bot(null, null);
+        botP4 = new Bot(null, null);
     }
 
     @Test

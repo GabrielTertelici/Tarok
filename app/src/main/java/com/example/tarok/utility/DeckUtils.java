@@ -30,7 +30,7 @@ public class DeckUtils {
      * @param tableCards cards on the table so far
      * @return list of legal cards
      */
-    private static List<Card> getLegalCardsNegative(List<Card> playerCards, List<PlayedCard> tableCards) {
+    public static List<Card> getLegalCardsNegative(List<Card> playerCards, List<PlayedCard> tableCards) {
         if(tableCards.isEmpty()){
             return playerCards;
         }

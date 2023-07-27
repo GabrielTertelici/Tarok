@@ -34,7 +34,7 @@ public class BotTeammateHandler {
 
         // dummy bot representing the human player
         List<Bot> bots = new ArrayList<>();
-        bots.add(new Bot(null));
+        bots.add(new Bot(null, null));
         bots.addAll(botsPassed);
 
         bots.get(playerIndex).setTeamMate(teammate);
