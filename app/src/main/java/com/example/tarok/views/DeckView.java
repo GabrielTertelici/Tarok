@@ -12,6 +12,7 @@ import com.example.tarok.utility.CardSuite;
 import com.example.tarok.R;
 import com.example.tarok.utility.DeckUtils;
 import com.example.tarok.utility.GameStage;
+import com.example.tarok.utility.PlayedCard;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,8 +94,13 @@ public class DeckView extends LinearLayout {
         this.gameStage = gameStage;
     }
 
-    public void setValidCards(Card firstCard) {
-        List<Card> validCards = DeckUtils.getLegalCards(cards,firstCard);
+    /**
+     * Invalidates all the cards which are illegal in the current round
+     * @param firstCard the first card which was played and dictates the legal cards to play
+     * @param isNegativeGameMode flag indicating whether the game mode is negative or not
+     */
+    public void setValidCards(List<PlayedCard> playedCards, boolean isNegativeGameMode) {
+        List<Card> validCards = DeckUtils.getLegalCards(cards, playedCards, isNegativeGameMode);
         for(Card c:cards){
             if(!validCards.contains(c))
                 c.invalidateCard();

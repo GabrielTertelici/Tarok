@@ -58,7 +58,11 @@ public class BidClickListener {
                 botBiddingProcess.incrementSkips();
                 playButtonsView.setInfoLabelText("PLAYER 1 SKIPS");
                 if (botBiddingProcess.getSkips() == 3) {
-                    playButtonsView.sendPlayModeToMain(2, botBiddingProcess.getCurrentLowestBid());
+                    if(botBiddingProcess.getCurrentLowestBid() != -1){
+                        playButtonsView.sendPlayModeToMain(2, botBiddingProcess.getCurrentLowestBid());
+                    }
+                } else if(botBiddingProcess.getSkips() == 4 && botBiddingProcess.getCurrentLowestBid() == -1){
+                    playButtonsView.playNegative();
                 } else {
                     botBiddingProcess.makeBids(0);
                 }

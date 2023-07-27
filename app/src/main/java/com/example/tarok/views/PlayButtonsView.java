@@ -128,6 +128,21 @@ public class PlayButtonsView {
     }
 
     /**
+     * Alerts the player that the negative mode has been entered
+     * and starts the game as such
+     */
+    public void playNegative() {
+        bidInformerLabel.setText("ALL PLAYERS SKIPPED, PLAYING NEGATIVE");
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mainActivity.playNegative();
+            }
+        }, 1500);
+    }
+
+    /**
      * Disables all the buttons corresponding to high PlayModes which are no longer playable
      * and indicates who went for what option, and what the current lowest bid is
      */

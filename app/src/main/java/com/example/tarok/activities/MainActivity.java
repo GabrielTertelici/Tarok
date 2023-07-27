@@ -124,4 +124,11 @@ public class MainActivity extends Activity {
                 talon,
                 chosenKing, player);
     }
+
+    /**
+     * Starts the game with negative play mode
+     */
+    public void playNegative() {
+        gameStage.startNegativeGame(talonStage.getDecks());
+    }
 }

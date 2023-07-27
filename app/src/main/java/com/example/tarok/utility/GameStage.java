@@ -36,6 +36,7 @@ public class GameStage {
     private List<Card> pointsTeam2;
     private Card chosenKing;
     private final int delay;
+    private boolean isNegativeGameMode;
 
     public GameStage(MainActivity mainActivity) {
         this.playerDeck = mainActivity.findViewById(R.id.deckView);
@@ -50,6 +51,8 @@ public class GameStage {
         mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         this.screenWidth = displayMetrics.widthPixels;
         this.screenHeight = displayMetrics.heightPixels;
+
+        this.isNegativeGameMode = false;
 
         delay=500;
     }
@@ -78,6 +81,23 @@ public class GameStage {
         if(chosenKing == null || talon.contains(chosenKing)){
             BotTeammateHandler.handleTeammatesOfBots(List.of(player2, player3, player4), player, teamMate);
         }
+    }
+
+    /**
+     * Starts game with negative game mode
+     * @param decks list of player decks
+     */
+    public void startNegativeGame(List<List<Card>> decks) {
+        this.isNegativeGameMode = true;
+        //A table can have max 4 cards
+        tableCards = new ArrayList<>(4);
+        roundCount = 0;
+        table.setFirstPlayer(1);
+
+        playerDeck.createDeckFromList(decks.get(0));
+        player2 = new Bot(decks.get(1));
+        player3 = new Bot(decks.get(2));
+        player4 = new Bot(decks.get(3));
     }
 
     private int getTeammate(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4) {
@@ -135,7 +155,7 @@ public class GameStage {
                 case 3 -> letBotPlayCard(player4, 4, tableCards);
                 case 4 -> {
                     playerDeck.unlockBoard();
-                    playerDeck.setValidCards(tableCards.get(0).card);
+                    playerDeck.setValidCards(tableCards, isNegativeGameMode);
                 }
             }
         }

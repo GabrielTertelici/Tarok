@@ -16,11 +16,81 @@ import java.util.stream.Collectors;
 
 public class DeckUtils {
 
-    public static List<Card> getLegalCards(List<Card> playerCards, Card firstCard){
-        if(firstCard==null)
+    public static List<Card> getLegalCards(List<Card> playerCards, List<PlayedCard> playedCards, boolean isNegativeGameMode){
+        if(isNegativeGameMode){
+            return getLegalCardsNegative(playerCards, playedCards);
+        } else {
+            return getLegalCardsNonNegative(playerCards, playedCards);
+        }
+    }
+
+    /**
+     * Returns list of legal cards in case the game mode is negative
+     * @param playerCards cards the player has in their hand
+     * @param tableCards cards on the table so far
+     * @return list of legal cards
+     */
+    private static List<Card> getLegalCardsNegative(List<Card> playerCards, List<PlayedCard> tableCards) {
+        if(tableCards.isEmpty()){
             return playerCards;
+        }
+
+        List<Card> properTableCards = tableCards.stream().map(card -> card.card).collect(Collectors.toList());
+        Card firstCard = properTableCards.get(0);
+
+        List<Card> cardsWhichPick = new ArrayList<>();
+        List<Card> cardsWhichDoNotPick = new ArrayList<>();
+
+        if(hasCardOfSuite(playerCards, firstCard.getSuite())){
+            for(Card c : playerCards){
+                List<Card> temporaryCards = new ArrayList<>(properTableCards);
+                temporaryCards.add(c);
+                if(c.getSuite().equals(firstCard.getSuite())){
+                    if(getWinningCard(temporaryCards).equals(c)){
+                        cardsWhichPick.add(c);
+                    } else {
+                        cardsWhichDoNotPick.add(c);
+                    }
+                }
+            }
+        } else if (hasCardOfSuite(playerCards, CardSuite.Tarot)){
+            for(Card c : playerCards){
+                List<Card> temporaryCards = new ArrayList<>(properTableCards);
+                temporaryCards.add(c);
+                if(c.getSuite().equals(CardSuite.Tarot)){
+                    if(getWinningCard(temporaryCards).equals(c)){
+                        cardsWhichPick.add(c);
+                    } else {
+                        cardsWhichDoNotPick.add(c);
+                    }
+                }
+            }
+        }
+
+        if(!cardsWhichPick.isEmpty()){
+            return cardsWhichPick;
+        } else if(!cardsWhichDoNotPick.isEmpty()) {
+            return cardsWhichDoNotPick;
+        } else {
+            return playerCards;
+        }
+    }
+
+    /**
+     * Returns list of legal cards in case the game mode is not negative
+     * @param playerCards cards the player has in their hand
+     * @param tableCards cards which are on the table so far
+     * @return list of legal cards
+     */
+    public static List<Card> getLegalCardsNonNegative(List<Card> playerCards, List<PlayedCard> tableCards){
+        if(tableCards.isEmpty()){
+            return playerCards;
+        }
+
+        Card firstCard = tableCards.stream().map(card -> card.card).collect(Collectors.toList()).get(0);
 
         List<Card> result = new ArrayList<>();
+
         if(hasCardOfSuite(playerCards,firstCard.getSuite())){
             for(Card c:playerCards){
                 if(c.getSuite().equals(firstCard.getSuite())){
