@@ -10,18 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 
 import com.example.tarok.activities.MainActivity;
-import com.example.tarok.bots.BotCardDroppingRule;
-import com.example.tarok.bots.BotTalonPickingRule;
 import com.example.tarok.bots.BotTalonStageRuleManager;
-import com.example.tarok.bots.GreedyCardDroppingRule;
-import com.example.tarok.bots.GreedyTalonPickingRule;
 import com.example.tarok.gameObjects.Card;
-import com.example.tarok.utility.DeckUtils;
 import com.example.tarok.utility.PlayMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TalonCardsView extends LinearLayout {
 

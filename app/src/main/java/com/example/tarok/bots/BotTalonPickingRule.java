@@ -13,5 +13,5 @@ public interface BotTalonPickingRule {
      * @param talon the current talon
      * @return the Card the user would click on
      */
-    Card pickCardFromTalon(List<Card> deck, List<Card> talon);
+    Card pickCardFromTalon(List<Card> deck, List<Card> talon, int cardsToPick);
 }

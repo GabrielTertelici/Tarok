@@ -8,8 +8,10 @@ import com.example.tarok.R;
 import com.example.tarok.gameObjects.Card;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DeckUtils {
@@ -253,5 +255,16 @@ public class DeckUtils {
         if(has1 && has21 && hasJoker)
             return card1;
         return null;
+    }
+
+    public static Map<CardSuite,Integer> countSuiteCards(List<Card> deck){
+        Map<CardSuite,Integer> result= new HashMap<>();
+        for(CardSuite e:CardSuite.values()){
+            result.put(e,0);
+        }
+        for(Card c:deck){
+            result.put(c.getSuite(),result.get(c.getSuite())+1);
+        }
+        return result;
     }
 }

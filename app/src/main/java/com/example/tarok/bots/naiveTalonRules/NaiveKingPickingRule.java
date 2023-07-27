@@ -1,11 +1,12 @@
-package com.example.tarok.bots;
+package com.example.tarok.bots.naiveTalonRules;
 
+import com.example.tarok.bots.BotKingPickingRule;
 import com.example.tarok.gameObjects.Card;
 
 import java.util.List;
 import java.util.Random;
 
-public class NaiveKingPickingRule implements BotKingPickingRule{
+public class NaiveKingPickingRule implements BotKingPickingRule {
 
     private Random random;
 
@@ -17,10 +18,10 @@ public class NaiveKingPickingRule implements BotKingPickingRule{
      * Picks a random king with equal probability
      * @param deck the bot's hand
      * @return int representing the selected king:
-     * 0 -> clubs
-     * 1 -> hearts
-     * 2 -> spades
-     * 3 -> diamonds
+     * 0 -> heart
+     * 1 -> diamond
+     * 2 -> club
+     * 3 -> spade
      */
     @Override
     public int pickKing(List<Card> deck){
