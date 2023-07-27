@@ -19,6 +19,7 @@
         android:id="@+id/player_3_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginStart="75dp"
         app:layout_constraintEnd_toEndOf="@id/tableView"
         app:layout_constraintStart_toStartOf="@+id/tableView"
         app:layout_constraintTop_toTopOf="@+id/tableView" />
@@ -35,6 +36,7 @@
         android:id="@+id/player_1_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="75dp"
         app:layout_constraintBottom_toTopOf="@id/deckView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
