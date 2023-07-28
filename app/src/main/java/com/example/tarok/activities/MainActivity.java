@@ -131,4 +131,29 @@ public class MainActivity extends Activity {
     public void playNegative() {
         gameStage.startNegativeGame(talonStage.getDecks());
     }
+
+    /**
+     * Handles the ending of a negative round
+     * @param individualPointsList list of lists of individual points won by each player
+     */
+    public void endGameStageNegative(List<List<Card>> individualPointsList) {
+        setContentView(R.layout.end_game_view);
+        TextView textTeam1 = findViewById(R.id.pointsTeam1);
+        TextView textTeam2 = findViewById(R.id.pointsTeam2);
+        Button playAgain = findViewById(R.id.playAgainButton);
+        playAgain.setOnClickListener(view -> {
+            playAgain.setVisibility(View.GONE);
+            startTalonStage();
+        });
+        EndGameCardsView viewCards1 = findViewById(R.id.cardsTeam1);
+        viewCards1.createDeckFromList(individualPointsList.get(0));
+        EndGameCardsView viewCards2 = findViewById(R.id.cardsTeam2);
+        individualPointsList.get(1).addAll(individualPointsList.get(2));
+        individualPointsList.get(1).addAll(individualPointsList.get(3));
+        viewCards2.createDeckFromList(individualPointsList.get(1));
+        textTeam1.setText("Your points: "+DeckUtils.sumPoints(individualPointsList.get(0)));
+        textTeam2.setText("Player 2: " + DeckUtils.sumPoints(individualPointsList.get(1)) + " in " + individualPointsList.get(1).size() + " cards; " +
+                "Player 3: " + DeckUtils.sumPoints(individualPointsList.get(2)) + " in " + individualPointsList.get(2).size() + " cards; " +
+                "Player 4: " + DeckUtils.sumPoints(individualPointsList.get(3)) + " in " + individualPointsList.get(3).size() + " cards; ");
+    }
 }
