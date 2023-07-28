@@ -19,7 +19,8 @@ public class BotBiddingProcess {
     public BotBiddingProcess(PlayButtonsView playButtonsView,
                              BotTalonStageRuleManager botManager,
                              List<List<Card>> decks){
-        this.currentLowestBid = 0;
+        // 0 represents playing for 3, -1 represents an invalid initial bid
+        this.currentLowestBid = -1;
         this.skips = 0;
         this.playButtonsView = playButtonsView;
         this.decks = decks;
@@ -43,6 +44,8 @@ public class BotBiddingProcess {
                 }
 
                 int decision = botManager.decideWhatToPlayFor(decks.get(bidderId), currentLowestBid);
+                //REPLACE THE LINE ABOVE WITH THE LINE BELOW TO FORCE ALL THE BOTS TO SKIP AND PLAY NEGATIVE
+                //int decision = -1;
 
                 if(decision > currentLowestBid){
                     currentLowestBid = decision;
@@ -64,7 +67,14 @@ public class BotBiddingProcess {
                     playButtonsView.setInfoLabelText("PLAYER " + (bidderId + 2) + " SKIPS");
 
                     if(skips == 3){
-                        playButtonsView.sendPlayModeToMain((bidderId + 2) % 4 + 1, currentLowestBid);
+                        if(currentLowestBid != -1){
+                            playButtonsView.sendPlayModeToMain((bidderId + 2) % 4 + 1, currentLowestBid);
+                            return;
+                        }
+                    }
+
+                    if(skips == 4 && currentLowestBid == -1){
+                        playButtonsView.playNegative();
                         return;
                     }
                 }

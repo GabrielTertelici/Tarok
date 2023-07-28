@@ -3,6 +3,7 @@ package com.example.tarok.utility;
 import android.util.Log;
 
 import com.example.tarok.bots.Bot;
+import com.example.tarok.bots.botBrains.NegativeGameModeBrain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class BotTeammateHandler {
 
         // dummy bot representing the human player
         List<Bot> bots = new ArrayList<>();
-        bots.add(new Bot(null));
+        bots.add(new Bot(null, new NegativeGameModeBrain()));
         bots.addAll(botsPassed);
 
         bots.get(playerIndex).setTeamMate(teammate);

@@ -22,16 +22,18 @@ public class Bot {
      * 0 if the teamMate is unknown
      */
     private Set<Integer> teamMates;
-    private Random r;
     private SuiteCardRule suiteRule;
     private TarotCardRule tarotRule;
 
-    public Bot(List<Card> deck) {
+    private BotBrain botBrain;
+
+    public Bot(List<Card> deck, BotBrain botBrain) {
         this.deck = deck;
         teamMates = new HashSet<>();
         suiteRule = new SuiteCardRule();
         tarotRule = new TarotCardRule();
-        r = new Random();
+
+        this.botBrain = botBrain;
     }
 
     /**
@@ -40,29 +42,14 @@ public class Bot {
      * @return The card the bot will play
      */
     public Card playCard(List<PlayedCard> table){
-        Card c;
-        Card bottomCard = table.size()>0 ? table.get(0).card : null;
-        List<Card> usableCards = DeckUtils.getLegalCards(deck,bottomCard);
-
-        //When starting -> play lowest point card
-        if(table.size()==0){
-            //Shuffle suites and tarots before sort
-            //So that one point tarots and one point suites are both good
-            Collections.shuffle(usableCards);
-            usableCards.sort(Comparator.comparingInt(Card::getPoints));
-            c = usableCards.get(0);
-        }
-        else if(DeckUtils.hasCardOfSuite(usableCards, CardSuite.Tarot)){
-            c = tarotRule.sortedList(usableCards,table,teamMates).get(0);
-        }
-        else
-            c = suiteRule.sortedList(usableCards,table,teamMates).get(0);
-        deck.remove(c);
-        return c;
+        Card card = botBrain.playCard(table, deck);
+        deck.remove(card);
+        return card;
     }
 
     public void setTeamMate(int teamMate) {
         teamMates.add(teamMate);
+        botBrain.addTeamMate(teamMate);
     }
 
     /**

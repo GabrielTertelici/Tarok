@@ -6,6 +6,10 @@ import android.util.DisplayMetrics;
 import com.example.tarok.R;
 import com.example.tarok.activities.MainActivity;
 import com.example.tarok.bots.Bot;
+import com.example.tarok.bots.botBrains.NegativeGameModeBrain;
+import com.example.tarok.bots.botBrains.NormalGameModeBrain;
+import com.example.tarok.bots.cardPlayingRules.SuiteCardRule;
+import com.example.tarok.bots.cardPlayingRules.TarotCardRule;
 import com.example.tarok.gameObjects.Card;
 import com.example.tarok.views.DeckView;
 import com.example.tarok.views.PlayerIconsView;
@@ -38,6 +42,8 @@ public class GameStage {
     private List<Card> pointsTeam2;
     private Card chosenKing;
     private final int delay;
+    private boolean isNegativeGameMode;
+    private List<List<Card>> individualPointsList;
 
     public GameStage(MainActivity mainActivity) {
         this.playerDeck = mainActivity.findViewById(R.id.deckView);
@@ -59,6 +65,8 @@ public class GameStage {
     }
 
     public void startGame(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4, List<Card> talon,  List<Card> pointsPlayer, List<Card> pointsOpponent, Card pickedKing) {
+        this.isNegativeGameMode = false;
+
         //A table can have max 4 cards
         tableCards = new ArrayList<>(4);
         roundCount=0;
@@ -69,9 +77,9 @@ public class GameStage {
         chosenKing = pickedKing;
 
         playerDeck.createDeckFromList(deckP1);
-        player2 = new Bot(deckP2);
-        player3 = new Bot(deckP3);
-        player4 = new Bot(deckP4);
+        player2 = new Bot(deckP2, new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
+        player3 = new Bot(deckP3, new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
+        player4 = new Bot(deckP4, new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
 
         if(this.player == 0){
             this.player = 1;
@@ -95,6 +103,28 @@ public class GameStage {
             case 3 -> iconsView.setPlayer3King(chosenKing.getSuite());
             case 4 -> iconsView.setPlayer4King(chosenKing.getSuite());
         }
+    }
+
+    /**
+     * Starts game with negative game mode
+     * @param decks list of player decks
+     */
+    public void startNegativeGame(List<List<Card>> decks) {
+        this.isNegativeGameMode = true;
+        //A table can have max 4 cards
+        tableCards = new ArrayList<>(4);
+        roundCount = 0;
+        table.setFirstPlayer(1);
+
+        playerDeck.createDeckFromList(decks.get(0));
+        player2 = new Bot(decks.get(1), new NegativeGameModeBrain());
+        player3 = new Bot(decks.get(2), new NegativeGameModeBrain());
+        player4 = new Bot(decks.get(3), new NegativeGameModeBrain());
+
+        this.individualPointsList = List.of(new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>());
     }
 
     private int getTeammate(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4) {
@@ -153,7 +183,7 @@ public class GameStage {
                 case 3 -> letBotPlayCard(player4, 4, tableCards);
                 case 4 -> {
                     playerDeck.unlockBoard();
-                    playerDeck.setValidCards(tableCards.get(0).card);
+                    playerDeck.setValidCards(tableCards, isNegativeGameMode);
                 }
             }
         }
@@ -174,22 +204,37 @@ public class GameStage {
         int winningPlayer = DeckUtils.getWinningPlayer(tableCards);
 
         animateTableCardPickup(winningPlayer);
-        assignPointsToWinningTeam(winningPlayer);
+
+        if(isNegativeGameMode){
+            assignPointsToWinningPlayer(winningPlayer);
+        } else {
+            assignPointsToWinningTeam(winningPlayer);
+        }
 
         tableCards = new ArrayList<>(4);
 
         roundCount++;
         if(roundCount==12){
+            handleGameEnding();
+        }
+        else{
+            handleNextRound(winningPlayer);
+        }
+    }
+
+    /**
+     * Handles the end of round 12 (final round)
+     */
+    public void handleGameEnding(){
+        if(isNegativeGameMode){
+            mainActivity.runOnUiThread(()->mainActivity.endGameStageNegative(individualPointsList));
+        } else {
             if(this.player == 1 || this.teamMate == 1){
                 mainActivity.runOnUiThread(()->mainActivity.endGameStage(pointsTeam1,pointsTeam2));
             } else {
                 mainActivity.runOnUiThread(()->mainActivity.endGameStage(pointsTeam2,pointsTeam1));
             }
         }
-        else{
-            handleNextRound(winningPlayer);
-        }
-
     }
 
     private void handleNextRound(int winningPlayer) {
@@ -216,6 +261,15 @@ public class GameStage {
             pointsTeam1.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
         else
             pointsTeam2.addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
+    }
+
+    /**
+     * Adds the cards picked up to the specific player who won the round, in case of a
+     * negative game mode
+     * @param winningPlayer player who won the round
+     */
+    private void assignPointsToWinningPlayer(int winningPlayer){
+        individualPointsList.get(winningPlayer - 1).addAll(tableCards.stream().map(x->x.card).collect(Collectors.toList()));
     }
 
     private void animateTableCardPickup(int winningPlayer) {

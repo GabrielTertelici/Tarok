@@ -3,6 +3,8 @@ package com.example.tarok;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.tarok.bots.Bot;
+import com.example.tarok.bots.botBrains.NegativeGameModeBrain;
+import com.example.tarok.bots.botBrains.NormalGameModeBrain;
 import com.example.tarok.utility.BotTeammateHandler;
 
 import org.junit.Before;
@@ -18,9 +20,9 @@ public class BotTeammateHandlerTest {
 
     @Before
     public void initialise(){
-        botP2 = new Bot(null);
-        botP3 = new Bot(null);
-        botP4 = new Bot(null);
+        botP2 = new Bot(null, new NegativeGameModeBrain());
+        botP3 = new Bot(null, new NegativeGameModeBrain());
+        botP4 = new Bot(null, new NegativeGameModeBrain());
     }
 
     @Test
