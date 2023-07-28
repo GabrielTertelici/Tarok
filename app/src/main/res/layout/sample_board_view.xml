@@ -7,6 +7,40 @@
     android:background="@drawable/background"
     android:padding="15dp">
 
+    <ImageView
+        android:id="@+id/player_4_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@id/tableView"
+        app:layout_constraintStart_toStartOf="@+id/tableView"
+        app:layout_constraintTop_toTopOf="@id/tableView" />
+
+    <ImageView
+        android:id="@+id/player_3_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="75dp"
+        app:layout_constraintEnd_toEndOf="@id/tableView"
+        app:layout_constraintStart_toStartOf="@+id/tableView"
+        app:layout_constraintTop_toTopOf="@+id/tableView" />
+
+    <ImageView
+        android:id="@+id/player_2_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/player_1_image"
+        app:layout_constraintEnd_toEndOf="@+id/tableView"
+        app:layout_constraintTop_toTopOf="@+id/tableView" />
+
+    <ImageView
+        android:id="@+id/player_1_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="75dp"
+        app:layout_constraintBottom_toTopOf="@id/deckView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.example.tarok.views.TableView
         android:id="@+id/tableView"
         android:layout_width="match_parent"
