@@ -51,21 +51,19 @@ public class BidClickListener {
      */
     public void setSkipButtonListener(Button skipButton){
         skipButton.setOnClickListener(view -> {
-            if(botBiddingProcess.getCurrentLowestBid() == 0){
-                playButtonsView.setInfoLabelText("PLEASE MAKE THE FIRST BID");
-            } else {
-                playButtonsView.enableAllButtons(false);
-                botBiddingProcess.incrementSkips();
-                playButtonsView.setInfoLabelText("PLAYER 1 SKIPS");
-                if (botBiddingProcess.getSkips() == 3) {
-                    if(botBiddingProcess.getCurrentLowestBid() != -1){
-                        playButtonsView.sendPlayModeToMain(2, botBiddingProcess.getCurrentLowestBid());
-                    }
-                } else if(botBiddingProcess.getSkips() == 4 && botBiddingProcess.getCurrentLowestBid() == -1){
-                    playButtonsView.playNegative();
+            playButtonsView.enableAllButtons(false);
+            botBiddingProcess.incrementSkips();
+            playButtonsView.setInfoLabelText("PLAYER 1 SKIPS");
+            if (botBiddingProcess.getSkips() == 3) {
+                if(botBiddingProcess.getCurrentLowestBid() != -1){
+                    playButtonsView.sendPlayModeToMain(2, botBiddingProcess.getCurrentLowestBid());
                 } else {
                     botBiddingProcess.makeBids(0);
                 }
+            } else if(botBiddingProcess.getSkips() == 4 && botBiddingProcess.getCurrentLowestBid() == -1){
+                playButtonsView.playNegative();
+            } else {
+                botBiddingProcess.makeBids(0);
             }
         });
     }

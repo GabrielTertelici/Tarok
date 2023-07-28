@@ -66,6 +66,9 @@ public class MainActivity extends Activity {
             playAgain.setVisibility(View.GONE);
             startTalonStage();
         });
+
+        textTeam2.setTextSize(18);
+
         EndGameCardsView viewCards1 = findViewById(R.id.cardsTeam1);
         viewCards1.createDeckFromList(pointsTeam1);
         EndGameCardsView viewCards2 = findViewById(R.id.cardsTeam2);
@@ -129,6 +132,8 @@ public class MainActivity extends Activity {
      * Starts the game with negative play mode
      */
     public void playNegative() {
+        setContentView(R.layout.sample_board_view);
+        gameStage = new GameStage(this);
         gameStage.startNegativeGame(talonStage.getDecks());
     }
 
@@ -145,15 +150,24 @@ public class MainActivity extends Activity {
             playAgain.setVisibility(View.GONE);
             startTalonStage();
         });
+
+        textTeam2.setMaxLines(4);
+        textTeam2.setTextSize(12);
+
         EndGameCardsView viewCards1 = findViewById(R.id.cardsTeam1);
         viewCards1.createDeckFromList(individualPointsList.get(0));
         EndGameCardsView viewCards2 = findViewById(R.id.cardsTeam2);
-        individualPointsList.get(1).addAll(individualPointsList.get(2));
-        individualPointsList.get(1).addAll(individualPointsList.get(3));
-        viewCards2.createDeckFromList(individualPointsList.get(1));
+
+        List<Card> allOtherCards = new ArrayList<>(individualPointsList.get(1));
+        allOtherCards.addAll(individualPointsList.get(2));
+        allOtherCards.addAll(individualPointsList.get(3));
+        viewCards2.createDeckFromList(allOtherCards);
         textTeam1.setText("Your points: "+DeckUtils.sumPoints(individualPointsList.get(0)));
-        textTeam2.setText("Player 2: " + DeckUtils.sumPoints(individualPointsList.get(1)) + " in " + individualPointsList.get(1).size() + " cards; " +
+
+        String allOthers = "Player 2: " + DeckUtils.sumPoints(individualPointsList.get(1)) + " in " + individualPointsList.get(1).size() + " cards; " + System.lineSeparator() +
                 "Player 3: " + DeckUtils.sumPoints(individualPointsList.get(2)) + " in " + individualPointsList.get(2).size() + " cards; " +
-                "Player 4: " + DeckUtils.sumPoints(individualPointsList.get(3)) + " in " + individualPointsList.get(3).size() + " cards; ");
+                "Player 4: " + DeckUtils.sumPoints(individualPointsList.get(3)) + " in " + individualPointsList.get(3).size() + " cards; ";
+
+        textTeam2.setText(allOthers);
     }
 }

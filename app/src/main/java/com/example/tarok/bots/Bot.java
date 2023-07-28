@@ -42,7 +42,9 @@ public class Bot {
      * @return The card the bot will play
      */
     public Card playCard(List<PlayedCard> table){
-        return botBrain.playCard(table, deck);
+        Card card = botBrain.playCard(table, deck);
+        deck.remove(card);
+        return card;
     }
 
     public void setTeamMate(int teamMate) {

@@ -44,6 +44,8 @@ public class BotBiddingProcess {
                 }
 
                 int decision = botManager.decideWhatToPlayFor(decks.get(bidderId), currentLowestBid);
+                //REPLACE THE LINE ABOVE WITH THE LINE BELOW TO FORCE ALL THE BOTS TO SKIP AND PLAY NEGATIVE
+                //int decision = -1;
 
                 if(decision > currentLowestBid){
                     currentLowestBid = decision;
