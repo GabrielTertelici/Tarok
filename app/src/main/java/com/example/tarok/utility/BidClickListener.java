@@ -67,4 +67,12 @@ public class BidClickListener {
             }
         });
     }
+
+    /**
+     * Getter for BotBiddingProcess field
+     * @return BotBiddingProcess field
+     */
+    public BotBiddingProcess getBotBiddingProcess(){
+        return this.botBiddingProcess;
+    }
 }

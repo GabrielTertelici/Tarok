@@ -96,7 +96,7 @@ public class DeckView extends LinearLayout {
 
     /**
      * Invalidates all the cards which are illegal in the current round
-     * @param firstCard the first card which was played and dictates the legal cards to play
+     * @param playedCards cards currently on the table
      * @param isNegativeGameMode flag indicating whether the game mode is negative or not
      */
     public void setValidCards(List<PlayedCard> playedCards, boolean isNegativeGameMode) {

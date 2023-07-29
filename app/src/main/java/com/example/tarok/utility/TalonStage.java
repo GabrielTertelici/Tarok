@@ -46,7 +46,7 @@ public class TalonStage {
             new OpenFileCardDroppingRule()
     );
 
-    public TalonStage(MainActivity mainActivity, List<Card> fullDeck) {
+    public TalonStage(MainActivity mainActivity, List<Card> fullDeck, int firstPlayer) {
         this.mainActivity = mainActivity;
         this.playerDeck = mainActivity.findViewById(R.id.dealtCardsView);
         this.talonView = mainActivity.findViewById(R.id.talonCardsView);
@@ -57,7 +57,7 @@ public class TalonStage {
         advanceButton.setVisibility(View.GONE);
         dealToPlayers(fullDeck);
 
-        new PlayButtonsView(mainActivity, List.of(deckP2, deckP3, deckP4), botManager);
+        new PlayButtonsView(mainActivity, List.of(deckP2, deckP3, deckP4), botManager, firstPlayer);
     }
 
     private void getTeamMate() {

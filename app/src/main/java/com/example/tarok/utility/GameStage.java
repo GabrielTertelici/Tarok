@@ -44,8 +44,9 @@ public class GameStage {
     private final int delay;
     private boolean isNegativeGameMode;
     private List<List<Card>> individualPointsList;
+    private int firstPlayer;
 
-    public GameStage(MainActivity mainActivity) {
+    public GameStage(MainActivity mainActivity, int firstPlayer) {
         this.playerDeck = mainActivity.findViewById(R.id.deckView);
         playerDeck.setGameStage(this);
 
@@ -61,6 +62,8 @@ public class GameStage {
         this.screenWidth = displayMetrics.widthPixels;
         this.screenHeight = displayMetrics.heightPixels;
 
+        this.firstPlayer = firstPlayer;
+
         delay=500;
     }
 
@@ -70,7 +73,7 @@ public class GameStage {
         //A table can have max 4 cards
         tableCards = new ArrayList<>(4);
         roundCount=0;
-        table.setFirstPlayer(1);
+        table.setFirstPlayer(firstPlayer);
 
         pointsTeam1 = new ArrayList<>(pointsPlayer);
         pointsTeam2 = new ArrayList<>(pointsOpponent);
@@ -94,6 +97,11 @@ public class GameStage {
         else{
             showPickedKingImage();
         }
+
+        if(firstPlayer != 1){
+            playerDeck.lockBoard();
+            letBotPlayCard(List.of(player2, player3, player4).get(firstPlayer - 2), firstPlayer, tableCards);
+        }
     }
 
     private void showPickedKingImage() {
@@ -114,7 +122,7 @@ public class GameStage {
         //A table can have max 4 cards
         tableCards = new ArrayList<>(4);
         roundCount = 0;
-        table.setFirstPlayer(1);
+        table.setFirstPlayer(firstPlayer);
 
         playerDeck.createDeckFromList(decks.get(0));
         player2 = new Bot(decks.get(1), new NegativeGameModeBrain());
@@ -125,6 +133,11 @@ public class GameStage {
                 new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>());
+
+        if(firstPlayer != 1){
+            playerDeck.lockBoard();
+            letBotPlayCard(List.of(player2, player3, player4).get(firstPlayer - 2), firstPlayer, tableCards);
+        }
     }
 
     private int getTeammate(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4) {

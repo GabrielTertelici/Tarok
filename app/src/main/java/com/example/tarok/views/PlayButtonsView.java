@@ -41,7 +41,7 @@ public class PlayButtonsView {
 
     private BidClickListener clickListenerHandler;
 
-    public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks, BotTalonStageRuleManager botManager) {
+    public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks, BotTalonStageRuleManager botManager, int firstPlayer) {
         this.mainActivity = mainActivity;
         this.playThree = mainActivity.findViewById(R.id.playThree);
         this.playTwo = mainActivity.findViewById(R.id.playTwo);
@@ -65,10 +65,14 @@ public class PlayButtonsView {
 
         textViewList = addAllLabels();
 
+        enableAllButtons(false);
+
         this.clickListenerHandler = new BidClickListener(this,
                 new BotBiddingProcess(this, botManager, decks));
         this.clickListenerHandler.setSkipButtonListener(skipButton);
         this.clickListenerHandler.setButtonListeners(buttonList);
+
+        this.clickListenerHandler.getBotBiddingProcess().makeBids((firstPlayer + 2) % 4);
     }
 
     /**
@@ -147,6 +151,10 @@ public class PlayButtonsView {
      * and indicates who went for what option, and what the current lowest bid is
      */
     public void displayLatestBid(int currentLowestBid){
+        // do nothing for invalid indices
+        if(currentLowestBid < 0){
+            return;
+        }
         for(int i = 0; i < currentLowestBid; i++){
             buttonList.get(i).setEnabled(false);
             buttonList.get(i).setAlpha(0.5f);

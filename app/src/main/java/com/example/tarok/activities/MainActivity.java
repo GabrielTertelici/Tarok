@@ -28,10 +28,13 @@ public class MainActivity extends Activity {
     private TalonStage talonStage;
     private GameStage gameStage;
     private List<Card> fullDeck;
+    private int firstPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.firstPlayer = 1;
 
         // Set fullscreen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -48,12 +51,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.talon_view);
         //Reset full deck
         fullDeck = fullDeck.stream().map(c->c.resetCard(getApplicationContext())).collect(Collectors.toList());
-        talonStage = new TalonStage(this,fullDeck);
+        talonStage = new TalonStage(this,fullDeck, this.firstPlayer);
     }
 
     public void startGameStage(List<Card> deckP1, List<Card> deckP2, List<Card> deckP3, List<Card> deckP4, List<Card> talon,List<Card> pointsPlayer, List<Card> pointsOpponent, Card pickedKing) {
         setContentView(R.layout.sample_board_view);
-        gameStage = new GameStage(this);
+        gameStage = new GameStage(this, this.firstPlayer);
         gameStage.startGame(deckP1, deckP2, deckP3, deckP4,talon,pointsPlayer, pointsOpponent, pickedKing);
     }
 
@@ -64,6 +67,7 @@ public class MainActivity extends Activity {
         Button playAgain = findViewById(R.id.playAgainButton);
         playAgain.setOnClickListener(view -> {
             playAgain.setVisibility(View.GONE);
+            this.firstPlayer = (this.firstPlayer % 4) + 1;
             startTalonStage();
         });
 
@@ -116,7 +120,7 @@ public class MainActivity extends Activity {
     public void startGameStageWithBotPlaying(List<Card> pointsPlayer, List<Card> pointsOpponent, List<Card> talon, Card chosenKing, int player) {
         List<List<Card>> decks = talonStage.getDecks();
         setContentView(R.layout.sample_board_view);
-        gameStage = new GameStage(this);
+        gameStage = new GameStage(this, this.firstPlayer);
         gameStage.startGameWithBotPlaying(
                 decks.get(0),
                 decks.get(1),
@@ -133,7 +137,7 @@ public class MainActivity extends Activity {
      */
     public void playNegative() {
         setContentView(R.layout.sample_board_view);
-        gameStage = new GameStage(this);
+        gameStage = new GameStage(this, this.firstPlayer);
         gameStage.startNegativeGame(talonStage.getDecks());
     }
 
