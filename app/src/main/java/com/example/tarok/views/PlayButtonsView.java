@@ -65,6 +65,8 @@ public class PlayButtonsView {
 
         textViewList = addAllLabels();
 
+        bidInformerLabel.setText("PLAYER " + firstPlayer + " MAKES THE FIRST BID");
+
         enableAllButtons(false);
 
         this.clickListenerHandler = new BidClickListener(this,
@@ -82,14 +84,20 @@ public class PlayButtonsView {
      * @param player the player who is playing
      */
     public void announceWhoPlaysAndInformMain(PlayMode mode, int player){
-        bidInformerLabel.setText("PLAYER " + player + " IS PLAYING " + mode.toString());
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        Handler outerHandler = new Handler();
+        outerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mainActivity.setPlayMode(mode, player);
+                bidInformerLabel.setText("PLAYER " + player + " IS PLAYING " + mode.toString());
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.setPlayMode(mode, player);
+                    }
+                }, 1500);
             }
-        }, 1500);
+        }, 1000);
     }
 
     /**
