@@ -152,6 +152,7 @@ public class MainActivity extends Activity {
         Button playAgain = findViewById(R.id.playAgainButton);
         playAgain.setOnClickListener(view -> {
             playAgain.setVisibility(View.GONE);
+            this.firstPlayer = (this.firstPlayer % 4) + 1;
             startTalonStage();
         });
 
@@ -185,5 +186,30 @@ public class MainActivity extends Activity {
         setContentView(R.layout.sample_board_view);
         gameStage = new GameStage(this, this.firstPlayer);
         gameStage.startPBVGame(player, currentLowestBid, talonStage.getDecks());
+    }
+
+    /**
+     *
+     * @param message message to output to the player
+     */
+    public void endPBVGame(String message) {
+        setContentView(R.layout.end_game_view);
+        TextView textTeam1 = findViewById(R.id.pointsTeam1);
+        TextView textTeam2 = findViewById(R.id.pointsTeam2);
+        Button playAgain = findViewById(R.id.playAgainButton);
+        playAgain.setOnClickListener(view -> {
+            playAgain.setVisibility(View.GONE);
+            this.firstPlayer = (this.firstPlayer % 4) + 1;
+            startTalonStage();
+        });
+
+        textTeam2.setMaxLines(4);
+        textTeam2.setTextSize(12);
+
+        EndGameCardsView viewCards1 = findViewById(R.id.cardsTeam1);
+        EndGameCardsView viewCards2 = findViewById(R.id.cardsTeam2);
+
+        textTeam1.setText(message);
+        textTeam2.setText("");
     }
 }
