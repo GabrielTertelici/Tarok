@@ -175,12 +175,15 @@ public class MainActivity extends Activity {
         textTeam2.setText(allOthers);
     }
 
-    public void playPiccolo(int player) {
-    }
-
-    public void playBeggar(int player) {
-    }
-
-    public void playValat(int player) {
+    /**
+     * Method for starting the game stage when the talon is not needed
+     * (Piccolo, Beggar, Valat)
+     * @param player player who made the winning bid
+     * @param currentLowestBid lowest bid made
+     */
+    public void skipTalon(int player, int currentLowestBid) {
+        setContentView(R.layout.sample_board_view);
+        gameStage = new GameStage(this, this.firstPlayer);
+        gameStage.startPBVGame(player, currentLowestBid, talonStage.getDecks());
     }
 }

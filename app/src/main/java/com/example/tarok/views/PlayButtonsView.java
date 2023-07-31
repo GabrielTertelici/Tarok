@@ -188,13 +188,7 @@ public class PlayButtonsView {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(currentLowestBid == 6){
-                    mainActivity.playPiccolo(player);
-                } else if(currentLowestBid == 7){
-                    mainActivity.playBeggar(player);
-                } else if(currentLowestBid == 8){
-                    mainActivity.playValat(player);
-                }
+                mainActivity.skipTalon(player, currentLowestBid);
             }
         }, 1500);
     }
