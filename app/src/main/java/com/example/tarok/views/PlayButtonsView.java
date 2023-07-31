@@ -27,6 +27,9 @@ public class PlayButtonsView {
     private Button playSoloThree;
     private Button playSoloTwo;
     private Button playSoloOne;
+    private Button playPiccolo;
+    private Button playBeggar;
+    private Button playValat;
     private Button skipButton;
     private TextView playThreeLabel;
     private TextView playTwoLabel;
@@ -34,6 +37,9 @@ public class PlayButtonsView {
     private TextView playSoloThreeLabel;
     private TextView playSoloTwoLabel;
     private TextView playSoloOneLabel;
+    private TextView playPiccoloLabel;
+    private TextView playBeggarLabel;
+    private TextView playValatLabel;
     private TextView bidInformerLabel;
 
     private List<Button> buttonList;
@@ -49,6 +55,9 @@ public class PlayButtonsView {
         this.playSoloThree = mainActivity.findViewById(R.id.soloThree);
         this.playSoloTwo = mainActivity.findViewById(R.id.soloTwo);
         this.playSoloOne = mainActivity.findViewById(R.id.soloOne);
+        this.playPiccolo = mainActivity.findViewById(R.id.piccolo);
+        this.playBeggar = mainActivity.findViewById(R.id.beggar);
+        this.playValat = mainActivity.findViewById(R.id.valat);
 
         this.skipButton = mainActivity.findViewById(R.id.skipButton);
 
@@ -58,6 +67,9 @@ public class PlayButtonsView {
         this.playSoloThreeLabel = mainActivity.findViewById(R.id.playSoloThreeLabel);
         this.playSoloTwoLabel = mainActivity.findViewById(R.id.playSoloTwoLabel);
         this.playSoloOneLabel = mainActivity.findViewById(R.id.playSoloOneLabel);
+        this.playPiccoloLabel = mainActivity.findViewById(R.id.playPiccoloLabel);
+        this.playBeggarLabel = mainActivity.findViewById(R.id.playBeggarLabel);
+        this.playValatLabel = mainActivity.findViewById(R.id.playValatLabel);
 
         this.bidInformerLabel = mainActivity.findViewById(R.id.bidInformerLabel);
 
@@ -198,6 +210,9 @@ public class PlayButtonsView {
         result.add(playSoloThree);
         result.add(playSoloTwo);
         result.add(playSoloOne);
+        result.add(playPiccolo);
+        result.add(playBeggar);
+        result.add(playValat);
 
         return result;
     }
@@ -215,6 +230,9 @@ public class PlayButtonsView {
         result.add(playSoloThreeLabel);
         result.add(playSoloTwoLabel);
         result.add(playSoloOneLabel);
+        result.add(playPiccoloLabel);
+        result.add(playBeggarLabel);
+        result.add(playValatLabel);
 
         return result;
     }
