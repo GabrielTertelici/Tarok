@@ -41,7 +41,7 @@ public class PlayButtonsView {
 
     private BidClickListener clickListenerHandler;
 
-    public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks, BotTalonStageRuleManager botManager) {
+    public PlayButtonsView(MainActivity mainActivity, List<List<Card>> decks, BotTalonStageRuleManager botManager, int firstPlayer) {
         this.mainActivity = mainActivity;
         this.playThree = mainActivity.findViewById(R.id.playThree);
         this.playTwo = mainActivity.findViewById(R.id.playTwo);
@@ -65,10 +65,16 @@ public class PlayButtonsView {
 
         textViewList = addAllLabels();
 
+        bidInformerLabel.setText("PLAYER " + firstPlayer + " MAKES THE FIRST BID");
+
+        enableAllButtons(false);
+
         this.clickListenerHandler = new BidClickListener(this,
                 new BotBiddingProcess(this, botManager, decks));
         this.clickListenerHandler.setSkipButtonListener(skipButton);
         this.clickListenerHandler.setButtonListeners(buttonList);
+
+        this.clickListenerHandler.getBotBiddingProcess().makeBids((firstPlayer + 2) % 4);
     }
 
     /**
@@ -78,14 +84,20 @@ public class PlayButtonsView {
      * @param player the player who is playing
      */
     public void announceWhoPlaysAndInformMain(PlayMode mode, int player){
-        bidInformerLabel.setText("PLAYER " + player + " IS PLAYING " + mode.toString());
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        Handler outerHandler = new Handler();
+        outerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mainActivity.setPlayMode(mode, player);
+                bidInformerLabel.setText("PLAYER " + player + " IS PLAYING " + mode.toString());
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.setPlayMode(mode, player);
+                    }
+                }, 1500);
             }
-        }, 1500);
+        }, 1000);
     }
 
     /**
@@ -147,6 +159,10 @@ public class PlayButtonsView {
      * and indicates who went for what option, and what the current lowest bid is
      */
     public void displayLatestBid(int currentLowestBid){
+        // do nothing for invalid indices
+        if(currentLowestBid < 0){
+            return;
+        }
         for(int i = 0; i < currentLowestBid; i++){
             buttonList.get(i).setEnabled(false);
             buttonList.get(i).setAlpha(0.5f);
