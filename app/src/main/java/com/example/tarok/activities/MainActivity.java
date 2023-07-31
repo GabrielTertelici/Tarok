@@ -174,4 +174,13 @@ public class MainActivity extends Activity {
 
         textTeam2.setText(allOthers);
     }
+
+    public void playPiccolo(int player) {
+    }
+
+    public void playBeggar(int player) {
+    }
+
+    public void playValat(int player) {
+    }
 }

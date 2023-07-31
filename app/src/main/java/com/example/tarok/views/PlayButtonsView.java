@@ -167,6 +167,39 @@ public class PlayButtonsView {
     }
 
     /**
+     * Method for starting a game with a mode not requiring a talon
+     * @param player player who made the winning bid
+     * @param currentLowestBid the bid being played for
+     */
+    public void skipTalonStage(int player, int currentLowestBid) {
+        String message = "PLAYING ";
+
+        if(currentLowestBid == 6){
+            message += "PICCOLO";
+        } else if (currentLowestBid == 7){
+            message += "BEGGAR";
+        } else if(currentLowestBid == 8){
+            message += "VALAT";
+        }
+
+        bidInformerLabel.setText(message);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(currentLowestBid == 6){
+                    mainActivity.playPiccolo(player);
+                } else if(currentLowestBid == 7){
+                    mainActivity.playBeggar(player);
+                } else if(currentLowestBid == 8){
+                    mainActivity.playValat(player);
+                }
+            }
+        }, 1500);
+    }
+
+    /**
      * Disables all the buttons corresponding to high PlayModes which are no longer playable
      * and indicates who went for what option, and what the current lowest bid is
      */

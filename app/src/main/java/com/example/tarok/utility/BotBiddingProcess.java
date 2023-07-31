@@ -57,8 +57,8 @@ public class BotBiddingProcess {
 
                     playButtonsView.displayLatestBid(currentLowestBid);
 
-                    if(currentLowestBid == 5){
-                        playButtonsView.announceWhoPlaysAndInformMain(PlayMode.Solo_One, bidderId + 2);
+                    if(currentLowestBid == 8){
+                        playButtonsView.skipTalonStage(bidderId + 2, 8);
                         return;
                     }
                 } else {
@@ -68,7 +68,12 @@ public class BotBiddingProcess {
 
                     if(skips == 3){
                         if(currentLowestBid != -1){
-                            playButtonsView.sendPlayModeToMain((bidderId + 2) % 4 + 1, currentLowestBid);
+                            if(currentLowestBid <= 5){
+                                playButtonsView.sendPlayModeToMain((bidderId + 2) % 4 + 1, currentLowestBid);
+                                return;
+                            }
+
+                            playButtonsView.skipTalonStage((bidderId + 2) % 4 + 1, currentLowestBid);
                             return;
                         }
                     }

@@ -38,10 +38,10 @@ public class BidClickListener {
         int lastButtonIndex = buttons.size() - 1;
 
         buttons.get(lastButtonIndex).setOnClickListener(view ->  {
-            botBiddingProcess.setCurrentLowestBid(5);
+            botBiddingProcess.setCurrentLowestBid(lastButtonIndex);
             playButtonsView.setLabelText(lastButtonIndex, "PLAYER 1");
-            playButtonsView.displayLatestBid(5);
-            playButtonsView.announceWhoPlaysAndInformMain(PlayMode.Solo_One, 1);
+            playButtonsView.displayLatestBid(lastButtonIndex);
+            playButtonsView.skipTalonStage(1, 8);
         });
     }
 
@@ -56,7 +56,11 @@ public class BidClickListener {
             playButtonsView.setInfoLabelText("PLAYER 1 SKIPS");
             if (botBiddingProcess.getSkips() == 3) {
                 if(botBiddingProcess.getCurrentLowestBid() != -1){
-                    playButtonsView.sendPlayModeToMain(2, botBiddingProcess.getCurrentLowestBid());
+                    if(botBiddingProcess.getCurrentLowestBid() <= 5){
+                        playButtonsView.sendPlayModeToMain(2, botBiddingProcess.getCurrentLowestBid());
+                    } else {
+                        playButtonsView.skipTalonStage(2, botBiddingProcess.getCurrentLowestBid());
+                    }
                 } else {
                     botBiddingProcess.makeBids(0);
                 }
