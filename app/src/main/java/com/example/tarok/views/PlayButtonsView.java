@@ -16,8 +16,6 @@ import com.example.tarok.utility.PlayMode;
 
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.logging.Handler;
-
 
 public class PlayButtonsView {
     private MainActivity mainActivity;
@@ -156,14 +154,20 @@ public class PlayButtonsView {
      * and starts the game as such
      */
     public void playNegative() {
-        bidInformerLabel.setText("ALL PLAYERS SKIPPED, PLAYING NEGATIVE");
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        Handler outerHandler = new Handler();
+        outerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mainActivity.playNegative();
+                bidInformerLabel.setText("ALL PLAYERS SKIPPED, PLAYING NEGATIVE");
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.playNegative();
+                    }
+                }, 1500);
             }
-        }, 1500);
+        }, 1000);
     }
 
     /**
@@ -172,25 +176,31 @@ public class PlayButtonsView {
      * @param currentLowestBid the bid being played for
      */
     public void skipTalonStage(int player, int currentLowestBid) {
-        String message = "PLAYING ";
-
-        if(currentLowestBid == 6){
-            message += "PICCOLO";
-        } else if (currentLowestBid == 7){
-            message += "BEGGAR";
-        } else if(currentLowestBid == 8){
-            message += "VALAT";
-        }
-
-        bidInformerLabel.setText(message);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        Handler outerHandler = new Handler();
+        outerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mainActivity.skipTalon(player, currentLowestBid);
+                String message = "PLAYING ";
+
+                if(currentLowestBid == 6){
+                    message += "PICCOLO";
+                } else if (currentLowestBid == 7){
+                    message += "BEGGAR";
+                } else if(currentLowestBid == 8){
+                    message += "VALAT";
+                }
+                
+                bidInformerLabel.setText(message);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.skipTalon(player, currentLowestBid);
+                    }
+                }, 1500);
             }
-        }, 1500);
+        }, 1000);
     }
 
     /**
