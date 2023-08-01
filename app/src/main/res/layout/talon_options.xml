@@ -49,7 +49,7 @@
                 android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:layout_weight="33"
+                android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/tarok_gold_accent"
                 android:text="" />
@@ -60,7 +60,7 @@
                 android:layout_width="117dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:layout_weight="33"
+                android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/tarok_gold_accent"
                 android:text="" />
@@ -70,7 +70,17 @@
                 android:layout_width="117dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:layout_weight="33"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/playSoloThreeLabel"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/tarok_gold_accent"
                 android:text="" />
@@ -96,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
-                android:layout_weight="33"
+                android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Three"
                 android:textColor="@color/tarok_gold_accent"/>
@@ -106,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
-                android:layout_weight="33"
+                android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Two"
                 android:textColor="@color/tarok_gold_accent"/>
@@ -116,9 +126,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
-                android:layout_weight="33"
+                android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="One"
+                android:textColor="@color/tarok_gold_accent"/>
+
+            <Button
+                android:id="@+id/soloThree"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Solo Three"
                 android:textColor="@color/tarok_gold_accent"/>
         </TableRow>
 
@@ -126,16 +146,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/playSoloThreeLabel"
-                android:layout_width="125dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@color/tarok_gold_accent"
-                android:text="" />
 
             <TextView
                 android:id="@+id/playSoloTwoLabel"
@@ -156,22 +166,42 @@
                 android:textAlignment="center"
                 android:textColor="@color/tarok_gold_accent"
                 android:text="" />
+
+            <TextView
+                android:id="@+id/playPiccoloLabel"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/playBeggarLabel"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/playValatLabel"
+                android:layout_width="117dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/tarok_gold_accent"
+                android:text="" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="10" >
-
-            <Button
-                android:id="@+id/soloThree"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="20dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/tarok_red_dark"
-                android:text="Solo Three"
-                android:textColor="@color/tarok_gold_accent"/>
 
             <Button
                 android:id="@+id/soloTwo"
@@ -191,6 +221,36 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/tarok_red_dark"
                 android:text="Solo One"
+                android:textColor="@color/tarok_gold_accent"/>
+
+            <Button
+                android:id="@+id/piccolo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Piccolo"
+                android:textColor="@color/tarok_gold_accent"/>
+
+            <Button
+                android:id="@+id/beggar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Beggar"
+                android:textColor="@color/tarok_gold_accent"/>
+
+            <Button
+                android:id="@+id/valat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tarok_red_dark"
+                android:text="Valat"
                 android:textColor="@color/tarok_gold_accent"/>
         </TableRow>
     </TableLayout>

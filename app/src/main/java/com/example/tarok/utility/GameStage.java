@@ -43,8 +43,11 @@ public class GameStage {
     private Card chosenKing;
     private final int delay;
     private boolean isNegativeGameMode;
+    private boolean pointsMatter;
     private List<List<Card>> individualPointsList;
     private int firstPlayer;
+    private int collectedHands;
+    private int PBVGameMode;
 
     public GameStage(MainActivity mainActivity, int firstPlayer) {
         this.playerDeck = mainActivity.findViewById(R.id.deckView);
@@ -63,6 +66,10 @@ public class GameStage {
         this.screenHeight = displayMetrics.heightPixels;
 
         this.firstPlayer = firstPlayer;
+
+        this.pointsMatter = true;
+
+        this.collectedHands = 0;
 
         delay=500;
     }
@@ -97,6 +104,8 @@ public class GameStage {
         else{
             showPickedKingImage();
         }
+
+        this.collectedHands = 0;
 
         if(firstPlayer != 1){
             playerDeck.lockBoard();
@@ -218,10 +227,29 @@ public class GameStage {
 
         animateTableCardPickup(winningPlayer);
 
-        if(isNegativeGameMode){
-            assignPointsToWinningPlayer(winningPlayer);
+        if(PBVGameMode == 8 && winningPlayer != player){
+            handlePBVGameEnding();
+            return;
+        } else if(PBVGameMode == 7 && winningPlayer == player){
+            collectedHands++;
+            handlePBVGameEnding();
+            return;
+        } else if(PBVGameMode == 6 && winningPlayer == player && collectedHands >= 1){
+            collectedHands++;
+            handlePBVGameEnding();
+            return;
+        }
+
+        if(pointsMatter){
+            if(isNegativeGameMode){
+                assignPointsToWinningPlayer(winningPlayer);
+            } else {
+                assignPointsToWinningTeam(winningPlayer);
+            }
         } else {
-            assignPointsToWinningTeam(winningPlayer);
+            if(winningPlayer == this.player){
+                collectedHands++;
+            }
         }
 
         tableCards = new ArrayList<>(4);
@@ -236,10 +264,39 @@ public class GameStage {
     }
 
     /**
+     * Handles an end of a Piccolo, Beggar or Valat (PBV) game
+     */
+    public void handlePBVGameEnding(){
+        if(PBVGameMode == 8){
+            if(collectedHands == 12){
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked all hands and won"));
+            } else {
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " missed a hand and lost"));
+            }
+        } else if(PBVGameMode == 7){
+            if(collectedHands == 0){
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked no hands and won"));
+            } else {
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked a hand and lost"));
+            }
+        } else if(PBVGameMode == 6){
+            if(collectedHands == 1){
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked 1 hand and won"));
+            } else if(collectedHands == 0){
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked 0 hands and lost"));
+            } else if(collectedHands == 2){
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked 2 hands and lost"));
+            }
+        }
+    }
+
+    /**
      * Handles the end of round 12 (final round)
      */
     public void handleGameEnding(){
-        if(isNegativeGameMode){
+        if(!pointsMatter){
+            handlePBVGameEnding();
+        } else if(isNegativeGameMode){
             mainActivity.runOnUiThread(()->mainActivity.endGameStageNegative(individualPointsList));
         } else {
             if(this.player == 1 || this.teamMate == 1){
@@ -304,5 +361,58 @@ public class GameStage {
         this.player = player;
 
         startGame(cards, cards1, cards2, cards3, talon, pointsPlayer, pointsOpponent, chosenKing);
+    }
+
+    /**
+     * Starts a game where Piccolo, Beggar or Valat has been selected (hence PBV)
+     * @param player player who made the bet (human player = 1, right hand side bot = 2...)
+     * @param currentLowestBid the game mode played for (6 -> piccolo, 7 -> beggar, 8 -> valat)
+     * @param decks list of player decks
+     */
+    public void startPBVGame(int player, int currentLowestBid, List<List<Card>> decks) {
+        this.pointsMatter = false;
+
+        this.player = player;
+
+        this.PBVGameMode = currentLowestBid;
+
+        //A table can have max 4 cards
+        tableCards = new ArrayList<>(4);
+        roundCount = 0;
+
+        playerDeck.createDeckFromList(decks.get(0));
+
+        if(currentLowestBid < 8){
+            this.isNegativeGameMode = true;
+
+            this.player2 = new Bot(decks.get(1), new NegativeGameModeBrain());
+            this.player3 = new Bot(decks.get(2), new NegativeGameModeBrain());
+            this.player4 = new Bot(decks.get(3), new NegativeGameModeBrain());
+        } else {
+            this.isNegativeGameMode = false;
+
+            this.player2 = new Bot(decks.get(1), new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
+            this.player3 = new Bot(decks.get(2), new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
+            this.player4 = new Bot(decks.get(3), new NormalGameModeBrain(new SuiteCardRule(), new TarotCardRule()));
+        }
+
+        int beginningPlayer = 0;
+
+        if(currentLowestBid == 8){
+            beginningPlayer  = this.firstPlayer;
+        } else if(currentLowestBid == 7){
+            // beggar plays second
+            beginningPlayer = ((player + 2) % 4) + 1;
+        } else if(currentLowestBid == 6){
+            // piccolo plays first
+            beginningPlayer = player;
+        }
+
+        table.setFirstPlayer(beginningPlayer);
+
+        if(beginningPlayer != 1){
+            playerDeck.lockBoard();
+            letBotPlayCard(List.of(player2, player3, player4).get(beginningPlayer - 2), beginningPlayer, tableCards);
+        }
     }
 }
