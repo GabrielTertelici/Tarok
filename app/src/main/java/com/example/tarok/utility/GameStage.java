@@ -269,23 +269,23 @@ public class GameStage {
     public void handlePBVGameEnding(){
         if(PBVGameMode == 8){
             if(collectedHands == 12){
-                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " has picked every hand and won"));
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked all hands and won"));
             } else {
-                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " has failed to pick every hand, and has lost"));
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " missed a hand and lost"));
             }
         } else if(PBVGameMode == 7){
             if(collectedHands == 0){
-                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " has not picked and hands and won"));
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked no hands and won"));
             } else {
-                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " has picked a hand and lost"));
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked a hand and lost"));
             }
         } else if(PBVGameMode == 6){
             if(collectedHands == 1){
-                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " has picked exactly one hand and won"));
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked 1 hand and won"));
             } else if(collectedHands == 0){
-                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " has not picked up any hands and lost"));
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked 0 hands and lost"));
             } else if(collectedHands == 2){
-                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " has picked two hands and lost"));
+                mainActivity.runOnUiThread(()->mainActivity.endPBVGame("Player " + this.player + " picked 2 hands and lost"));
             }
         }
     }
