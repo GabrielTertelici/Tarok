@@ -79,6 +79,7 @@ public class TalonCardsView extends LinearLayout {
 
         for(Card c:kings){
             c.setLayoutParams(params);
+            c.setOnTouchListener((view, motionEvent)-> false);
             this.addView(c);
         }
     }
@@ -131,6 +132,7 @@ public class TalonCardsView extends LinearLayout {
 
         for(Card c:cards){
             c.setLayoutParams(params);
+            c.setOnTouchListener((view, motionEvent)-> false);
             this.addView(c);
         }
 
