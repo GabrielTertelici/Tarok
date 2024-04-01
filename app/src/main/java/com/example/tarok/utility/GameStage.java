@@ -16,6 +16,7 @@ import com.example.tarok.views.PlayerIconsView;
 import com.example.tarok.views.TableView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,12 +79,12 @@ public class GameStage {
         this.isNegativeGameMode = false;
 
         //A table can have max 4 cards
-        tableCards = new ArrayList<>(4);
+        tableCards = Collections.synchronizedList(new ArrayList<>(4));
         roundCount=0;
         table.setFirstPlayer(firstPlayer);
 
-        pointsTeam1 = new ArrayList<>(pointsPlayer);
-        pointsTeam2 = new ArrayList<>(pointsOpponent);
+        pointsTeam1 = Collections.synchronizedList(new ArrayList<>(pointsPlayer));
+        pointsTeam2 = Collections.synchronizedList(new ArrayList<>(pointsOpponent));
         chosenKing = pickedKing;
 
         playerDeck.createDeckFromList(deckP1);
@@ -138,10 +139,10 @@ public class GameStage {
         player3 = new Bot(decks.get(2), new NegativeGameModeBrain());
         player4 = new Bot(decks.get(3), new NegativeGameModeBrain());
 
-        this.individualPointsList = List.of(new ArrayList<>(),
+        this.individualPointsList = Collections.synchronizedList(List.of(new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>(),
-                new ArrayList<>());
+                new ArrayList<>()));
 
         if(firstPlayer != 1){
             playerDeck.lockBoard();

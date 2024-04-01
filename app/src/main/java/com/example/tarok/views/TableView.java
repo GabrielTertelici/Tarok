@@ -10,6 +10,7 @@ import com.example.tarok.gameObjects.Card;
 import com.example.tarok.unused.GameThreadOld;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -25,7 +26,8 @@ public class TableView extends View {
 
         firstPlayer=1;
 
-        playedCards = new ArrayList<>();
+        //Have the player cards be synchronized
+        playedCards = Collections.synchronizedList(new ArrayList<>());
 
     }
 
@@ -41,9 +43,8 @@ public class TableView extends View {
         canvas.save();
         canvas.scale(scaleFactor,scaleFactor);
         int currentPlayer = firstPlayer-1;
-        //Copy the list to avoid concurrent modifications
-        List<Card> copyList = new ArrayList<>(playedCards);
-        for(Card c:copyList){
+
+        for(Card c:playedCards){
 
 
             canvas.rotate(currentPlayer*-90,centerX , centerY);
